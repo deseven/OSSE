@@ -36,6 +36,9 @@ Enumeration main
   #panel
   #saveSelector
   #menuLocation
+  #menuLocationTenement
+  #menuLocationMarket
+  #menuLocationBazaar
   
   #controlsBegin
   
@@ -133,8 +136,6 @@ CompilerElse
     IncludeBinary "icns/revert.png"
     iconSave:
     IncludeBinary "icns/save.png"
-    iconMain:
-    IncludeBinary "icns/main48.png"
   EndDataSection
 CompilerEndIf
 
@@ -161,14 +162,15 @@ EndDataSection
 
 NewMap values.value()
 
-values("name")\pcre               = ~".*PlayerFirstName[ ]*=[ ]*\"([a-zA-Z0-9]+)\""
-values("surname")\pcre               = ~".*PlayerLastName[ ]*=[ ]*\"([a-zA-Z0-9]+)\""
-values("OC")\pcre               = ".*MONEY_OS[ ]*=[ ]*([0-9]+)"
-values("RM")\pcre               = ".*MONEY_RM[ ]*=[ ]*([0-9]+)"
-values("BM")\pcre               = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
-
+values("name")\pcre               = ~".*PlayerFirstName[ ]*=[ ]*\"([^\"]+)\""
+values("surname")\pcre            = ~".*PlayerLastName[ ]*=[ ]*\"([^\"]+)\""
+values("OC")\pcre                 = ".*MONEY_OS[ ]*=[ ]*([0-9]+)"
+values("RM")\pcre                 = ".*MONEY_RM[ ]*=[ ]*([0-9]+)"
+values("BM")\pcre                 = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
+values("location")\pcre           = ~".*Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 37
+; CursorPosition = 165
+; FirstLine = 132
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

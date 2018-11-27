@@ -7,16 +7,16 @@
   <section name="data">
     <explorer view="../../" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-11-27 18:05" user="deseven" host="de7mac.local"/>
+    <lastopen date="2018-11-28 00:12" user="deseven" host="de7mac.local"/>
   </section>
   <section name="files">
     <file name="const.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="6328c9acf24b5ae5ff5718aeaf099cb4"/>
+      <fingerprint md5="9dc276066796639cacbcf8c44c9f41b6"/>
     </file>
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="568c3f36b0ca0a468664b884a4b0a0db"/>
+      <fingerprint md5="f66272a1b1325b7ac38aefe3d9b46176"/>
     </file>
     <file name="proc.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>

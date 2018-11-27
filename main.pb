@@ -127,10 +127,9 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
 CompilerEndIf
 
 CreatePopupMenu(#menuLocation)
-MenuItem(1,"Your tenement")
-MenuItem(2,"Bazaar")
-MenuItem(3,"Cemetery")
-MenuItem(4,"Robin")
+MenuItem(#menuLocationTenement,"Your tenement")
+MenuItem(#menuLocationBazaar,"Bazaar")
+MenuItem(#menuLocationMarket,"Market")
 
 CompilerSelect #PB_Compiler_OS
   CompilerCase #PB_OS_Linux
@@ -180,9 +179,9 @@ If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
 If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
 StringGadget(#location,330,25,285,20,"-56.67583,-100.05,90.42398")
 CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  ButtonGadget(#locationSelector,325,50,295,25,"Choose predefined location...")
+  ButtonGadget(#locationSelector,325,50,295,25,strings\character\captions("playerLocationSelect"))
 CompilerElse
-  ButtonGadget(#locationSelector,330,50,285,20,"Choose predefined location...")
+  ButtonGadget(#locationSelector,330,50,285,20,strings\character\captions("playerLocationSelect"))
 CompilerEndIf
 ImageGadget(#helpLocation,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
@@ -240,8 +239,10 @@ Repeat
   Select ev
     Case #PB_Event_Gadget
       Select EventGadget()
-        Case #name
-          ; do nothing!
+        Case #locationSelector
+          If EventData() <> 1
+            DisplayPopupMenu(#menuLocation,WindowID(#wnd))
+          EndIf
         Default
           If EventType() = #PB_EventType_LeftClick
             Select EventGadget()
@@ -255,8 +256,6 @@ Repeat
                 message(strings\character\help("realMoney"))
               Case #helpLocation
                 message(strings\character\help("playerLocation"))
-              Case #locationSelector
-                DisplayPopupMenu(#menuLocation,WindowID(#wnd))
             EndSelect
           ElseIf EventType() = #PB_EventType_Change
             Select EventGadget()
@@ -282,14 +281,20 @@ Repeat
           Else
             message(strings\messages("saveError"),#mError)
           EndIf
+        Case #menuLocationTenement
+          SetGadgetText(#location,"73.62659,-99.900,35.45837")
+        Case #menuLocationMarket
+          SetGadgetText(#location,"7.122754,-99.900,-26.292")
+        Case #menuLocationBazaar
+          SetGadgetText(#location,"19.98339,-99.900,118.622")
       EndSelect
     Case #PB_Event_CloseWindow
       Break
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 258
-; FirstLine = 216
+; CursorPosition = 288
+; FirstLine = 256
 ; Folding = --
 ; EnableXP
 ; EnableUnicode

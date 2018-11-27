@@ -75,7 +75,11 @@ Procedure checkSavesPath(path.s)
         If DirectoryEntryType(0) = #PB_DirectoryEntry_File
           ;Debug "found " + DirectoryEntryName(0)
           AddElement(saveFiles())
-          saveFiles() = path + "/" + DirectoryEntryName(0)
+          CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+            saveFiles() = path + "\" + DirectoryEntryName(0)
+          CompilerElse
+            saveFiles() = path + "/" + DirectoryEntryName(0)
+          CompilerEndIf
           saveFound = #True
         EndIf
       Wend
@@ -127,7 +131,11 @@ Procedure langPathSelect()
   TextGadget(2,10,42,150,20,strings\options("savesPath"),#PB_Text_Right)
   ComboBoxGadget(3,170,40,220,20)
   AddElement(savesPaths())
-  savesPaths() = "/Volumes/Data/work/osse/saves"
+  CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
+    savesPaths() = "/Volumes/Data/work/osse/saves"
+  CompilerElse
+    savesPaths() = GetEnvironmentVariable("USERPROFILE") + "\AppData\LocalLow\Loiste Interactive\Open Sewer"
+  CompilerEndIf
   ForEach savesPaths()
     If LCase(savesPaths()) <> LCase(savesPath)
       AddGadgetItem(3,-1,savesPaths())
@@ -137,7 +145,7 @@ Procedure langPathSelect()
     AddGadgetItem(3,-1,savesPath)
     SetGadgetState(3,CountGadgetItems(3)-1)
   Else
-    If CountGadgetItems(3) = 1
+    If CountGadgetItems(3) > 1
       SetGadgetState(3,-1)
     Else
       SetGadgetState(3,0)
@@ -249,7 +257,7 @@ Procedure loadSave(path.s)
   If Not OpenFile(0,path,#PB_File_SharedRead)
     ProcedureReturn #False
   EndIf
-  Debug "loading " + path
+  ;Debug "loading " + path
   ;While Not Eof(0)
   Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
   ;Debug line
@@ -272,6 +280,7 @@ Procedure loadSave(path.s)
   Protected missingValues.i = 0
   ForEach values()
     If Not Len(values()\value)
+      Debug "missing " + values()\pcre
       missingValues + 1
     EndIf
   Next
@@ -326,6 +335,7 @@ Procedure updateInternal()
   values("surname")\value = GetGadgetText(#surname)
   values("OC")\value = Str(GetGadgetState(#oc))
   values("RM")\value = Str(GetGadgetState(#rm))
+  values("location")\value = GetGadgetText(#location)
 EndProcedure
 
 Procedure updateUI()
@@ -334,6 +344,7 @@ Procedure updateUI()
   SetGadgetText(#surname,values("surname")\value)
   SetGadgetState(#oc,Val(values("OC")\value))
   SetGadgetState(#rm,Val(values("RM")\value))
+  SetGadgetText(#location,values("location")\value)
   
   ; sending events to update captions
   Protected i
@@ -345,8 +356,8 @@ EndProcedure
 Procedure revertSave()
 
 EndProcedure
-; IDE Options = PureBasic 5.46 LTS (MacOS X - x64)
-; CursorPosition = 317
-; FirstLine = 276
-; Folding = ---
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 337
+; FirstLine = 320
+; Folding = ----
 ; EnableXP

@@ -33,7 +33,8 @@
 			"openSewerCoins": "Open Sewer coins: ",
 			"realMoney": "Real money: ",
 			"bankMoney": "Bank money: ",
-			"playerLocation": "Player location: "
+			"playerLocation": "Player location: ",
+			"playerLocationSelect": "Choose predefined location..."
 		},
 		"help": {
 			"name": "Player name",
