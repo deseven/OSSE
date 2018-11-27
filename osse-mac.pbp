@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 5.46 LTS (MacOS X - x64)">
+  <section name="config">
+    <options closefiles="1" openmode="0" name="OSSE"/>
+  </section>
+  <section name="data">
+    <explorer view="../../" pattern="0"/>
+    <log show="1"/>
+    <lastopen date="2018-11-27 18:05" user="deseven" host="de7mac.local"/>
+  </section>
+  <section name="files">
+    <file name="const.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="6328c9acf24b5ae5ff5718aeaf099cb4"/>
+    </file>
+    <file name="main.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="568c3f36b0ca0a468664b884a4b0a0db"/>
+    </file>
+    <file name="proc.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="816c984fdebb7a8adc66a58e9b6eb226"/>
+    </file>
+  </section>
+  <section name="targets">
+    <target name="Default Target" enabled="1" default="1">
+      <inputfile value="main.pb"/>
+      <outputfile value="OSSE.app"/>
+      <options unicode="1" xpskin="1" debug="1"/>
+    </target>
+  </section>
+</project>

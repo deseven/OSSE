@@ -1,0 +1,61 @@
+{
+	"langCode": "en",
+	"langName": "English",
+	"translatedBy": "Internal english translation.",
+	"options": {
+		"langSelect": "Select your language:",
+		"savesPath": "Save dir path:",
+		"apply": "Apply"
+	},
+	"interface": {
+		"toolbarSave": "Save",
+		"toolbarRevert": "Undo all changes",
+		"toolbarAbout": "About",
+		"character": "Character",
+		"stats": "Stats",
+		"inventory": "Inventory",
+		"tenement": "Tenement",
+		"quests": "Quests",
+		"world": "World",
+		"enable": "Enable",
+		"thanksTo": "Thanks to:"
+	},
+	"messages": {
+		"wrongSavesPath": "Selected saves path is wrong. There are no save files here :(\n\nIf you're sure that it's correct maybe you want to save the game first.",
+		"saveError": "Save failed! File cannot be found or opened for writing.",
+		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!",
+		"revert": "Do you really want to undo all changes?"
+	},
+	"character": {
+		"captions": {
+			"name": "Name: ",
+			"surname": "Surname: ",
+			"openSewerCoins": "Open Sewer coins: ",
+			"realMoney": "Real money: ",
+			"bankMoney": "Bank money: ",
+			"playerLocation": "Player location: "
+		},
+		"help": {
+			"name": "Player name",
+			"surname": "Player surname",
+			"openSewerCoins": "Amount of Open Sewer coins",
+			"realMoney": "Amount of real money",
+			"playerLocation": "Player location in the game world"
+		}
+	},
+	"stats": {
+		"placeholder": "...work in progress..."
+	},
+	"inventory": {
+		"placeholder": "...work in progress..."
+	},
+	"tenement": {
+		"placeholder": "...work in progress..."
+	},
+	"quests": {
+		"placeholder": "...work in progress..."
+	},
+	"world": {
+		"placeholder": "...work in progress..."
+	}
+}
