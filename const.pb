@@ -13,7 +13,7 @@ Enumeration res
   #font
   #frameFont
   #iconInfo
-  #iconRevert
+  #iconRefresh
   #iconSave
   #iconAbout
   #iconMain
@@ -31,7 +31,7 @@ Enumeration main
   #wndSelect
   #toolbar
   #toolbarSave
-  #toolbarRevert
+  #toolbarRefresh
   #toolbarAbout
   #panel
   #saveSelector
@@ -115,29 +115,16 @@ Structure lang
   world.category
 EndStructure
 
-CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-  DataSection
-    iconAbout:
-    IncludeBinary "icns/about.ico"
-    iconInfo:
-    IncludeBinary "icns/info.ico"
-    iconRevert:
-    IncludeBinary "icns/revert.ico"
-    iconSave:
-    IncludeBinary "icns/save.ico"
-  EndDataSection
-CompilerElse
-  DataSection
+DataSection
     iconAbout:
     IncludeBinary "icns/about.png"
     iconInfo:
     IncludeBinary "icns/info.png"
-    iconRevert:
-    IncludeBinary "icns/revert.png"
+    iconRefresh:
+    IncludeBinary "icns/refresh.png"
     iconSave:
     IncludeBinary "icns/save.png"
-  EndDataSection
-CompilerEndIf
+EndDataSection
 
 DataSection
   langEN:
@@ -168,9 +155,9 @@ values("OC")\pcre                 = ".*MONEY_OS[ ]*=[ ]*([0-9]+)"
 values("RM")\pcre                 = ".*MONEY_RM[ ]*=[ ]*([0-9]+)"
 values("BM")\pcre                 = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
 values("location")\pcre           = ~".*Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
+values("SmokingAddiction")\pcre           = ~".*Smoking_Addiction[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 165
-; FirstLine = 132
-; Folding = -
+; CursorPosition = 33
+; FirstLine = 4
 ; EnableXP
 ; EnableUnicode

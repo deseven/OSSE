@@ -21,9 +21,10 @@ CompilerEndSelect
 
 EnableExplicit
 
-Define savesPath.s,lang.s
-Define ev.i
+Define savesPath.s,lang.s,currentSave.s
+Define ev.i,i.i
 Define strings.lang
+Define saveNeeded.b
 NewList gamePaths.s()
 NewList savesPaths.s()
 NewList saveFiles.s()
@@ -32,7 +33,7 @@ IncludeFile "proc.pb"
 
 CatchImage(#iconAbout,?iconAbout)
 CatchImage(#iconInfo,?iconInfo)
-CatchImage(#iconRevert,?iconRevert)
+CatchImage(#iconRefresh,?iconRefresh)
 CatchImage(#iconSave,?iconSave)
 CatchImage(#iconCharacter,?iconCharacter)
 CatchImage(#iconStats,?iconStats)
@@ -62,11 +63,13 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
   imageSize\height = 16
   CocoaMessage(0,ImageID(#iconAbout),"setSize:@",@ImageSize)
   CocoaMessage(0,ImageID(#iconSave),"setSize:@",@ImageSize)
-  CocoaMessage(0,ImageID(#iconRevert),"setSize:@",@ImageSize)
+  CocoaMessage(0,ImageID(#iconRefresh),"setSize:@",@ImageSize)
+  CocoaMessage(0,ImageID(#iconInfo),"setSize:@",@ImageSize)
   helpOffsetY = 5
 CompilerEndIf
 
 CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+  ResizeImage(#iconInfo,16,16,#PB_Image_Smooth)
   If FileSize(GetEnvironmentVariable("APPDATA") + "\osse") <> -2
     CreateDirectory(GetEnvironmentVariable("APPDATA") + "\osse")
   EndIf
@@ -115,10 +118,10 @@ SmartWindowRefresh(#wnd,#True)
 
 CreateToolBar(#toolbar,WindowID(#wnd))
 ToolBarImageButton(#toolbarSave,ImageID(#iconSave))
-;ToolBarImageButton(#toolbarRevert,ImageID(#iconRevert))
+ToolBarImageButton(#toolbarRefresh,ImageID(#iconRefresh))
 ToolBarImageButton(#toolbarAbout,ImageID(#iconAbout))
 ToolBarToolTip(#toolbar,#toolbarSave,strings\interface("toolbarSave"))
-ToolBarToolTip(#toolbar,#toolbarRevert,strings\interface("toolbarRevert"))
+ToolBarToolTip(#toolbar,#toolbarRefresh,strings\interface("toolbarRefresh"))
 ToolBarToolTip(#toolbar,#toolbarAbout,strings\interface("toolbarAbout"))
 ResizeWindow(#wnd,#PB_Ignore,#PB_Ignore,WindowWidth(#wnd),WindowHeight(#wnd)+ToolBarHeight(#toolbar))
 CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
@@ -187,15 +190,6 @@ ImageGadget(#helpLocation,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
 ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
 
-CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  CocoaMessage(0,GadgetID(#name),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#name),"setFocusRingType:",1)
-  CocoaMessage(0,GadgetID(#surname),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#surname),"setFocusRingType:",1)
-  CocoaMessage(0,GadgetID(#location),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#location),"setFocusRingType:",1)
-CompilerEndIf
-
 ; ForceGadgetZOrder(#frameMillisPerDay)
 ; ForceGadgetZOrder(#helpMillisPerDay)
 ; ForceGadgetZOrder(#frameForestLevel)
@@ -226,6 +220,15 @@ TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
 ;SetGadgetState(#panel,2)
+
+CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
+  CocoaMessage(0,GadgetID(#name),"setBezelStyle:",10)
+  CocoaMessage(0,GadgetID(#name),"setFocusRingType:",1)
+  CocoaMessage(0,GadgetID(#surname),"setBezelStyle:",10)
+  CocoaMessage(0,GadgetID(#surname),"setFocusRingType:",1)
+  CocoaMessage(0,GadgetID(#location),"setBezelStyle:",10)
+  CocoaMessage(0,GadgetID(#location),"setFocusRingType:",1)
+CompilerEndIf
 
 loadSave(GetGadgetText(#saveSelector))
 updateUI()
@@ -260,14 +263,25 @@ Repeat
           ElseIf EventType() = #PB_EventType_Change
             Select EventGadget()
               Case #saveSelector
-                loadSave(GetGadgetText(#saveSelector))
-                updateUI()
-                DisableToolBarButton(#toolbar,#toolbarSave,#True)
+                If Not saveNeeded Or message(strings\messages("selectConfirm"),#mQuestion)
+                  loadSave(GetGadgetText(#saveSelector))
+                  updateUI()
+                  DisableToolBarButton(#toolbar,#toolbarSave,#True)
+                  saveNeeded = #False
+                Else
+                  For i = 0 To CountGadgetItems(#saveSelector)-1
+                    If GetGadgetItemText(#saveSelector,i) = currentSave
+                      SetGadgetState(#saveSelector,i)
+                      Break
+                    EndIf
+                  Next
+                EndIf
             EndSelect
           EndIf
       EndSelect
-      If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> 1
+      If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> 1 And EventType() = #PB_EventType_Change
         DisableToolBarButton(#toolbar,#toolbarSave,#False)
+        saveNeeded = #True
       EndIf
     Case #PB_Event_Menu
       Select EventMenu()
@@ -278,22 +292,40 @@ Repeat
           If saveSave(GetGadgetText(#saveSelector))
             loadSave(GetGadgetText(#saveSelector))
             DisableToolBarButton(#toolbar,#toolbarSave,#True)
+            saveNeeded = #False
           Else
             message(strings\messages("saveError"),#mError)
           EndIf
+        Case #toolbarRefresh
+          If Not saveNeeded Or message(strings\messages("refreshConfirm"),#mQuestion)
+            ClearList(saveFiles())
+            checkSavesPath(savesPath)
+            ClearGadgetItems(#saveSelector)
+            ForEach saveFiles()
+              AddGadgetItem(#saveSelector,-1,saveFiles())
+            Next
+            SetGadgetState(#saveSelector,0)
+            loadSave(GetGadgetText(#saveSelector))
+            updateUI()
+            DisableToolBarButton(#toolbar,#toolbarSave,#True)
+            saveNeeded = #False
+          EndIf
         Case #menuLocationTenement
           SetGadgetText(#location,"73.62659,-99.900,35.45837")
+          PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
         Case #menuLocationMarket
           SetGadgetText(#location,"7.122754,-99.900,-26.292")
+          PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
         Case #menuLocationBazaar
           SetGadgetText(#location,"19.98339,-99.900,118.622")
+          PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
       EndSelect
     Case #PB_Event_CloseWindow
       Break
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 288
+; CursorPosition = 272
 ; FirstLine = 256
 ; Folding = --
 ; EnableXP

@@ -249,8 +249,10 @@ Procedure message(message.s,type.b = #mInfo)
 EndProcedure
 
 Procedure loadSave(path.s)
+  Shared currentSave.s
   Shared values.value()
   Shared strings.lang
+  currentSave = path
   If FileSize(path) < 1
     ProcedureReturn #False
   EndIf
@@ -278,14 +280,16 @@ Procedure loadSave(path.s)
   CloseFile(0)
   line = ""
   Protected missingValues.i = 0
+  Protected missingValuesKeys.s = ~"\n"
   ForEach values()
     If Not Len(values()\value)
-      Debug "missing " + values()\pcre
+      ;Debug "missing " + values()\pcre
       missingValues + 1
+      missingValuesKeys + Str(missingValues) + ". " + MapKey(values()) + ~"\n"
     EndIf
   Next
   If missingValues
-    message(strings\messages("missingValues"),#mError)
+    message(strings\messages("missingValues") + missingValuesKeys,#mError)
   EndIf
   ProcedureReturn #True
 EndProcedure
@@ -357,7 +361,7 @@ Procedure revertSave()
 
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 337
-; FirstLine = 320
+; CursorPosition = 254
+; FirstLine = 247
 ; Folding = ----
 ; EnableXP

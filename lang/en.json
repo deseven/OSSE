@@ -9,7 +9,7 @@
 	},
 	"interface": {
 		"toolbarSave": "Save",
-		"toolbarRevert": "Undo all changes",
+		"toolbarRefresh": "Refresh saves list and current save",
 		"toolbarAbout": "About",
 		"character": "Character",
 		"stats": "Stats",
@@ -23,8 +23,9 @@
 	"messages": {
 		"wrongSavesPath": "Selected saves path is wrong. There are no save files here :(\n\nIf you're sure that it's correct maybe you want to save the game first.",
 		"saveError": "Save failed! File cannot be found or opened for writing.",
-		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!",
-		"revert": "Do you really want to undo all changes?"
+		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!\n\nMissing values:",
+		"refreshConfirm": "Looks like you have some unsaved changes, do you really want to refresh?",
+		"selectConfirm": "Looks like you have some unsaved changes, do you really want to select another save?"
 	},
 	"character": {
 		"captions": {
