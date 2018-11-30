@@ -8,9 +8,9 @@
 		"apply": "Apply"
 	},
 	"interface": {
-		"toolbarSave": "Save",
+		"toolbarSave": "Save current file",
 		"toolbarRefresh": "Refresh saves list and current save",
-		"toolbarAbout": "About",
+		"toolbarAbout": "About this editor",
 		"character": "Character",
 		"stats": "Stats",
 		"inventory": "Inventory",
@@ -29,12 +29,12 @@
 	},
 	"character": {
 		"captions": {
-			"name": "Name: ",
-			"surname": "Surname: ",
-			"openSewerCoins": "Open Sewer coins: ",
-			"realMoney": "Real money: ",
-			"bankMoney": "Bank money: ",
-			"playerLocation": "Player location: ",
+			"name": "Name",
+			"surname": "Surname",
+			"openSewerCoins": "Open Sewer coins",
+			"realMoney": "Real money",
+			"bankMoney": "Bank money",
+			"playerLocation": "Player location",
 			"playerLocationSelect": "Choose predefined location..."
 		},
 		"help": {
@@ -46,6 +46,38 @@
 		}
 	},
 	"stats": {
+		"captions": {
+			"selectHealth": "Health",
+			"selectNeeds": "Common needs",
+			"selectSubstances": "Substances",
+			"selectRates": "Rates",
+			"health": "Health: ",
+			"smv": "SMV progression: ",
+			"depression": "Depression: ",
+			"hunger": "Hunger: ",
+			"thirst": "Thirst: ",
+			"bowel": "Bowel: ",
+			"bladder": "Bladder: ",
+			"tiredness": "Tiredness: ",
+			"alcoholAddiction": "Alcohol addiction: ",
+			"alcoholNeed": "Alcohol need: ",
+			"smokingAddiction": "Nicotine addiction: ",
+			"smokingNeed": "Nicotine need: "
+		},
+		"help": {
+			"health": "Current health level, good for not dying",
+			"smv": "Progression of SMV disease",
+			"depression": "Depression level",
+			"hunger": "Hunger level",
+			"thirst": "Thirst: ",
+			"bowel": "How much you need to shit",
+			"bladder": "How much you need to pee",
+			"tiredness": "How tired you are",
+			"alcoholAddiction": "Level of alcohol addiction",
+			"alcoholNeed": "How much you need that precious Osmo Olut",
+			"smokingAddiction": "Level of smoking addiction",
+			"smokingNeed": "How much you need to smoke another one"
+		},
 		"placeholder": "...work in progress..."
 	},
 	"inventory": {

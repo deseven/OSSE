@@ -1,6 +1,6 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.1.0"
+#myVer = "0.2.0"
 #thanksTo = ~"\nnobody"
 
 Enumeration message
@@ -39,6 +39,7 @@ Enumeration main
   #menuLocationTenement
   #menuLocationMarket
   #menuLocationBazaar
+  #statsSelector
   
   #controlsBegin
   
@@ -59,6 +60,33 @@ Enumeration main
   #bgCharacter
   
   ; stats
+  #frameHealth
+  #health
+  #frameSMV
+  #SMV
+  #frameDepression
+  #depression
+  ; -
+  #frameHunger
+  #hunger
+  #frameBowel
+  #bowel
+  #frameBladder
+  #bladder
+  #frameThirst
+  #thirst
+  #frameTiredness
+  #tiredness
+  ; -
+  #frameAlcoholAddiction
+  #alcoholAddiction
+  #frameAlcoholNeed
+  #alcoholNeed
+  #frameSmokingAddiction
+  #smokingAddiction
+  #frameSmokingNeed
+  #smokingNeed
+  ; -
   #placeholderStats
   #bgStats
   
@@ -87,6 +115,19 @@ Enumeration main
   #helpRM
   #helpBM
   #helpLocation
+  #helpHealth
+  #helpSMV
+  #helpDepression
+  #helpHunger
+  #helpThirst
+  #helpBowel
+  #helpBladder
+  #helpTiredness
+  #helpAlcoholAddiction
+  #helpAlcoholNeed
+  #helpSmokingAddiction
+  #helpSmokingNeed
+  
 EndEnumeration
 
 Structure value
@@ -157,7 +198,6 @@ values("BM")\pcre                 = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
 values("location")\pcre           = ~".*Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 values("SmokingAddiction")\pcre           = ~".*Smoking_Addiction[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 33
-; FirstLine = 4
+; CursorPosition = 2
 ; EnableXP
 ; EnableUnicode

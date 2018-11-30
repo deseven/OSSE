@@ -152,16 +152,19 @@ Next
 SetGadgetState(#saveSelector,0)
 
 AddGadgetItem(#panel,-1,strings\interface("character"))
+
 FrameGadget(#frameName,5,5,305,50,strings\character\captions("name"))
 If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
-StringGadget(#name,15,25,285,20,"Esko")
+StringGadget(#name,15+gadOffsetX,25+gadOffsetY,285,20,"")
 ImageGadget(#helpName,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpName,strings\character\help("name"))
+
 FrameGadget(#frameSurname,5,60,305,50,strings\character\captions("surname"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSurname,FontID(#frameFont)) : EndIf
-StringGadget(#surname,15+gadOffsetX,80+gadOffsetY,285,20,"Virtanen")
+StringGadget(#surname,15+gadOffsetX,80+gadOffsetY,285,20,"")
 ImageGadget(#helpSurname,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpSurname,strings\character\help("surname"))
+
 FrameGadget(#frameOC,5,115,305,50,strings\character\captions("openSewerCoins"))
 If IsFont(#frameFont) : SetGadgetFont(#frameOC,FontID(#frameFont)) : EndIf
 SpinGadget(#oc,15+gadOffsetX,135+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
@@ -169,6 +172,7 @@ SetGadgetState(#oc,10)
 SetGadgetFont(#oc,FontID(#font))
 ImageGadget(#helpOC,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
+
 FrameGadget(#frameRM,5,170,305,50,strings\character\captions("realMoney"))
 If IsFont(#frameFont) : SetGadgetFont(#frameRM,FontID(#frameFont)) : EndIf
 SpinGadget(#rm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
@@ -200,7 +204,32 @@ ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
 ; ForceGadgetZOrder(#helpSingleDensity)
 
 AddGadgetItem(#panel,-1,strings\interface("stats"))
-TextGadget(#placeholderStats,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\stats\placeholder,#PB_Text_Center)
+ListViewGadget(#statsSelector,5,5,100,215)
+AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectHealth"))
+AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectNeeds"))
+AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectSubstances"))
+AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectRates"))
+SetGadgetState(#statsSelector,0)
+
+FrameGadget(#frameHealth,115,5,250,50,strings\stats\captions("health"))
+If IsFont(#frameFont) : SetGadgetFont(#frameHealth,FontID(#frameFont)) : EndIf
+TrackBarGadget(#health,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
+ImageGadget(#helpHealth,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpHealth,strings\stats\help("health"))
+
+FrameGadget(#frameSMV,375,5,250,50,strings\stats\captions("smv"))
+If IsFont(#frameFont) : SetGadgetFont(#frameSMV,FontID(#frameFont)) : EndIf
+TrackBarGadget(#smv,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
+ImageGadget(#helpSMV,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpSMV,strings\stats\help("smv"))
+
+FrameGadget(#frameDepression,115,60,250,50,strings\stats\captions("depression"))
+If IsFont(#frameFont) : SetGadgetFont(#frameDepression,FontID(#frameFont)) : EndIf
+TrackBarGadget(#depression,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
+ImageGadget(#helpDepression,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpDepression,strings\stats\help("depression"))
+
+;TextGadget(#placeholderStats,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\stats\placeholder,#PB_Text_Center)
 ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
 
 AddGadgetItem(#panel,-1,strings\interface("inventory"))
@@ -219,7 +248,7 @@ AddGadgetItem(#panel,-1,strings\interface("world"))
 TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\world\placeholder,#PB_Text_Center)
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
-;SetGadgetState(#panel,2)
+SetGadgetState(#panel,1)
 
 CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
   CocoaMessage(0,GadgetID(#name),"setBezelStyle:",10)
@@ -325,8 +354,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 272
-; FirstLine = 256
+; CursorPosition = 228
+; FirstLine = 199
 ; Folding = --
 ; EnableXP
 ; EnableUnicode
