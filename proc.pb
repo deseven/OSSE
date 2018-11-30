@@ -1,13 +1,4 @@
-﻿Procedure ForceGadgetZOrder(gadget)
-  CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-    If IsGadget(gadget)
-      SetWindowLong_(GadgetID(gadget),#GWL_STYLE,GetWindowLong_(GadgetID(gadget),#GWL_STYLE)|#WS_CLIPSIBLINGS)
-      SetWindowPos_(GadgetID(gadget),#HWND_TOP,0,0,0,0,#SWP_NOSIZE|#SWP_NOMOVE)
-    EndIf
-  CompilerEndIf
-EndProcedure
-
-Procedure getGamePaths()
+﻿Procedure getGamePaths()
   Shared gamePaths.s()
   Protected NewList paths.s()
   CompilerSelect #PB_Compiler_OS
@@ -217,41 +208,6 @@ Procedure langPathSelect()
   CompilerEndIf
 EndProcedure
 
-Procedure message(message.s,type.b = #mInfo)
-  Protected wndID.i
-  If IsWindow(#wnd) : wndID = WindowID(#wnd) : EndIf
-  CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-    Select type
-      Case #mError
-        MessageBox_(wndID,message,"PERKELE!",#MB_OK|#MB_ICONERROR)
-      Case #mWarning
-        MessageBox_(wndID,message,"PERKELE!",#MB_OK|#MB_ICONWARNING)
-      Case #mQuestion
-        If MessageBox_(wndID,message,#myNameShort,#MB_YESNO|#MB_ICONQUESTION) = #IDYES
-          ProcedureReturn #True
-        Else
-          ProcedureReturn #False
-        EndIf
-      Default
-        MessageBox_(wndID,message,#myNameShort,#MB_OK|#MB_ICONINFORMATION)
-    EndSelect
-  CompilerElse
-    Select type
-      Case #mQuestion
-        If MessageRequester(#myNameShort,message,#PB_MessageRequester_YesNo) = #PB_MessageRequester_Yes
-          ProcedureReturn #True
-        Else
-          ProcedureReturn #False
-        EndIf
-      Case #mError
-        MessageRequester("PERKELE!",message)
-      Default
-        MessageRequester(#myNameShort,message)
-    EndSelect
-  CompilerEndIf
-  ProcedureReturn #True
-EndProcedure
-
 Procedure loadSave(path.s)
   Shared currentSave.s
   Shared values.value()
@@ -344,6 +300,22 @@ Procedure updateInternal()
   values("OC")\value = Str(GetGadgetState(#oc))
   values("RM")\value = Str(GetGadgetState(#rm))
   values("location")\value = GetGadgetText(#location)
+  
+  values("health")\value = Str(GetGadgetState(#health))
+  values("depression")\value = Str(GetGadgetState(#depression))
+  values("SMVProgression")\value = Str(GetGadgetState(#SMV))
+  values("SMVProgressionRate")\value = Str(GetGadgetState(#SMVRate)-100)
+  values("tiredness")\value = Str(GetGadgetState(#tiredness))
+  
+  values("hunger")\value = Str(GetGadgetState(#hunger))
+  values("thirst")\value = Str(GetGadgetState(#thirst))
+  values("bowel")\value = Str(GetGadgetState(#bowel))
+  values("bladder")\value = Str(GetGadgetState(#bladder))
+  
+  values("alcoholAddiction")\value = Str(GetGadgetState(#alcoholAddiction))
+  values("alcoholNeed")\value = Str(GetGadgetState(#alcoholNeed))
+  values("smokingAddiction")\value = Str(GetGadgetState(#smokingAddiction))
+  values("smokingNeed")\value = Str(GetGadgetState(#smokingNeed))
 EndProcedure
 
 Procedure updateUI()
@@ -354,17 +326,30 @@ Procedure updateUI()
   SetGadgetState(#rm,Val(values("RM")\value))
   SetGadgetText(#location,values("location")\value)
   
+  SetGadgetState(#health,ValF(values("health")\value))
+  SetGadgetState(#depression,ValF(values("depression")\value))
+  SetGadgetState(#smv,ValF(values("SMVProgression")\value))
+  SetGadgetState(#SMVRate,ValF(values("SMVProgressionRate")\value)+100)
+  SetGadgetState(#tiredness,ValF(values("tiredness")\value))
+  
+  SetGadgetState(#hunger,ValF(values("hunger")\value))
+  SetGadgetState(#thirst,ValF(values("thirst")\value))
+  SetGadgetState(#bowel,ValF(values("bowel")\value))
+  SetGadgetState(#bladder,ValF(values("bladder")\value))
+  
+  SetGadgetState(#alcoholAddiction,ValF(values("alcoholAddiction")\value))
+  SetGadgetState(#alcoholNeed,ValF(values("alcoholNeed")\value))
+  SetGadgetState(#smokingAddiction,ValF(values("smokingAddiction")\value))
+  SetGadgetState(#smokingNeed,ValF(values("smokingNeed")\value))
+  
   ; sending events to update captions
   Protected i
   For i = #controlsBegin To #controlsEnd
-    PostEvent(#PB_Event_Gadget,#wnd,i,0,1)
+    PostEvent(#PB_Event_Gadget,#wnd,i,0,-1)
   Next
 EndProcedure
-
-Procedure revertSave()
-
-EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 5
-; Folding = ----
+; CursorPosition = 308
+; FirstLine = 287
+; Folding = ---
 ; EnableXP

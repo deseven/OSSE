@@ -53,7 +53,7 @@
 			"selectRates": "Rates",
 			"health": "Health: %p%",
 			"smv": "SMV progression: %p%",
-			"smvProgression": "SMV progression rate",
+			"smvRate": "SMV progression rate: %p% per hour",
 			"depression": "Depression: %p%",
 			"hunger": "Hunger: %p%",
 			"thirst": "Thirst: %p%",
@@ -63,13 +63,13 @@
 			"alcoholAddiction": "Alcohol addiction: %p%",
 			"alcoholNeed": "Alcohol need: %p%",
 			"smokingAddiction": "Nicotine addiction: %p%",
-			"smokingNeed": "Nicotine need: "
+			"smokingNeed": "Nicotine need: %p%"
 		},
 		"help": {
 			"health": "Current health level, good for not dying",
-			"smv": "Progression of SMV disease",
-			"smvProgression": "Progression rate of SMV disease",
-			"depression": "Depression level",
+			"smv": "Progression of SMV disease, 100% = DÖD",
+			"smvRate": "Progression rate of SMV disease per game hour, you can fine-tune it with arrow keys on your keyboard",
+			"depression": "How much you want to hang yourself on a street lamp",
 			"hunger": "Hunger level",
 			"thirst": "Thirst: ",
 			"bowel": "How much you need to shit",

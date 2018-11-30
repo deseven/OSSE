@@ -65,6 +65,8 @@ Enumeration main
   #health
   #frameSMV
   #SMV
+  #frameSMVRate
+  #SMVRate
   #frameDepression
   #depression
   ; -
@@ -88,7 +90,6 @@ Enumeration main
   #frameSmokingNeed
   #smokingNeed
   ; -
-  #placeholderStats
   #bgStats
   
   ; inventory
@@ -109,7 +110,7 @@ Enumeration main
   
   #controlsEnd
   
-  #helpStart
+  #helpBegin
   
   ; help buttons
   #helpName
@@ -120,6 +121,7 @@ Enumeration main
   #helpLocation
   #helpHealth
   #helpSMV
+  #helpSMVRate
   #helpDepression
   #helpHunger
   #helpThirst
@@ -201,9 +203,23 @@ values("OC")\pcre                 = ".*MONEY_OS[ ]*=[ ]*([0-9]+)"
 values("RM")\pcre                 = ".*MONEY_RM[ ]*=[ ]*([0-9]+)"
 values("BM")\pcre                 = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
 values("location")\pcre           = ~".*Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
-values("SmokingAddiction")\pcre           = ~".*Smoking_Addiction[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
+
+values("health")\pcre             = ~".*PLAYER_STATS_Health[ ]*=[ ]*([0-9\\-.]+)"
+values("depression")\pcre         = ~".*PLAYER_STATS_Depression[ ]*=[ ]*([0-9\\-.]+)"
+values("SMVProgression")\pcre     = ~".*PLAYER_STATS_SMVProgression[ ]*=[ ]*([0-9\\-.]+)"
+values("SMVProgressionRate")\pcre = ~".*PLAYER_STATS_SMVProgressionRate[ ]*=[ ]*([0-9\\-.]+)"
+values("tiredness")\pcre          = ~".*PLAYER_STATS_Tiredness[ ]*=[ ]*([0-9\\-.]+)"
+values("hunger")\pcre             = ~".*PLAYER_STATS_Hunger[ ]*=[ ]*([0-9\\-.]+)"
+values("bowel")\pcre              = ~".*PLAYER_STATS_Bowel[ ]*=[ ]*([0-9\\-.]+)"
+values("thirst")\pcre             = ~".*PLAYER_STATS_Thirst[ ]*=[ ]*([0-9\\-.]+)"
+values("bladder")\pcre            = ~".*PLAYER_STATS_Bladder[ ]*=[ ]*([0-9\\-.]+)"
+values("smokingAddiction")\pcre   = ~".*PLAYER_STATS_SmokingAddiction[ ]*=[ ]*([0-9\\-.]+)"
+values("smokingNeed")\pcre        = ~".*PLAYER_STATS_SmokingNeed[ ]*=[ ]*([0-9\\-.]+)"
+values("alcoholAddiction")\pcre   = ~".*PLAYER_STATS_AlcoholAddiction[ ]*=[ ]*([0-9\\-.]+)"
+values("alcoholNeed")\pcre        = ~".*PLAYER_STATS_AlcoholNeed[ ]*=[ ]*([0-9\\-.]+)"
+
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 133
-; FirstLine = 99
+; CursorPosition = 218
+; FirstLine = 182
 ; EnableXP
 ; EnableUnicode

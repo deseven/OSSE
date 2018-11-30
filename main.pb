@@ -30,6 +30,7 @@ NewList gamePaths.s()
 NewList savesPaths.s()
 NewList saveFiles.s()
 
+IncludeFile "helpers.pb"
 IncludeFile "proc.pb"
 
 CatchImage(#iconAbout,?iconAbout)
@@ -114,161 +115,7 @@ WritePreferenceString("lang",lang)
 
 ClosePreferences()
 
-OpenWindow(#wnd,#PB_Ignore,#PB_Ignore,640,285,#myName + " " + #myVer,#PB_Window_SystemMenu|#PB_Window_ScreenCentered|#PB_Window_Invisible)
-SmartWindowRefresh(#wnd,#True)
-
-CreateToolBar(#toolbar,WindowID(#wnd))
-ToolBarImageButton(#toolbarSave,ImageID(#iconSave))
-ToolBarImageButton(#toolbarRefresh,ImageID(#iconRefresh))
-ToolBarImageButton(#toolbarAbout,ImageID(#iconAbout))
-ToolBarToolTip(#toolbar,#toolbarSave,strings\interface("toolbarSave"))
-ToolBarToolTip(#toolbar,#toolbarRefresh,strings\interface("toolbarRefresh"))
-ToolBarToolTip(#toolbar,#toolbarAbout,strings\interface("toolbarAbout"))
-ResizeWindow(#wnd,#PB_Ignore,#PB_Ignore,WindowWidth(#wnd),WindowHeight(#wnd)+ToolBarHeight(#toolbar))
-CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  CocoaMessage(0,CocoaMessage(0,WindowID(#wnd),"standardWindowButton:",1),"setHidden:",#YES)
-  CocoaMessage(0,CocoaMessage(0,WindowID(#wnd),"standardWindowButton:",2),"setHidden:",#YES)
-CompilerEndIf
-
-CreatePopupMenu(#menuLocation)
-MenuItem(#menuLocationTenement,"Your tenement")
-MenuItem(#menuLocationBazaar,"Bazaar")
-MenuItem(#menuLocationMarket,"Market")
-
-CompilerSelect #PB_Compiler_OS
-  CompilerCase #PB_OS_Linux
-    PanelGadget(#panel,0,50,640,250)
-  CompilerCase #PB_OS_MacOS
-    ResizeWindow(#wnd,#PB_Ignore,#PB_Ignore,WindowWidth(#wnd)+30,WindowHeight(#wnd)+30)
-    ComboBoxGadget(#saveSelector,5,20,650,20)
-    PanelGadget(#panel,0,50,660,270)
-  CompilerDefault
-    ComboBoxGadget(#saveSelector,5,ToolBarHeight(#toolbar)+2,630,20)
-    PanelGadget(#panel,0,ToolBarHeight(#toolbar)+30,645,275)
-CompilerEndSelect
-
-ForEach saveFiles()
-  AddGadgetItem(#saveSelector,-1,saveFiles())
-Next
-SetGadgetState(#saveSelector,0)
-
-AddGadgetItem(#panel,-1,strings\interface("character"))
-
-FrameGadget(#frameName,5,5,305,50,strings\character\captions("name"))
-If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
-StringGadget(#name,15+gadOffsetX,25+gadOffsetY,285,20,"")
-ImageGadget(#helpName,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpName,strings\character\help("name"))
-
-FrameGadget(#frameSurname,5,60,305,50,strings\character\captions("surname"))
-If IsFont(#frameFont) : SetGadgetFont(#frameSurname,FontID(#frameFont)) : EndIf
-StringGadget(#surname,15+gadOffsetX,80+gadOffsetY,285,20,"")
-ImageGadget(#helpSurname,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSurname,strings\character\help("surname"))
-
-FrameGadget(#frameOC,5,115,305,50,strings\character\captions("openSewerCoins"))
-If IsFont(#frameFont) : SetGadgetFont(#frameOC,FontID(#frameFont)) : EndIf
-SpinGadget(#oc,15+gadOffsetX,135+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
-SetGadgetState(#oc,10)
-SetGadgetFont(#oc,FontID(#font))
-ImageGadget(#helpOC,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
-
-FrameGadget(#frameRM,5,170,305,50,strings\character\captions("realMoney"))
-If IsFont(#frameFont) : SetGadgetFont(#frameRM,FontID(#frameFont)) : EndIf
-SpinGadget(#rm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
-SetGadgetState(#rm,0)
-SetGadgetFont(#rm,FontID(#font))
-ImageGadget(#helpRM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpRM,strings\character\help("realMoney"))
-; |
-FrameGadget(#frameLocation,320,5,305,75,strings\character\captions("playerLocation"))
-If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
-If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
-StringGadget(#location,330,25,285,20,"-56.67583,-100.05,90.42398")
-CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  ButtonGadget(#locationSelector,325,50,295,25,strings\character\captions("playerLocationSelect"))
-CompilerElse
-  ButtonGadget(#locationSelector,330,50,285,20,strings\character\captions("playerLocationSelect"))
-CompilerEndIf
-ImageGadget(#helpLocation,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
-ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
-
-; ForceGadgetZOrder(#frameMillisPerDay)
-; ForceGadgetZOrder(#helpMillisPerDay)
-; ForceGadgetZOrder(#frameForestLevel)
-; ForceGadgetZOrder(#helpForestLevel)
-; ForceGadgetZOrder(#frameForestDensity)
-; ForceGadgetZOrder(#helpForestDensity)
-; ForceGadgetZOrder(#frameSingleDensity)
-; ForceGadgetZOrder(#helpSingleDensity)
-
-AddGadgetItem(#panel,-1,strings\interface("stats"))
-ListViewGadget(#statsSelector,5,5,100,215)
-AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectHealth"))
-AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectNeeds"))
-AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectSubstances"))
-AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectRates"))
-SetGadgetState(#statsSelector,0)
-
-FrameGadget(#frameHealth,115,5,250,50,strings\stats\captions("health"))
-If IsFont(#frameFont) : SetGadgetFont(#frameHealth,FontID(#frameFont)) : EndIf
-TrackBarGadget(#health,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
-ImageGadget(#helpHealth,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpHealth,strings\stats\help("health"))
-SetGadgetData(#frameHealth,@strings\stats\captions("health"))
-
-FrameGadget(#frameSMV,375,5,250,50,strings\stats\captions("smv"))
-If IsFont(#frameFont) : SetGadgetFont(#frameSMV,FontID(#frameFont)) : EndIf
-TrackBarGadget(#smv,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
-ImageGadget(#helpSMV,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSMV,strings\stats\help("smv"))
-SetGadgetData(#frameSMV,@strings\stats\captions("smv"))
-
-FrameGadget(#frameDepression,115,60,250,50,strings\stats\captions("depression"))
-If IsFont(#frameFont) : SetGadgetFont(#frameDepression,FontID(#frameFont)) : EndIf
-TrackBarGadget(#depression,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
-ImageGadget(#helpDepression,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpDepression,strings\stats\help("depression"))
-SetGadgetData(#frameDepression,@strings\stats\captions("depression"))
-
-;TextGadget(#placeholderStats,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\stats\placeholder,#PB_Text_Center)
-ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
-
-AddGadgetItem(#panel,-1,strings\interface("inventory"))
-TextGadget(#placeholderInventory,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\inventory\placeholder,#PB_Text_Center)
-ImageGadget(#bgInventory,565,160,64,64,ImageID(#iconInventory))
-
-AddGadgetItem(#panel,-1,strings\interface("tenement"))
-TextGadget(#placeholderTenement,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\tenement\placeholder,#PB_Text_Center)
-ImageGadget(#bgTenement,565,160,64,64,ImageID(#iconTenement))
-
-AddGadgetItem(#panel,-1,strings\interface("quests"))
-TextGadget(#placeholderQuests,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\quests\placeholder,#PB_Text_Center)
-ImageGadget(#bgQuests,565,160,64,64,ImageID(#iconQuests))
-
-AddGadgetItem(#panel,-1,strings\interface("world"))
-TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\world\placeholder,#PB_Text_Center)
-ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
-
-SetGadgetState(#panel,1)
-
-CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  CocoaMessage(0,GadgetID(#name),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#name),"setFocusRingType:",1)
-  CocoaMessage(0,GadgetID(#surname),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#surname),"setFocusRingType:",1)
-  CocoaMessage(0,GadgetID(#location),"setBezelStyle:",10)
-  CocoaMessage(0,GadgetID(#location),"setFocusRingType:",1)
-CompilerEndIf
-
-loadSave(GetGadgetText(#saveSelector))
-updateUI()
-DisableToolBarButton(#toolbar,#toolbarSave,#True)
-RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
-
-HideWindow(#wnd,#False)
+IncludeFile "gui.pb"
 
 Repeat
   ev = WaitWindowEvent()
@@ -276,34 +123,47 @@ Repeat
     Case #PB_Event_Gadget
       Select EventGadget()
         Case #locationSelector
-          If EventData() <> 1
+          If EventData() <> -1
             DisplayPopupMenu(#menuLocation,WindowID(#wnd))
           EndIf
         Default
-          If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_TrackBar And EventData() <> 1
+          If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_TrackBar
             If IsGadget(EventGadget()-1) And GetGadgetData(EventGadget()-1)
               *caption = GetGadgetData(EventGadget()-1)
-              SetGadgetText(EventGadget()-1,ReplaceString(*caption\s,"%p",Str(GetGadgetState(EventGadget())))) ; oh shit
-              ForceGadgetZOrder(EventGadget()-1)
-              For i = #helpStart+1 To #helpEnd-1
-                ForceGadgetZOrder(i)
-              Next
+              Select EventGadget()
+                Case #SMVRate
+                  SetGadgetText(EventGadget()-1,ReplaceString(*caption\s,"%p",signStr((GetGadgetState(EventGadget())-100)))) ; functional programming is great
+                Default
+                  SetGadgetText(EventGadget()-1,ReplaceString(*caption\s,"%p",Str(GetGadgetState(EventGadget())))) ; oh shit
+              EndSelect
             EndIf
-            DisableToolBarButton(#toolbar,#toolbarSave,#False)
-            saveNeeded = #True
+            If EventData() <> -1
+              DisableToolBarButton(#toolbar,#toolbarSave,#False)
+              saveNeeded = #True
+            EndIf
           EndIf
           If EventType() = #PB_EventType_LeftClick
             Select EventGadget()
-              Case #helpName
-                message(strings\character\help("name"))
-              Case #helpSurname
-                message(strings\character\help("surname"))
-              Case #helpOC
-                message(strings\character\help("openSewerCoins"))
-              Case #helpRM
-                message(strings\character\help("realMoney"))
-              Case #helpLocation
-                message(strings\character\help("playerLocation"))
+              Case #statsSelector
+                Select GetGadgetText(#statsSelector)
+                  Case strings\stats\captions("selectHealth")
+                    hideHealth(#False)
+                    hideNeeds(#True)
+                    hideSubstances(#True)
+                  Case strings\stats\captions("selectNeeds")
+                    hideHealth(#True)
+                    hideNeeds(#False)
+                    hideSubstances(#True)
+                  Case strings\stats\captions("selectSubstances")
+                    hideHealth(#True)
+                    hideNeeds(#True)
+                    hideSubstances(#False)
+                EndSelect
+              Default
+                If IsGadget(EventGadget()) And GetGadgetData(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_Image
+                  *caption = GetGadgetData(EventGadget())
+                  message(*caption\s)
+                EndIf
             EndSelect
           ElseIf EventType() = #PB_EventType_Change
             Select EventGadget()
@@ -322,7 +182,7 @@ Repeat
                   Next
                 EndIf
               Default
-                If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> 1
+                If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> -1
                   DisableToolBarButton(#toolbar,#toolbarSave,#False)
                   saveNeeded = #True
                 EndIf
@@ -371,8 +231,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 285
-; FirstLine = 263
-; Folding = --
+; CursorPosition = 125
+; FirstLine = 194
+; Folding = -
 ; EnableXP
 ; EnableUnicode
