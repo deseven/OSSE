@@ -1,7 +1,9 @@
 ﻿Procedure ForceGadgetZOrder(gadget)
   CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-    SetWindowLong_(GadgetID(gadget),#GWL_STYLE,GetWindowLong_(GadgetID(gadget),#GWL_STYLE)|#WS_CLIPSIBLINGS)
-    SetWindowPos_(GadgetID(gadget),#HWND_TOP,0,0,0,0,#SWP_NOSIZE|#SWP_NOMOVE)
+    If IsGadget(gadget)
+      SetWindowLong_(GadgetID(gadget),#GWL_STYLE,GetWindowLong_(GadgetID(gadget),#GWL_STYLE)|#WS_CLIPSIBLINGS)
+      SetWindowPos_(GadgetID(gadget),#HWND_TOP,0,0,0,0,#SWP_NOSIZE|#SWP_NOMOVE)
+    EndIf
   CompilerEndIf
 EndProcedure
 
@@ -222,6 +224,8 @@ Procedure message(message.s,type.b = #mInfo)
     Select type
       Case #mError
         MessageBox_(wndID,message,"PERKELE!",#MB_OK|#MB_ICONERROR)
+      Case #mWarning
+        MessageBox_(wndID,message,"PERKELE!",#MB_OK|#MB_ICONWARNING)
       Case #mQuestion
         If MessageBox_(wndID,message,#myNameShort,#MB_YESNO|#MB_ICONQUESTION) = #IDYES
           ProcedureReturn #True
@@ -289,7 +293,7 @@ Procedure loadSave(path.s)
     EndIf
   Next
   If missingValues
-    message(strings\messages("missingValues") + missingValuesKeys,#mError)
+    message(strings\messages("missingValues") + missingValuesKeys,#mWarning)
   EndIf
   ProcedureReturn #True
 EndProcedure
@@ -361,7 +365,6 @@ Procedure revertSave()
 
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 254
-; FirstLine = 247
+; CursorPosition = 5
 ; Folding = ----
 ; EnableXP

@@ -25,6 +25,7 @@ Define savesPath.s,lang.s,currentSave.s
 Define ev.i,i.i
 Define strings.lang
 Define saveNeeded.b
+Define *caption.String
 NewList gamePaths.s()
 NewList savesPaths.s()
 NewList saveFiles.s()
@@ -142,7 +143,7 @@ CompilerSelect #PB_Compiler_OS
     ComboBoxGadget(#saveSelector,5,20,650,20)
     PanelGadget(#panel,0,50,660,270)
   CompilerDefault
-    ComboBoxGadget(#saveSelector,5,ToolBarHeight(#toolbar),630,20)
+    ComboBoxGadget(#saveSelector,5,ToolBarHeight(#toolbar)+2,630,20)
     PanelGadget(#panel,0,ToolBarHeight(#toolbar)+30,645,275)
 CompilerEndSelect
 
@@ -216,18 +217,21 @@ If IsFont(#frameFont) : SetGadgetFont(#frameHealth,FontID(#frameFont)) : EndIf
 TrackBarGadget(#health,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpHealth,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpHealth,strings\stats\help("health"))
+SetGadgetData(#frameHealth,@strings\stats\captions("health"))
 
 FrameGadget(#frameSMV,375,5,250,50,strings\stats\captions("smv"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSMV,FontID(#frameFont)) : EndIf
 TrackBarGadget(#smv,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpSMV,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpSMV,strings\stats\help("smv"))
+SetGadgetData(#frameSMV,@strings\stats\captions("smv"))
 
 FrameGadget(#frameDepression,115,60,250,50,strings\stats\captions("depression"))
 If IsFont(#frameFont) : SetGadgetFont(#frameDepression,FontID(#frameFont)) : EndIf
 TrackBarGadget(#depression,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpDepression,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpDepression,strings\stats\help("depression"))
+SetGadgetData(#frameDepression,@strings\stats\captions("depression"))
 
 ;TextGadget(#placeholderStats,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\stats\placeholder,#PB_Text_Center)
 ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
@@ -276,6 +280,18 @@ Repeat
             DisplayPopupMenu(#menuLocation,WindowID(#wnd))
           EndIf
         Default
+          If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_TrackBar And EventData() <> 1
+            If IsGadget(EventGadget()-1) And GetGadgetData(EventGadget()-1)
+              *caption = GetGadgetData(EventGadget()-1)
+              SetGadgetText(EventGadget()-1,ReplaceString(*caption\s,"%p",Str(GetGadgetState(EventGadget())))) ; oh shit
+              ForceGadgetZOrder(EventGadget()-1)
+              For i = #helpStart+1 To #helpEnd-1
+                ForceGadgetZOrder(i)
+              Next
+            EndIf
+            DisableToolBarButton(#toolbar,#toolbarSave,#False)
+            saveNeeded = #True
+          EndIf
           If EventType() = #PB_EventType_LeftClick
             Select EventGadget()
               Case #helpName
@@ -305,13 +321,14 @@ Repeat
                     EndIf
                   Next
                 EndIf
+              Default
+                If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> 1
+                  DisableToolBarButton(#toolbar,#toolbarSave,#False)
+                  saveNeeded = #True
+                EndIf
             EndSelect
           EndIf
       EndSelect
-      If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> 1 And EventType() = #PB_EventType_Change
-        DisableToolBarButton(#toolbar,#toolbarSave,#False)
-        saveNeeded = #True
-      EndIf
     Case #PB_Event_Menu
       Select EventMenu()
         Case #toolbarAbout
@@ -354,8 +371,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 228
-; FirstLine = 199
+; CursorPosition = 285
+; FirstLine = 263
 ; Folding = --
 ; EnableXP
 ; EnableUnicode

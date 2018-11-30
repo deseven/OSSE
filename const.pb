@@ -5,6 +5,7 @@
 
 Enumeration message
   #mInfo
+  #mWarning
   #mQuestion
   #mError
 EndEnumeration
@@ -108,6 +109,8 @@ Enumeration main
   
   #controlsEnd
   
+  #helpStart
+  
   ; help buttons
   #helpName
   #helpSurname
@@ -127,6 +130,8 @@ Enumeration main
   #helpAlcoholNeed
   #helpSmokingAddiction
   #helpSmokingNeed
+  
+  #helpEnd
   
 EndEnumeration
 
@@ -198,6 +203,7 @@ values("BM")\pcre                 = ".*MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
 values("location")\pcre           = ~".*Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 values("SmokingAddiction")\pcre           = ~".*Smoking_Addiction[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 2
+; CursorPosition = 133
+; FirstLine = 99
 ; EnableXP
 ; EnableUnicode
