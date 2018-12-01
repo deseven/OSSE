@@ -20,7 +20,6 @@ CompilerSelect #PB_Compiler_OS
 CompilerEndSelect
 
 LoadFont(#invFont,"Arial",8)
-LoadFont(#loadingFont,"Arial",12,#PB_Font_HighQuality|#PB_Font_Bold)
 
 EnableExplicit
 
@@ -48,6 +47,8 @@ CatchImage(#iconInventory,?iconInventory)
 CatchImage(#iconTenement,?iconTenement)
 CatchImage(#iconQuests,?iconQuests)
 CatchImage(#iconWorld,?iconWorld)
+CatchImage(#splashItems,?splashItems)
+CatchImage(#splashSave,?splashSave)
 
 Define gadOffsetX = 0
 Define gadOffsetY = 0
@@ -109,13 +110,7 @@ EndSelect
 
 langPathSelect()
 
-OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,90,20,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
-StickyWindow(#wndLoading,#True)
-FrameGadget(#loadingFrame,0,0,90,20,"",#PB_Frame_Flat)
-TextGadget(#loadingText,2,2,86,16,"LOADING",#PB_Text_Center)
-SetGadgetFont(#loadingText,FontID(#loadingFont))
-SetGadgetColor(#loadingText,#PB_Gadget_BackColor,$ffffff)
-While WindowEvent() : Wend
+showSplash(ImageID(#splashItems))
 
 If Not checkSavesPath(savesPath)
   message(strings\messages("wrongSavesPath"),#mError)
@@ -133,9 +128,12 @@ WritePreferenceString("lang",lang)
 
 ClosePreferences()
 
+showSplash(ImageID(#splashSave))
+FreeImage(#splashItems)
+
 IncludeFile "gui.pb"
 
-CloseWindow(#wndLoading)
+showSplash()
 HideWindow(#wnd,#False)
 
 Repeat
@@ -143,6 +141,8 @@ Repeat
   Select ev
     Case #evSaveLoadError
       message(strings\messages("missingValues") + missingValuesKeys,#mWarning)
+    Case #evSaveSaveError
+      message(strings\messages("saveError"),#mError)
     Case #PB_Event_Gadget
       Select EventGadget()
         Case #locationSelector
@@ -192,10 +192,12 @@ Repeat
             Select EventGadget()
               Case #saveSelector
                 If Not saveNeeded Or message(strings\messages("selectConfirm"),#mQuestion)
+                  showSplash(ImageID(#splashSave))
                   loadSave(GetGadgetText(#saveSelector))
                   updateUI()
                   DisableToolBarButton(#toolbar,#toolbarSave,#True)
                   saveNeeded = #False
+                  showSplash()
                 Else
                   For i = 0 To CountGadgetItems(#saveSelector)-1
                     If GetGadgetItemText(#saveSelector,i) = currentSave
@@ -217,16 +219,19 @@ Repeat
         Case #toolbarAbout
           message(~"Open Sewer Save Editor\n© deseven, 2018\n\n" + strings\translatedBy)
         Case #toolbarSave
+          showSplash(ImageID(#splashSave))
           updateInternal()
           If saveSave(GetGadgetText(#saveSelector))
             loadSave(GetGadgetText(#saveSelector))
             DisableToolBarButton(#toolbar,#toolbarSave,#True)
             saveNeeded = #False
           Else
-            message(strings\messages("saveError"),#mError)
+            PostEvent(#evSaveSaveError)
           EndIf
+          showSplash()
         Case #toolbarRefresh
           If Not saveNeeded Or message(strings\messages("refreshConfirm"),#mQuestion)
+            showSplash(ImageID(#splashSave))
             ClearList(saveFiles())
             checkSavesPath(savesPath)
             ClearGadgetItems(#saveSelector)
@@ -238,6 +243,7 @@ Repeat
             updateUI()
             DisableToolBarButton(#toolbar,#toolbarSave,#True)
             saveNeeded = #False
+            showSplash()
           EndIf
         Case #menuLocationTenement
           SetGadgetText(#location,"73.62659,-99.900,35.45837")
@@ -254,8 +260,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 111
-; FirstLine = 99
+; CursorPosition = 199
+; FirstLine = 178
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

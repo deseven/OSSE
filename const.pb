@@ -13,7 +13,6 @@ EndEnumeration
 Enumeration res
   #font
   #frameFont
-  #loadingFont
   #invFont
   #iconInfo
   #iconRefresh
@@ -26,10 +25,13 @@ Enumeration res
   #iconTenement
   #iconQuests
   #iconWorld
+  #splashItems
+  #splashSave
 EndEnumeration
 
 Enumeration events #PB_Event_FirstCustomValue
   #evSaveLoadError
+  #evSaveSaveError
 EndEnumeration
 
 Enumeration main
@@ -37,8 +39,7 @@ Enumeration main
   #wnd
   #wndSelect
   #wndLoading
-  #loadingFrame
-  #loadingText
+  #loadingSplash
   #toolbar
   #toolbarSave
   #toolbarRefresh
@@ -219,6 +220,10 @@ DataSection
   IncludeBinary "icns/quests.png"
   iconWorld:
   IncludeBinary "icns/world.png"
+  splashItems:
+  IncludeBinary "icns/splash_items.png"
+  splashSave:
+  IncludeBinary "icns/splash_save.png"
 EndDataSection
 
 NewMap values.value()
@@ -249,7 +254,7 @@ For i = 8 To 42
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 39
-; FirstLine = 15
+; CursorPosition = 33
+; FirstLine = 12
 ; EnableXP
 ; EnableUnicode
