@@ -129,6 +129,70 @@ Procedure loadItems(path.s)
   ProcedureReturn #False
 EndProcedure
 
+Procedure selectItem(gadget.i)
+  Shared strings.lang
+  Shared values.value()
+  Shared items.item()
+  Protected i.i,foundCat.b
+  Protected item.item
+  OpenWindow(#wndItem,#PB_Ignore,#PB_Ignore,250,180,ReplaceString(strings\interface("itemSelectTitle"),"%s",Str(gadget-#invBegin+1)),#PB_Window_Tool|#PB_Window_WindowCentered,WindowID(#wnd))
+  ComboBoxGadget(#itemCategory,5,5,240,20)
+  ForEach items()
+    foundCat = #False
+    For i = 0 To CountGadgetItems(#itemCategory)
+      If items()\category = GetGadgetItemText(#itemCategory,i)
+        foundCat = #True
+        Break
+      EndIf
+    Next
+    If Not foundCat
+      AddGadgetItem(#itemCategory,-1,items()\category)
+    EndIf
+  Next
+  ; finding item
+  ForEach items()
+    If Val(values("inventorySlotID" + Str(gadget-#invBegin+8))\value) = items()\id
+      item = items()
+      Break
+    EndIf
+  Next
+  For i = 0 To CountGadgetItems(#itemCategory)
+    If item\category = GetGadgetItemText(#itemCategory,i)
+      SetGadgetState(#itemCategory,i)
+      Break
+    EndIf
+  Next
+  ComboBoxGadget(#itemTitle,5,30,240,20)
+  ForEach items()
+    If items()\category = GetGadgetText(#itemCategory)
+      AddGadgetItem(#itemTitle,-1,items()\title)
+    EndIf
+  Next
+  For i = 0 To CountGadgetItems(#itemTitle)
+    If item\title = GetGadgetItemText(#itemTitle,i)
+      SetGadgetState(#itemTitle,i)
+      Break
+    EndIf
+  Next
+  TextGadget(#itemDescription,9,60,232,40,strings\inventory\captions("description") + ": " + item\description + ~"\n" + 
+                                          strings\inventory\captions("rarity") + ": " + Str(item\rarity) + ~"\n" +
+                                          strings\inventory\captions("value") + ": " + Str(item\value))
+  If Not Len(item\title)
+    SetGadgetText(#itemDescription,"")
+  EndIf
+  FrameGadget(#itemSeparator,5,110,240,1,"",#PB_Frame_Flat)
+  TextGadget(#itemAmountCaption,9,123,50,20,strings\inventory\captions("amount") + ":")
+  SpinGadget(#itemAmount,55,120,65,20,0,65535,#PB_Spin_Numeric)
+  SetGadgetState(#itemAmount,Val(values("inventorySlotAmount" + Str(gadget-#invBegin+8))\value))
+  TextGadget(#itemOwnerCaption,139,123,50,20,strings\inventory\captions("owner") + ":")
+  SpinGadget(#itemOwner,180,120,65,20,0,65535,#PB_Spin_Numeric)
+  SetGadgetState(#itemOwner,Val(values("inventorySlotOwner" + Str(gadget-#invBegin+8))\value))
+  ButtonGadget(#itemLeaveEmpty,5,150,118,25,strings\inventory\captions("leaveEmpty"))
+  ButtonGadget(#itemApply,130,150,118,25,strings\inventory\captions("apply"))
+  SetGadgetData(#itemApply,gadget)
+  DisableWindow(#wnd,#True)
+EndProcedure
+
 Procedure langPathSelect()
   Shared lang.s
   Shared strings.lang
@@ -272,7 +336,7 @@ Procedure loadSave(path.s)
   Shared missingValuesKeys.s
   currentSave = path
   Protected startTime.i = ElapsedMilliseconds()
-  Debug "loading " + path
+  ;Debug "loading " + path
   If FileSize(path) < 1
     ProcedureReturn #False
   EndIf
@@ -281,6 +345,7 @@ Procedure loadSave(path.s)
   EndIf
   Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
   ForEach values()
+    values()\value = ""
     If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
       ;Debug "searching " + values()\pcre
       If ExamineRegularExpression(0,line)
@@ -307,47 +372,54 @@ Procedure loadSave(path.s)
   If missingValues
     PostEvent(#evSaveLoadError)
   EndIf
-  Debug "took " + Str(ElapsedMilliseconds() - startTime)
+  ;Debug "took " + Str(ElapsedMilliseconds() - startTime)
   ProcedureReturn #True
 EndProcedure
 
 Procedure saveSave(path.s) ; no pun intended
   Shared values.value()
   Protected startTime.i = ElapsedMilliseconds()
-  Debug "saving " + path
+  ;Debug "saving " + path
   If FileSize(path) < 1
     ProcedureReturn #False
   EndIf
   If Not OpenFile(0,path,#PB_File_SharedRead)
     ProcedureReturn #False
   EndIf
-    Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
-      ForEach values()
-        If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
-          If ExamineRegularExpression(0,line)
-            While NextRegularExpressionMatch(0)
-              Protected newLine.s = Left(line,RegularExpressionGroupPosition(0,1)-1) + values()\value + Right(line,Len(line) - RegularExpressionGroupPosition(0,1) - RegularExpressionGroupLength(0,1) + 1)
-              If line <> newLine
-                line = newLine
-              EndIf
-              Break ; should save a lot of time
-            Wend
+  Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
+  ForEach values()
+    ;Debug "saving " + MapKey(values()) + "=" + values()\value + ", regex: " + values()\pcre
+    If CreateRegularExpression(0,values()\pcre)
+      If ExamineRegularExpression(0,line)
+        While NextRegularExpressionMatch(0)
+          ;Debug "found"
+          Protected newLine.s = Left(line,RegularExpressionMatchPosition(0)+RegularExpressionMatchLength(0)-RegularExpressionGroupLength(0,1)-1) + values()\value + Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
+          ;Debug Left(line,RegularExpressionMatchPosition(0)+RegularExpressionGroupPosition(0,1))
+          ;Debug Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
+          ;Debug newLine
+          If line <> newLine
+            line = newLine
           EndIf
-          FreeRegularExpression(0)
-        EndIf
-      Next
+          Break ; should save a lot of time
+        Wend
+      EndIf
+      FreeRegularExpression(0)
+    EndIf
+  Next
   CloseFile(0)
+  ;path="C:\Users\deseven\AppData\LocalLow\Loiste Interactive\Open Sewer\slot0.txt"
   If Not CreateFile(0,path,#PB_File_SharedWrite)
     ProcedureReturn #False
   EndIf
   WriteString(0,line,#PB_Unicode)
   CloseFile(0)
-  Debug "took " + Str(ElapsedMilliseconds() - startTime)
+  ;Debug "took " + Str(ElapsedMilliseconds() - startTime)
   ProcedureReturn #True
 EndProcedure
 
 Procedure updateInternal()
   Shared values.value()
+  Protected i.i
   values("name")\value = GetGadgetText(#name)
   values("surname")\value = GetGadgetText(#surname)
   values("OC")\value = Str(GetGadgetState(#oc))
@@ -373,6 +445,9 @@ EndProcedure
 
 Procedure updateUI()
   Shared values.value()
+  Shared items.item()
+  Shared strings.lang
+  Protected i.i
   SetGadgetText(#name,values("name")\value)
   SetGadgetText(#surname,values("surname")\value)
   SetGadgetState(#oc,Val(values("OC")\value))
@@ -395,14 +470,32 @@ Procedure updateUI()
   SetGadgetState(#smokingAddiction,ValF(values("smokingAddiction")\value))
   SetGadgetState(#smokingNeed,ValF(values("smokingNeed")\value))
   
+  Protected itemFound.b
+  For i = 0 To 34
+    itemFound = #False
+    ForEach items()
+      If items()\id = Val(values("inventorySlotID" + Str(i+8))\value)
+        SetGadgetText(#invBegin+i,values("inventorySlotAmount" + Str(i+8))\value + "x " + items()\title)
+        GadgetToolTip(#invBegin+i,items()\description + ~" | " + 
+                                  strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~" | " +
+                                  strings\inventory\captions("value") + ": " + Str(items()\value))
+        itemFound = #True
+        Break
+      EndIf
+    Next
+    If Not itemFound
+      SetGadgetText(#invBegin+i,strings\inventory\captions("nothing"))
+      GadgetToolTip(#invBegin+i,"")
+    EndIf
+  Next
+  
   ; sending events to update captions
-  Protected i
   For i = #controlsBegin To #controlsEnd
     PostEvent(#PB_Event_Gadget,#wnd,i,0,-1)
   Next
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 271
-; FirstLine = 265
+; CursorPosition = 374
+; FirstLine = 346
 ; Folding = ---
 ; EnableXP

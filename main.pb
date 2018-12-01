@@ -149,6 +149,40 @@ Repeat
           If EventData() <> -1
             DisplayPopupMenu(#menuLocation,WindowID(#wnd))
           EndIf
+        Case #invBegin To #invEnd
+          If EventData() <> -1
+            selectItem(EventGadget())
+          EndIf
+        Case #itemApply
+          If IsWindow(#wndItem)
+            SetGadgetState(GetGadgetData(#itemApply),0)
+            ForEach items()
+              If items()\title = GetGadgetText(#itemTitle)
+                ;Debug "setting " + "inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8)
+                values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(items()\id)
+                values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemAmount))
+                values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemOwner))
+                Break
+              EndIf
+            Next
+            updateUI()
+            CloseWindow(#wndItem)
+            DisableWindow(#wnd,#False)
+            DisableToolBarButton(#toolbar,#toolbarSave,#False)
+            saveNeeded = #True
+          EndIf
+        Case #itemLeaveEmpty
+          If IsWindow(#wndItem)
+            SetGadgetState(GetGadgetData(#itemApply),0)
+            values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "-1"
+            values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
+            values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
+            updateUI()
+            CloseWindow(#wndItem)
+            DisableWindow(#wnd,#False)
+            DisableToolBarButton(#toolbar,#toolbarSave,#False)
+            saveNeeded = #True
+          EndIf
         Default
           If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_TrackBar
             If IsGadget(EventGadget()-1) And GetGadgetData(EventGadget()-1)
@@ -206,6 +240,29 @@ Repeat
                     EndIf
                   Next
                 EndIf
+              Case #itemCategory
+                ClearGadgetItems(#itemTitle)
+                ForEach items()
+                  If items()\category = GetGadgetText(#itemCategory)
+                    AddGadgetItem(#itemTitle,-1,items()\title)
+                  EndIf
+                Next
+                SetGadgetText(#itemDescription,"")
+              Case #itemTitle
+                ForEach items()
+                  If items()\title = GetGadgetText(#itemTitle)
+                    If Not GetGadgetState(#itemAmount)
+                      SetGadgetState(#itemAmount,1)
+                    EndIf
+                    If Not GetGadgetState(#itemOwner)
+                      SetGadgetState(#itemOwner,0)
+                    EndIf
+                    SetGadgetText(#itemDescription,strings\inventory\captions("description") + ": " + items()\description + ~"\n" + 
+                                                   strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~"\n" +
+                                                   strings\inventory\captions("value") + ": " + Str(items()\value))
+                    Break  
+                  EndIf
+                Next
               Default
                 If EventGadget() > #controlsBegin And EventGadget() < #controlsEnd And EventData() <> -1
                   DisableToolBarButton(#toolbar,#toolbarSave,#False)
@@ -228,6 +285,7 @@ Repeat
           Else
             PostEvent(#evSaveSaveError)
           EndIf
+          updateUI()
           showSplash()
         Case #toolbarRefresh
           If Not saveNeeded Or message(strings\messages("refreshConfirm"),#mQuestion)
@@ -256,12 +314,14 @@ Repeat
           PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
       EndSelect
     Case #PB_Event_CloseWindow
-      Break
+      If Not saveNeeded Or message(strings\messages("exitConfirm"),#mQuestion)
+        Break
+      EndIf
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 34
-; FirstLine = 3
+; CursorPosition = 302
+; FirstLine = 282
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

@@ -1,6 +1,6 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.2.0"
+#myVer = "0.3.0"
 #thanksTo = ~"\nnobody"
 
 Enumeration message
@@ -39,6 +39,7 @@ Enumeration main
   #wnd
   #wndSelect
   #wndLoading
+  #wndItem
   #loadingSplash
   #toolbar
   #toolbarSave
@@ -147,6 +148,18 @@ Enumeration main
   
   #helpEnd
   
+  ; item selector
+  #itemCategory
+  #itemTitle
+  #itemDescription
+  #itemSeparator
+  #itemAmountCaption
+  #itemAmount
+  #itemOwnerCaption
+  #itemOwner
+  #itemLeaveEmpty
+  #itemApply
+  
 EndEnumeration
 
 Structure value
@@ -226,12 +239,12 @@ DataSection
   IncludeBinary "icns/splash_save.png"
 EndDataSection
 
-#inventoryPCRE = ~".*PLAYER_INVENTORY_SLOT_([0-9]+)_ID[ ]*=[ ]*([0-9\\-]+),[ ]*PLAYER_INVENTORY_SLOT_([0-9]+)_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
+;#inventoryPCRE = ~".*PLAYER_INVENTORY_SLOT_([0-9]+)_ID[ ]*=[ ]*([0-9\\-]+),[ ]*PLAYER_INVENTORY_SLOT_([0-9]+)_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
 
 NewMap values.value()
 
-values("name")\pcre               = ~"PlayerFirstName[ ]*=[ ]*\"([^\"]+)\""
-values("surname")\pcre            = ~"PlayerLastName[ ]*=[ ]*\"([^\"]+)\""
+values("name")\pcre               = ~"PlayerFirstName[ ]*=[ ]*\"([^\"]+)"
+values("surname")\pcre            = ~"PlayerLastName[ ]*=[ ]*\"([^\"]+)"
 values("OC")\pcre                 = ~"MONEY_OS[ ]*=[ ]*([0-9]+)"
 values("RM")\pcre                 = ~"MONEY_RM[ ]*=[ ]*([0-9]+)"
 values("BM")\pcre                 = ~"MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
@@ -254,11 +267,11 @@ values("alcoholNeed")\pcre        = ~"PLAYER_STATS_AlcoholNeed[ ]*=[ ]*([0-9\\-.
 For i = 8 To 42
   values("inventorySlotID" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_ID[ ]*=[ ]*([0-9\\-]+)"
   values("inventorySlotAmount" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
-  ;values("inventorySlotOwner" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
+  values("inventorySlotOwner" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 236
-; FirstLine = 221
+; CursorPosition = 246
+; FirstLine = 234
 ; EnableXP
 ; EnableUnicode

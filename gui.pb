@@ -200,9 +200,9 @@ ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
 AddGadgetItem(#panel,-1,strings\interface("inventory"))
 Define.b x,y
 i = 0
-For x = 0 To 4
-  For y = 0 To 6
-    ButtonGadget(#invBegin+i,5+100*x,5+31*y,100,31,"Glowing minced meat pitsa",#PB_Button_MultiLine)
+For y = 0 To 6
+  For x = 0 To 4
+    ButtonGadget(#invBegin+i,5+110*x,5+31*y,110,31,strings\inventory\captions("nothing"),#PB_Button_MultiLine|#PB_Button_Toggle)
     SetGadgetFont(#invBegin+i,FontID(#invFont))
     i + 1
   Next
@@ -221,7 +221,7 @@ AddGadgetItem(#panel,-1,strings\interface("world"))
 TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\world\placeholder,#PB_Text_Center)
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
-SetGadgetState(#panel,2)
+;SetGadgetState(#panel,2)
 
 ; making help icons on top of controls
 For i = #controlsBegin+1 To #controlsEnd-1
@@ -249,7 +249,7 @@ hideNeeds(#True)
 hideSubstances(#True)
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 243
-; FirstLine = 210
+; CursorPosition = 223
+; FirstLine = 197
 ; Folding = -
 ; EnableXP

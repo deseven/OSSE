@@ -19,7 +19,8 @@
 		"quests": "Quests",
 		"world": "World",
 		"enable": "Enable",
-		"thanksTo": "Thanks to:"
+		"thanksTo": "Thanks to:",
+		"itemSelectTitle": "[slot %s]"
 	},
 	"messages": {
 		"wrongSavesPath": "Selected saves path is wrong. There are no save files here :(\n\nIf you're sure that it's correct maybe you want to save the game first.",
@@ -27,7 +28,8 @@
 		"saveError": "Save failed! File cannot be found or opened for writing.",
 		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!\n\nMissing values:",
 		"refreshConfirm": "Looks like you have some unsaved changes, do you really want to refresh?",
-		"selectConfirm": "Looks like you have some unsaved changes, do you really want to select another save?"
+		"selectConfirm": "Looks like you have some unsaved changes, do you really want to select another save?",
+		"exitConfirm": "Looks like you have some unsaved changes, do you really want to exit anyway?"
 	},
 	"character": {
 		"captions": {
@@ -85,7 +87,16 @@
 		"placeholder": "...work in progress..."
 	},
 	"inventory": {
-		"placeholder": "...work in progress..."
+		"captions": {
+			"nothing": "[empty]",
+			"description": "Description",
+			"value": "Value",
+			"rarity": "Rarity",
+			"amount": "Amount",
+			"owner": "Owner",
+			"leaveEmpty": "Leave empty",
+			"apply": "Apply"
+		}
 	},
 	"tenement": {
 		"placeholder": "...work in progress..."
