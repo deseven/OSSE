@@ -198,7 +198,15 @@ SetGadgetData(#helpSmokingNeed,@strings\stats\help("smokingNeed"))
 ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
 
 AddGadgetItem(#panel,-1,strings\interface("inventory"))
-TextGadget(#placeholderInventory,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\inventory\placeholder,#PB_Text_Center)
+Define.b x,y
+i = 0
+For x = 0 To 4
+  For y = 0 To 6
+    ButtonGadget(#invBegin+i,5+100*x,5+31*y,100,31,"Glowing minced meat pitsa",#PB_Button_MultiLine)
+    SetGadgetFont(#invBegin+i,FontID(#invFont))
+    i + 1
+  Next
+Next
 ImageGadget(#bgInventory,565,160,64,64,ImageID(#iconInventory))
 
 AddGadgetItem(#panel,-1,strings\interface("tenement"))
@@ -213,7 +221,7 @@ AddGadgetItem(#panel,-1,strings\interface("world"))
 TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\world\placeholder,#PB_Text_Center)
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
-SetGadgetState(#panel,1)
+SetGadgetState(#panel,2)
 
 ; making help icons on top of controls
 For i = #controlsBegin+1 To #controlsEnd-1
@@ -240,10 +248,8 @@ RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
 hideNeeds(#True)
 hideSubstances(#True)
 
-HideWindow(#wnd,#False)
-
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 116
-; FirstLine = 98
+; CursorPosition = 243
+; FirstLine = 210
 ; Folding = -
 ; EnableXP

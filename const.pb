@@ -13,6 +13,8 @@ EndEnumeration
 Enumeration res
   #font
   #frameFont
+  #loadingFont
+  #invFont
   #iconInfo
   #iconRefresh
   #iconSave
@@ -26,10 +28,17 @@ Enumeration res
   #iconWorld
 EndEnumeration
 
+Enumeration events #PB_Event_FirstCustomValue
+  #evSaveLoadError
+EndEnumeration
+
 Enumeration main
   ; global
   #wnd
   #wndSelect
+  #wndLoading
+  #loadingFrame
+  #loadingText
   #toolbar
   #toolbarSave
   #toolbarRefresh
@@ -93,7 +102,9 @@ Enumeration main
   #bgStats
   
   ; inventory
-  #placeholderInventory
+  #invBegin
+  #invEnd = #invBegin + 34
+  
   #bgInventory
   
   ; tenement
@@ -146,6 +157,21 @@ Structure category
   Map captions.s()
   Map help.s()
   placeholder.s
+EndStructure
+
+Structure item
+  id.i
+  title.s
+  category.s
+  value.i
+  description.s
+  stackable.i
+  rarity.b
+  material.s
+  use.s
+  arguments.s
+  attachment1.s
+  attachment2.s
 EndStructure
 
 Structure lang
@@ -218,8 +244,12 @@ values("smokingNeed")\pcre        = ~".*PLAYER_STATS_SmokingNeed[ ]*=[ ]*([0-9\\
 values("alcoholAddiction")\pcre   = ~".*PLAYER_STATS_AlcoholAddiction[ ]*=[ ]*([0-9\\-.]+)"
 values("alcoholNeed")\pcre        = ~".*PLAYER_STATS_AlcoholNeed[ ]*=[ ]*([0-9\\-.]+)"
 
+For i = 8 To 42
+  values("inventorySlotID" + Str(i))\pcre = ~".*PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_ID[ ]*=[ ]*([0-9\\-]+)"
+Next
+
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 218
-; FirstLine = 182
+; CursorPosition = 39
+; FirstLine = 15
 ; EnableXP
 ; EnableUnicode

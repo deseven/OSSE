@@ -19,16 +19,21 @@ CompilerSelect #PB_Compiler_OS
     LoadFont(#font,"Arial",10)
 CompilerEndSelect
 
+LoadFont(#invFont,"Arial",8)
+LoadFont(#loadingFont,"Arial",12,#PB_Font_HighQuality|#PB_Font_Bold)
+
 EnableExplicit
 
-Define savesPath.s,lang.s,currentSave.s
-Define ev.i,i.i
+Define savesPath.s,gamePath.s,lang.s,currentSave.s
+Define.i ev,i
 Define strings.lang
+Define missingValuesKeys.s
 Define saveNeeded.b
 Define *caption.String
 NewList gamePaths.s()
 NewList savesPaths.s()
 NewList saveFiles.s()
+NewList items.item()
 
 IncludeFile "helpers.pb"
 IncludeFile "proc.pb"
@@ -87,6 +92,7 @@ CompilerElse
 CompilerEndIf
 OpenPreferences(myCfg)
 savesPath = ReadPreferenceString("savesPath","")
+gamePath = ReadPreferenceString("gamePath","")
 lang = ReadPreferenceString("lang","")
 
 getGamePaths()
@@ -103,23 +109,40 @@ EndSelect
 
 langPathSelect()
 
-If checkSavesPath(savesPath)
+OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,90,20,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
+StickyWindow(#wndLoading,#True)
+FrameGadget(#loadingFrame,0,0,90,20,"",#PB_Frame_Flat)
+TextGadget(#loadingText,2,2,86,16,"LOADING",#PB_Text_Center)
+SetGadgetFont(#loadingText,FontID(#loadingFont))
+SetGadgetColor(#loadingText,#PB_Gadget_BackColor,$ffffff)
+While WindowEvent() : Wend
 
-Else
+If Not checkSavesPath(savesPath)
   message(strings\messages("wrongSavesPath"),#mError)
-  End
+  End 1
+EndIf
+
+If Not loadItems(gamePath + "\Open Sewer_Data\StreamingAssets\Items.json")
+  message(strings\messages("wrongGamePath"),#mError)
+  End 2
 EndIf
 
 WritePreferenceString("savesPath",savesPath)
+WritePreferenceString("gamePath",gamePath)
 WritePreferenceString("lang",lang)
 
 ClosePreferences()
 
 IncludeFile "gui.pb"
 
+CloseWindow(#wndLoading)
+HideWindow(#wnd,#False)
+
 Repeat
   ev = WaitWindowEvent()
   Select ev
+    Case #evSaveLoadError
+      message(strings\messages("missingValues") + missingValuesKeys,#mWarning)
     Case #PB_Event_Gadget
       Select EventGadget()
         Case #locationSelector
@@ -231,8 +254,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 125
-; FirstLine = 194
+; CursorPosition = 111
+; FirstLine = 99
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

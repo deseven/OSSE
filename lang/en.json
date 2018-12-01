@@ -5,6 +5,7 @@
 	"options": {
 		"langSelect": "Select your language:",
 		"savesPath": "Save dir path:",
+		"gamePath": "Game path:",
 		"apply": "Apply"
 	},
 	"interface": {
@@ -22,6 +23,7 @@
 	},
 	"messages": {
 		"wrongSavesPath": "Selected saves path is wrong. There are no save files here :(\n\nIf you're sure that it's correct maybe you want to save the game first.",
+		"wrongGamePath": "Selected game path is wrong. There are no `Open Sewer_Data/StreamingAssets/Items.json` here or it's unreadable :(",
 		"saveError": "Save failed! File cannot be found or opened for writing.",
 		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!\n\nMissing values:",
 		"refreshConfirm": "Looks like you have some unsaved changes, do you really want to refresh?",
@@ -68,7 +70,7 @@
 		"help": {
 			"health": "Current health level, good for not dying",
 			"smv": "Progression of SMV disease, 100% = DÖD",
-			"smvRate": "Progression rate of SMV disease per game hour, you can fine-tune it with arrow keys on your keyboard",
+			"smvRate": "Progression rate of SMV disease per game hour",
 			"depression": "How much you want to hang yourself on a street lamp",
 			"hunger": "Hunger level",
 			"thirst": "Thirst: ",

@@ -46,12 +46,12 @@
   ForEach paths()
     ;Debug "trying " + paths()
     CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-      If FileSize(paths() + "\Open Sewer.exe") > 0
+      If FileSize(paths() + "\Open Sewer_Data\StreamingAssets\Items.json") > 0
         AddElement(gamePaths())
         gamePaths() = paths()
       EndIf
     CompilerElse
-      If FileSize(paths() + "/Open Sewer") > 0
+      If FileSize(paths() + "/Open Sewer_Data/StreamingAssets/Items.json") > 0
         AddElement(gamePaths())
         gamePaths() = paths()
       EndIf
@@ -105,10 +105,38 @@ Procedure loadLang(code.s)
   ProcedureReturn #False
 EndProcedure
 
+Procedure loadItems(path.s)
+  Shared items.item()
+  Protected.s line,json
+  If ReadFile(0,path,#PB_UTF8|#PB_File_SharedRead)
+    While Not Eof(0)
+      line = ReadString(0,#PB_UTF8)
+      json + line
+    Wend
+    If Left(json,1) <> Chr(123) ; fml
+      ;Debug "removing BOM"
+      json = Right(json,Len(json)-1)
+    EndIf
+    CloseFile(0)
+    If ParseJSON(0,json,#PB_JSON_NoCase)
+      ExtractJSONList(JSONValue(0),items())
+      ;ForEach items()
+      ;  Debug items()\title
+      ;Next
+      ProcedureReturn #True
+    EndIf
+  EndIf
+  Debug JSONErrorMessage()
+  Debug JSONErrorLine()
+  Debug JSONErrorPosition()
+  ProcedureReturn #False
+EndProcedure
+
 Procedure langPathSelect()
   Shared lang.s
   Shared strings.lang
   Shared savesPath.s
+  Shared gamePath.s
   Shared gamePaths.s()
   Shared savesPaths.s()
   OpenWindow(#wndSelect,#PB_Ignore,#PB_Ignore,400,135,#myName + " [settings]",#PB_Window_Tool|#PB_Window_ScreenCentered)
@@ -138,13 +166,31 @@ Procedure langPathSelect()
     AddGadgetItem(3,-1,savesPath)
     SetGadgetState(3,CountGadgetItems(3)-1)
   Else
-    If CountGadgetItems(3) > 1
+    If CountGadgetItems(3) = 0
       SetGadgetState(3,-1)
     Else
       SetGadgetState(3,0)
     EndIf
   EndIf
   AddGadgetItem(3,-1,"...")
+  TextGadget(5,10,72,150,20,strings\options("gamePath"),#PB_Text_Right)
+  ComboBoxGadget(6,170,70,220,20)
+  ForEach gamePaths()
+    If LCase(gamePaths()) <> LCase(gamePath)
+      AddGadgetItem(6,-1,gamePaths())
+    EndIf
+  Next
+  If Len(gamePath) And FileSize(gamePath)
+    AddGadgetItem(6,-1,gamePath)
+    SetGadgetState(6,CountGadgetItems(6)-1)
+  Else
+    If CountGadgetItems(6) = 0
+      SetGadgetState(6,-1)
+    Else
+      SetGadgetState(6,0)
+    EndIf
+  EndIf
+  AddGadgetItem(6,-1,"...")
   ButtonGadget(4,270,100,120,25,strings\options("apply"),#PB_Button_Default)
   Protected ev.i
   CompilerIf #PB_Compiler_OS = #PB_OS_Linux
@@ -181,7 +227,8 @@ Procedure langPathSelect()
           ;  Default
               lang = "en"
           ;EndSelect
-          savesPath = GetGadgetText(3)
+              savesPath = GetGadgetText(3)
+              gamePath = GetGadgetText(6)
           Break
         Case 3
           If EventType() = #PB_EventType_Change And GetGadgetState(3) = CountGadgetItems(3)-1
@@ -194,6 +241,19 @@ Procedure langPathSelect()
               SetGadgetState(3,-1)
             Else
               SetGadgetState(3,0)
+            EndIf
+          EndIf
+        Case 6
+          If EventType() = #PB_EventType_Change And GetGadgetState(6) = CountGadgetItems(6)-1
+            SetActiveGadget(2)
+            gamePath = PathRequester(strings\options("savesPath"),GetGadgetText(6))
+            If Len(gamePath)
+              AddGadgetItem(6,0,gamePath)
+            EndIf
+            If CountGadgetItems(6) = 1
+              SetGadgetState(6,-1)
+            Else
+              SetGadgetState(6,0)
             EndIf
           EndIf
       EndSelect
@@ -212,6 +272,7 @@ Procedure loadSave(path.s)
   Shared currentSave.s
   Shared values.value()
   Shared strings.lang
+  Shared missingValuesKeys.s
   currentSave = path
   If FileSize(path) < 1
     ProcedureReturn #False
@@ -229,8 +290,10 @@ Procedure loadSave(path.s)
       ;Debug "searching " + values()\pcre
       If ExamineRegularExpression(0,line)
         While NextRegularExpressionMatch(0)
-          ;Debug "found"
-          values()\value = RegularExpressionGroup(0,1)
+          If Len(RegularExpressionGroup(0,1))
+            ;Debug "found " + RegularExpressionGroup(0,1)
+            values()\value = RegularExpressionGroup(0,1)
+          EndIf
         Wend
       EndIf
       FreeRegularExpression(0)
@@ -240,7 +303,7 @@ Procedure loadSave(path.s)
   CloseFile(0)
   line = ""
   Protected missingValues.i = 0
-  Protected missingValuesKeys.s = ~"\n"
+  missingValuesKeys = ~"\n"
   ForEach values()
     If Not Len(values()\value)
       ;Debug "missing " + values()\pcre
@@ -249,7 +312,7 @@ Procedure loadSave(path.s)
     EndIf
   Next
   If missingValues
-    message(strings\messages("missingValues") + missingValuesKeys,#mWarning)
+    PostEvent(#evSaveLoadError)
   EndIf
   ProcedureReturn #True
 EndProcedure
@@ -349,7 +412,7 @@ Procedure updateUI()
   Next
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 308
-; FirstLine = 287
+; CursorPosition = 305
+; FirstLine = 279
 ; Folding = ---
 ; EnableXP
