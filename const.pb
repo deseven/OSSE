@@ -226,6 +226,8 @@ DataSection
   IncludeBinary "icns/splash_save.png"
 EndDataSection
 
+#cleanSavePCRE = ~""
+
 NewMap values.value()
 
 values("name")\pcre               = ~".*PlayerFirstName[ ]*=[ ]*\"([^\"]+)\""
@@ -251,10 +253,12 @@ values("alcoholNeed")\pcre        = ~".*PLAYER_STATS_AlcoholNeed[ ]*=[ ]*([0-9\\
 
 For i = 8 To 42
   values("inventorySlotID" + Str(i))\pcre = ~".*PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_ID[ ]*=[ ]*([0-9\\-]+)"
+  values("inventorySlotAmount" + Str(i))\pcre = ~".*PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
+  ;values("inventorySlotOwner" + Str(i))\pcre = ~".*PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 33
-; FirstLine = 12
+; CursorPosition = 256
+; FirstLine = 221
 ; EnableXP
 ; EnableUnicode

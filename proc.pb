@@ -107,12 +107,9 @@ EndProcedure
 
 Procedure loadItems(path.s)
   Shared items.item()
-  Protected.s line,json
+  Protected.s json
   If ReadFile(0,path,#PB_UTF8|#PB_File_SharedRead)
-    While Not Eof(0)
-      line = ReadString(0,#PB_UTF8)
-      json + line
-    Wend
+    json = ReadString(0,#PB_UTF8|#PB_File_IgnoreEOL)
     If Left(json,1) <> Chr(123) ; fml
       ;Debug "removing BOM"
       json = Right(json,Len(json)-1)
@@ -274,17 +271,15 @@ Procedure loadSave(path.s)
   Shared strings.lang
   Shared missingValuesKeys.s
   currentSave = path
+  Protected startTime.i = ElapsedMilliseconds()
+  Debug "loading " + path
   If FileSize(path) < 1
     ProcedureReturn #False
   EndIf
   If Not OpenFile(0,path,#PB_File_SharedRead)
     ProcedureReturn #False
   EndIf
-  ;Debug "loading " + path
-  ;While Not Eof(0)
   Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
-  ;Debug line
-  ;line = Trim(line)
   ForEach values()
     If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
       ;Debug "searching " + values()\pcre
@@ -293,6 +288,7 @@ Procedure loadSave(path.s)
           If Len(RegularExpressionGroup(0,1))
             ;Debug "found " + RegularExpressionGroup(0,1)
             values()\value = RegularExpressionGroup(0,1)
+            Break ; should save a lot of time
           EndIf
         Wend
       EndIf
@@ -314,24 +310,21 @@ Procedure loadSave(path.s)
   If missingValues
     PostEvent(#evSaveLoadError)
   EndIf
+  Debug "took " + Str(ElapsedMilliseconds() - startTime)
   ProcedureReturn #True
 EndProcedure
 
 Procedure saveSave(path.s) ; no pun intended
   Shared values.value()
-  ;Protected NewList lines.s()
+  Protected startTime.i = ElapsedMilliseconds()
+  Debug "saving " + path
   If FileSize(path) < 1
     ProcedureReturn #False
   EndIf
   If Not OpenFile(0,path,#PB_File_SharedRead)
     ProcedureReturn #False
   EndIf
-  ;While Not Eof(0)
-    ;AddElement(lines())
     Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
-    ;Protected lineTrimmed.s = Trim(line)
-    ;lines() = line
-    ;If Left(lineTrimmed,2) <> "--"
       ForEach values()
         If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
           If ExamineRegularExpression(0,line)
@@ -340,19 +333,19 @@ Procedure saveSave(path.s) ; no pun intended
               If line <> newLine
                 line = newLine
               EndIf
+              Break ; should save a lot of time
             Wend
           EndIf
           FreeRegularExpression(0)
         EndIf
       Next
-    ;EndIf
-  ;Wend
   CloseFile(0)
   If Not CreateFile(0,path,#PB_File_SharedWrite)
     ProcedureReturn #False
   EndIf
   WriteString(0,line,#PB_Unicode)
   CloseFile(0)
+  Debug "took " + Str(ElapsedMilliseconds() - startTime)
   ProcedureReturn #True
 EndProcedure
 
@@ -412,7 +405,7 @@ Procedure updateUI()
   Next
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 305
-; FirstLine = 279
+; CursorPosition = 335
+; FirstLine = 319
 ; Folding = ---
 ; EnableXP
