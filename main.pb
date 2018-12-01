@@ -260,8 +260,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 199
-; FirstLine = 178
+; CursorPosition = 34
+; FirstLine = 3
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

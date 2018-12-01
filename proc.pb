@@ -285,17 +285,14 @@ Procedure loadSave(path.s)
       ;Debug "searching " + values()\pcre
       If ExamineRegularExpression(0,line)
         While NextRegularExpressionMatch(0)
-          If Len(RegularExpressionGroup(0,1))
-            ;Debug "found " + RegularExpressionGroup(0,1)
-            values()\value = RegularExpressionGroup(0,1)
-            Break ; should save a lot of time
-          EndIf
+          ;Debug "found " + RegularExpressionGroup(0,1)
+          values()\value = RegularExpressionGroup(0,1)
+          Break ; should save a lot of time
         Wend
       EndIf
       FreeRegularExpression(0)
     EndIf
   Next
-  ;Wend
   CloseFile(0)
   line = ""
   Protected missingValues.i = 0
@@ -405,7 +402,7 @@ Procedure updateUI()
   Next
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 335
-; FirstLine = 319
+; CursorPosition = 271
+; FirstLine = 265
 ; Folding = ---
 ; EnableXP
