@@ -252,7 +252,7 @@ values("name")\pcre               = ~"PlayerFirstName[ ]*=[ ]*\"([^\"]+)"
 values("surname")\pcre            = ~"PlayerLastName[ ]*=[ ]*\"([^\"]+)"
 values("OC")\pcre                 = ~"MONEY_OS[ ]*=[ ]*([0-9]+)"
 values("RM")\pcre                 = ~"MONEY_RM[ ]*=[ ]*([0-9]+)"
-values("BM")\pcre                 = ~"MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
+;values("BM")\pcre                 = ~"MONEY_BANK_COUNT[ ]*=[ ]*([0-9]+)"
 values("location")\pcre           = ~"Position_Open_Sewer[ ]*=[ ]*\"([0-9\\-.]+,[0-9\\-.]+,[0-9\\-.]+)"
 
 values("health")\pcre             = ~"PLAYER_STATS_Health[ ]*=[ ]*([0-9\\-.]+)"
@@ -276,6 +276,7 @@ For i = 8 To 42
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 2
+; CursorPosition = 254
+; FirstLine = 239
 ; EnableXP
 ; EnableUnicode

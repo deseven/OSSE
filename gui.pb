@@ -45,41 +45,47 @@ ImageGadget(#helpName,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpName,strings\character\help("name"))
 SetGadgetData(#helpName,@strings\character\help("name"))
 
-FrameGadget(#frameSurname,5,60,305,50,strings\character\captions("surname"))
+FrameGadget(#frameSurname,320,5,305,50,strings\character\captions("surname"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSurname,FontID(#frameFont)) : EndIf
-StringGadget(#surname,15+gadOffsetX,80+gadOffsetY,285,20,"")
-ImageGadget(#helpSurname,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
+StringGadget(#surname,330+gadOffsetX,25+gadOffsetY,285,20,"")
+ImageGadget(#helpSurname,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpSurname,strings\character\help("surname"))
 SetGadgetData(#helpSurname,@strings\character\help("surname"))
 
-FrameGadget(#frameOC,5,115,305,50,strings\character\captions("openSewerCoins"))
+FrameGadget(#frameOC,5,60,305,50,strings\character\captions("openSewerCoins"))
 If IsFont(#frameFont) : SetGadgetFont(#frameOC,FontID(#frameFont)) : EndIf
-SpinGadget(#oc,15+gadOffsetX,135+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
-SetGadgetState(#oc,10)
+SpinGadget(#oc,15+gadOffsetX,80+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 SetGadgetFont(#oc,FontID(#font))
-ImageGadget(#helpOC,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
+ImageGadget(#helpOC,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
 SetGadgetData(#helpOC,@strings\character\help("openSewerCoins"))
 
-FrameGadget(#frameRM,5,170,305,50,strings\character\captions("realMoney"))
+FrameGadget(#frameRM,5,115,305,50,strings\character\captions("realMoney"))
 If IsFont(#frameFont) : SetGadgetFont(#frameRM,FontID(#frameFont)) : EndIf
-SpinGadget(#rm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
-SetGadgetState(#rm,0)
+SpinGadget(#rm,15+gadOffsetX,135+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 SetGadgetFont(#rm,FontID(#font))
-ImageGadget(#helpRM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
+ImageGadget(#helpRM,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpRM,strings\character\help("realMoney"))
 SetGadgetData(#helpRM,@strings\character\help("realMoney"))
+
+; FrameGadget(#frameBM,5,170,305,50,strings\character\captions("bankMoney"))
+; If IsFont(#frameFont) : SetGadgetFont(#frameBM,FontID(#frameFont)) : EndIf
+; SpinGadget(#bm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
+; SetGadgetFont(#bm,FontID(#font))
+; ImageGadget(#helpBM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
+; GadgetToolTip(#helpBM,strings\character\help("bankMoney"))
+; SetGadgetData(#helpBM,@strings\character\help("bankMoney"))
 ; |
-FrameGadget(#frameLocation,320,5,305,75,strings\character\captions("playerLocation"))
+FrameGadget(#frameLocation,320,60,305,75,strings\character\captions("playerLocation"))
 If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
 If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
-StringGadget(#location,330,25,285,20,"-56.67583,-100.05,90.42398")
+StringGadget(#location,330+gadOffsetX,80+gadOffsetY,285,20,"-56.67583,-100.05,90.42398")
 CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
-  ButtonGadget(#locationSelector,325,50,295,25,strings\character\captions("playerLocationSelect"))
+  ButtonGadget(#locationSelector,325,105,295,25,strings\character\captions("playerLocationSelect"))
 CompilerElse
-  ButtonGadget(#locationSelector,330,50,285,20,strings\character\captions("playerLocationSelect"))
+  ButtonGadget(#locationSelector,330,105,285,20,strings\character\captions("playerLocationSelect"))
 CompilerEndIf
-ImageGadget(#helpLocation,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
+ImageGadget(#helpLocation,615,60+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
 SetGadgetData(#helpLocation,@strings\character\help("playerLocation"))
 
@@ -255,7 +261,7 @@ hideNeeds(#True)
 hideSubstances(#True)
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 61
-; FirstLine = 46
+; CursorPosition = 68
+; FirstLine = 47
 ; Folding = -
 ; EnableXP

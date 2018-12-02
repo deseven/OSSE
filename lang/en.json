@@ -48,6 +48,7 @@
 			"surname": "Player surname",
 			"openSewerCoins": "Amount of Open Sewer coins",
 			"realMoney": "Amount of real money",
+			"bankMoney": "Amount of OC that you have in your bank account",
 			"playerLocation": "Player location in the game world"
 		}
 	},
@@ -85,8 +86,7 @@
 			"alcoholNeed": "How much you need that precious Osmo Olut",
 			"smokingAddiction": "Level of smoking addiction",
 			"smokingNeed": "How much you need to smoke another one"
-		},
-		"placeholder": "...work in progress..."
+		}
 	},
 	"inventory": {
 		"captions": {

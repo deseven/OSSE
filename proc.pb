@@ -448,6 +448,7 @@ Procedure updateInternal()
   values("surname")\value = GetGadgetText(#surname)
   values("OC")\value = Str(GetGadgetState(#oc))
   values("RM")\value = Str(GetGadgetState(#rm))
+  ;values("BM")\value = Str(GetGadgetState(#bm))
   values("location")\value = GetGadgetText(#location)
   
   values("health")\value = Str(GetGadgetState(#health))
@@ -476,6 +477,7 @@ Procedure updateUI()
   SetGadgetText(#surname,values("surname")\value)
   SetGadgetState(#oc,Val(values("OC")\value))
   SetGadgetState(#rm,Val(values("RM")\value))
+  ;SetGadgetState(#bm,Val(values("BM")\value))
   SetGadgetText(#location,values("location")\value)
   
   SetGadgetState(#health,ValF(values("health")\value))
@@ -547,7 +549,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 537
-; FirstLine = 509
+; CursorPosition = 450
+; FirstLine = 443
 ; Folding = ---
 ; EnableXP
