@@ -175,30 +175,24 @@ Repeat
           If EventData() <> -1
             selectItem(EventGadget())
           EndIf
-        Case #itemApply
+        Case #itemApply,#itemLeaveEmpty
           If IsWindow(#wndItem)
             SetGadgetState(GetGadgetData(#itemApply),0)
-            ForEach items()
-              If items()\title = GetGadgetText(#itemTitle)
-                ;Debug "setting " + "inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8)
-                values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(items()\id)
-                values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemAmount))
-                values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemOwner))
-                Break
-              EndIf
-            Next
-            updateUI()
-            CloseWindow(#wndItem)
-            DisableWindow(#wnd,#False)
-            DisableToolBarButton(#toolbar,#toolbarSave,#False)
-            saveNeeded = #True
-          EndIf
-        Case #itemLeaveEmpty
-          If IsWindow(#wndItem)
-            SetGadgetState(GetGadgetData(#itemApply),0)
-            values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "-1"
-            values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
-            values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
+            If EventGadget() = #itemLeaveEmpty Or GetGadgetState(#itemAmount) = 0
+              values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "-1"
+              values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
+              values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = "0"
+            Else
+              ForEach items()
+                If items()\title = GetGadgetText(#itemTitle)
+                  ;Debug "setting " + "inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8)
+                  values("inventorySlotID" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(items()\id)
+                  values("inventorySlotAmount" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemAmount))
+                  values("inventorySlotOwner" + Str(GetGadgetData(#itemApply)-#invBegin+8))\value = Str(GetGadgetState(#itemOwner))
+                  Break
+                EndIf
+              Next
+            EndIf
             updateUI()
             CloseWindow(#wndItem)
             DisableWindow(#wnd,#False)
@@ -349,8 +343,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 131
-; FirstLine = 102
+; CursorPosition = 178
+; FirstLine = 166
 ; Folding = -
 ; EnableXP
 ; EnableUnicode
