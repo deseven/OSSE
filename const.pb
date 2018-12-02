@@ -1,6 +1,6 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.3.0"
+#myVer = "0.3.1"
 #thanksTo = ~"\nnobody"
 
 Enumeration message
@@ -25,7 +25,7 @@ Enumeration res
   #iconTenement
   #iconQuests
   #iconWorld
-  #splashItems
+  #splash
   #splashSave
 EndEnumeration
 
@@ -233,8 +233,8 @@ DataSection
   IncludeBinary "icns/quests.png"
   iconWorld:
   IncludeBinary "icns/world.png"
-  splashItems:
-  IncludeBinary "icns/splash_items.png"
+  splash:
+  IncludeBinary "icns/splash.png"
   splashSave:
   IncludeBinary "icns/splash_save.png"
 EndDataSection
@@ -271,7 +271,7 @@ For i = 8 To 42
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 246
-; FirstLine = 234
+; CursorPosition = 235
+; FirstLine = 213
 ; EnableXP
 ; EnableUnicode

@@ -47,7 +47,7 @@ CatchImage(#iconInventory,?iconInventory)
 CatchImage(#iconTenement,?iconTenement)
 CatchImage(#iconQuests,?iconQuests)
 CatchImage(#iconWorld,?iconWorld)
-CatchImage(#splashItems,?splashItems)
+CatchImage(#splash,?splash)
 CatchImage(#splashSave,?splashSave)
 
 Define gadOffsetX = 0
@@ -110,7 +110,7 @@ EndSelect
 
 langPathSelect()
 
-showSplash(ImageID(#splashItems))
+showSplash(ImageID(#splash))
 
 If Not checkSavesPath(savesPath)
   message(strings\messages("wrongSavesPath"),#mError)
@@ -129,7 +129,7 @@ WritePreferenceString("lang",lang)
 ClosePreferences()
 
 showSplash(ImageID(#splashSave))
-FreeImage(#splashItems)
+FreeImage(#splash)
 
 IncludeFile "gui.pb"
 
@@ -274,7 +274,7 @@ Repeat
     Case #PB_Event_Menu
       Select EventMenu()
         Case #toolbarAbout
-          message(~"Open Sewer Save Editor\n© deseven, 2018\n\n" + strings\translatedBy)
+          message(#myName + " " + #myVer + ~"\n© deseven, 2018\n\n" + strings\translatedBy)
         Case #toolbarSave
           showSplash(ImageID(#splashSave))
           updateInternal()
@@ -314,14 +314,21 @@ Repeat
           PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
       EndSelect
     Case #PB_Event_CloseWindow
-      If Not saveNeeded Or message(strings\messages("exitConfirm"),#mQuestion)
-        Break
-      EndIf
+      Select EventWindow()
+        Case #wnd
+          If Not saveNeeded Or message(strings\messages("exitConfirm"),#mQuestion)
+            Break
+          EndIf
+        Case #wndItem
+          SetGadgetState(GetGadgetData(#itemApply),0)          
+          CloseWindow(#wndItem)
+          DisableWindow(#wnd,#False)
+     EndSelect
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 302
-; FirstLine = 282
+; CursorPosition = 276
+; FirstLine = 258
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

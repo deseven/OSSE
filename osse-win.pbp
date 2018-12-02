@@ -7,31 +7,39 @@
   <section name="data">
     <explorer view="C:\Program Files (x86)\PureBasic\Examples\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-11-27 18:05" user="deseven" host="DESKTOP-DRNA767"/>
+    <lastopen date="2018-12-02 00:05" user="deseven" host="DESKTOP-DRNA767"/>
   </section>
   <section name="files">
     <file name="const.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="6328c9acf24b5ae5ff5718aeaf099cb4"/>
+      <fingerprint md5="b21d9795ce3a30a4813638dc929403a9"/>
     </file>
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="568c3f36b0ca0a468664b884a4b0a0db"/>
+      <fingerprint md5="1513b9a8972d578bd26d48a7f7eaf21f"/>
     </file>
     <file name="proc.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="816c984fdebb7a8adc66a58e9b6eb226"/>
+      <fingerprint md5="5609263e5a35a4c1f748fbcfac5d11c2"/>
     </file>
     <file name="reg-read.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="825f2cf13d84c7e2a157cfbb09af71fd"/>
     </file>
+    <file name="helpers.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="17e4ef029a6dc87a48dd29d79ddcd933"/>
+    </file>
+    <file name="gui.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="c900c38d046bdbcfdf875ca88f72a540"/>
+    </file>
   </section>
   <section name="targets">
     <target name="Default Target" enabled="1" default="1">
       <inputfile value="main.pb"/>
-      <outputfile value="tfce.exe"/>
-      <executable value="tfce.exe"/>
+      <outputfile value="release\osse.exe"/>
+      <executable value="release\osse.exe"/>
       <options unicode="1" xpskin="1" debug="1"/>
       <icon enable="1">icns\icon.ico</icon>
     </target>

@@ -43,12 +43,14 @@ If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
 StringGadget(#name,15+gadOffsetX,25+gadOffsetY,285,20,"")
 ImageGadget(#helpName,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpName,strings\character\help("name"))
+SetGadgetData(#helpName,@strings\character\help("name"))
 
 FrameGadget(#frameSurname,5,60,305,50,strings\character\captions("surname"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSurname,FontID(#frameFont)) : EndIf
 StringGadget(#surname,15+gadOffsetX,80+gadOffsetY,285,20,"")
 ImageGadget(#helpSurname,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpSurname,strings\character\help("surname"))
+SetGadgetData(#helpSurname,@strings\character\help("surname"))
 
 FrameGadget(#frameOC,5,115,305,50,strings\character\captions("openSewerCoins"))
 If IsFont(#frameFont) : SetGadgetFont(#frameOC,FontID(#frameFont)) : EndIf
@@ -57,6 +59,7 @@ SetGadgetState(#oc,10)
 SetGadgetFont(#oc,FontID(#font))
 ImageGadget(#helpOC,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
+SetGadgetData(#helpOC,@strings\character\help("openSewerCoins"))
 
 FrameGadget(#frameRM,5,170,305,50,strings\character\captions("realMoney"))
 If IsFont(#frameFont) : SetGadgetFont(#frameRM,FontID(#frameFont)) : EndIf
@@ -65,6 +68,7 @@ SetGadgetState(#rm,0)
 SetGadgetFont(#rm,FontID(#font))
 ImageGadget(#helpRM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpRM,strings\character\help("realMoney"))
+SetGadgetData(#helpRM,@strings\character\help("realMoney"))
 ; |
 FrameGadget(#frameLocation,320,5,305,75,strings\character\captions("playerLocation"))
 If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
@@ -77,6 +81,8 @@ CompilerElse
 CompilerEndIf
 ImageGadget(#helpLocation,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
+SetGadgetData(#helpLocation,@strings\character\help("playerLocation"))
+
 ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
 
 AddGadgetItem(#panel,-1,strings\interface("stats"))
@@ -249,7 +255,7 @@ hideNeeds(#True)
 hideSubstances(#True)
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 223
-; FirstLine = 197
+; CursorPosition = 61
+; FirstLine = 46
 ; Folding = -
 ; EnableXP

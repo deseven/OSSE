@@ -84,6 +84,12 @@ Procedure checkSavesPath(path.s)
           Break
         EndIf
       Next
+      ForEach(saveFiles())
+        If LCase(GetFilePart(saveFiles())) = "autosave.sav"
+          MoveElement(saveFiles(),#PB_List_Last)
+          Break
+        EndIf
+      Next
       If saveFound : ProcedureReturn #True : EndIf
     EndIf
   EndIf
@@ -117,9 +123,13 @@ Procedure loadItems(path.s)
     CloseFile(0)
     If ParseJSON(0,json,#PB_JSON_NoCase)
       ExtractJSONList(JSONValue(0),items())
-      ;ForEach items()
-      ;  Debug items()\title
-      ;Next
+      ForEach items()
+        If UCase(Left(items()\category,1)) <> Left(items()\category,1)
+          DeleteElement(items())
+        EndIf
+      Next
+      SortStructuredList(items(),#PB_Sort_Ascending|#PB_Sort_NoCase,OffsetOf(item\title),#PB_String)
+      ;Debug ListSize(items())
       ProcedureReturn #True
     EndIf
   EndIf
@@ -135,18 +145,29 @@ Procedure selectItem(gadget.i)
   Shared items.item()
   Protected i.i,foundCat.b
   Protected item.item
-  OpenWindow(#wndItem,#PB_Ignore,#PB_Ignore,250,180,ReplaceString(strings\interface("itemSelectTitle"),"%s",Str(gadget-#invBegin+1)),#PB_Window_Tool|#PB_Window_WindowCentered,WindowID(#wnd))
+  Protected NewMap uniqueCategories.b()
+  Protected NewList categories.s()
+  OpenWindow(#wndItem,#PB_Ignore,#PB_Ignore,250,210,ReplaceString(strings\interface("itemSelectTitle"),"%s",Str(gadget-#invBegin+1)),#PB_Window_Tool|#PB_Window_WindowCentered|#PB_Window_SystemMenu,WindowID(#wnd))
   ComboBoxGadget(#itemCategory,5,5,240,20)
   ForEach items()
+    AddElement(categories())
+    uniqueCategories(items()\category) = 1
+  Next
+  ForEach uniqueCategories()
+    AddElement(categories())
+    categories() = MapKey(uniqueCategories())
+  Next
+  SortList(categories(),#PB_Sort_Ascending|#PB_Sort_NoCase)
+  ForEach categories()
     foundCat = #False
     For i = 0 To CountGadgetItems(#itemCategory)
-      If items()\category = GetGadgetItemText(#itemCategory,i)
+      If categories() = GetGadgetItemText(#itemCategory,i)
         foundCat = #True
         Break
       EndIf
     Next
     If Not foundCat
-      AddGadgetItem(#itemCategory,-1,items()\category)
+      AddGadgetItem(#itemCategory,-1,categories())
     EndIf
   Next
   ; finding item
@@ -174,21 +195,21 @@ Procedure selectItem(gadget.i)
       Break
     EndIf
   Next
-  TextGadget(#itemDescription,9,60,232,40,strings\inventory\captions("description") + ": " + item\description + ~"\n" + 
+  TextGadget(#itemDescription,9,60,232,70,strings\inventory\captions("description") + ": " + item\description + ~"\n" + 
                                           strings\inventory\captions("rarity") + ": " + Str(item\rarity) + ~"\n" +
                                           strings\inventory\captions("value") + ": " + Str(item\value))
   If Not Len(item\title)
     SetGadgetText(#itemDescription,"")
   EndIf
-  FrameGadget(#itemSeparator,5,110,240,1,"",#PB_Frame_Flat)
-  TextGadget(#itemAmountCaption,9,123,50,20,strings\inventory\captions("amount") + ":")
-  SpinGadget(#itemAmount,55,120,65,20,0,65535,#PB_Spin_Numeric)
+  FrameGadget(#itemSeparator,5,140,240,1,"",#PB_Frame_Flat)
+  TextGadget(#itemAmountCaption,9,153,50,20,strings\inventory\captions("amount") + ":")
+  SpinGadget(#itemAmount,55,150,65,20,0,65535,#PB_Spin_Numeric)
   SetGadgetState(#itemAmount,Val(values("inventorySlotAmount" + Str(gadget-#invBegin+8))\value))
-  TextGadget(#itemOwnerCaption,139,123,50,20,strings\inventory\captions("owner") + ":")
-  SpinGadget(#itemOwner,180,120,65,20,0,65535,#PB_Spin_Numeric)
+  TextGadget(#itemOwnerCaption,139,153,50,20,strings\inventory\captions("owner") + ":")
+  SpinGadget(#itemOwner,180,150,65,20,0,65535,#PB_Spin_Numeric)
   SetGadgetState(#itemOwner,Val(values("inventorySlotOwner" + Str(gadget-#invBegin+8))\value))
-  ButtonGadget(#itemLeaveEmpty,5,150,118,25,strings\inventory\captions("leaveEmpty"))
-  ButtonGadget(#itemApply,130,150,118,25,strings\inventory\captions("apply"))
+  ButtonGadget(#itemLeaveEmpty,5,180,118,25,strings\inventory\captions("leaveEmpty"))
+  ButtonGadget(#itemApply,130,180,118,25,strings\inventory\captions("apply"))
   SetGadgetData(#itemApply,gadget)
   DisableWindow(#wnd,#True)
 EndProcedure
@@ -200,18 +221,19 @@ Procedure langPathSelect()
   Shared gamePath.s
   Shared gamePaths.s()
   Shared savesPaths.s()
-  OpenWindow(#wndSelect,#PB_Ignore,#PB_Ignore,400,135,#myName + " [settings]",#PB_Window_Tool|#PB_Window_ScreenCentered)
+  OpenWindow(#wndSelect,#PB_Ignore,#PB_Ignore,400,315,#myName + " [settings]",#PB_Window_Tool|#PB_Window_ScreenCentered|#PB_Window_SystemMenu)
   StickyWindow(#wndSelect,#True)
-  TextGadget(0,10,12,150,20,strings\options("langSelect"),#PB_Text_Right)
-  ComboBoxGadget(1,170,10,220,20)
+  ImageGadget(#PB_Any,0,0,400,180,ImageID(#splash))
+  TextGadget(0,10,192,120,20,strings\options("langSelect"))
+  ComboBoxGadget(1,140,190,250,20)
   AddGadgetItem(1,-1,"English")
   ;Select lang
   ;  Default
       lang = "en"
       SetGadgetState(1,0)
   ;EndSelect
-  TextGadget(2,10,42,150,20,strings\options("savesPath"),#PB_Text_Right)
-  ComboBoxGadget(3,170,40,220,20)
+  TextGadget(2,10,222,120,20,strings\options("savesPath"))
+  ComboBoxGadget(3,140,220,250,20)
   AddElement(savesPaths())
   CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
     savesPaths() = "/Volumes/Data/work/osse/saves"
@@ -234,8 +256,8 @@ Procedure langPathSelect()
     EndIf
   EndIf
   AddGadgetItem(3,-1,"...")
-  TextGadget(5,10,72,150,20,strings\options("gamePath"),#PB_Text_Right)
-  ComboBoxGadget(6,170,70,220,20)
+  TextGadget(5,10,252,120,20,strings\options("gamePath"))
+  ComboBoxGadget(6,140,250,250,20)
   ForEach gamePaths()
     If LCase(gamePaths()) <> LCase(gamePath)
       AddGadgetItem(6,-1,gamePaths())
@@ -252,7 +274,7 @@ Procedure langPathSelect()
     EndIf
   EndIf
   AddGadgetItem(6,-1,"...")
-  ButtonGadget(4,270,100,120,25,strings\options("apply"),#PB_Button_Default)
+  ButtonGadget(4,270,280,120,25,strings\options("apply"),#PB_Button_Default)
   Protected ev.i
   CompilerIf #PB_Compiler_OS = #PB_OS_Linux
     SetGadgetFont(0,FontID(#font))
@@ -318,8 +340,10 @@ Procedure langPathSelect()
             EndIf
           EndIf
       EndSelect
+    ElseIf ev = #PB_Event_CloseWindow
+      End
     EndIf
-  Until ev = #PB_Event_CloseWindow
+  ForEver 
   CompilerIf #PB_Compiler_OS = #PB_OS_Linux
     ;gtk_window_close(WindowID(#wndSelect))
     ;CloseWindow(#wndSelect)
@@ -495,7 +519,7 @@ Procedure updateUI()
   Next
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 374
-; FirstLine = 346
+; CursorPosition = 259
+; FirstLine = 235
 ; Folding = ---
 ; EnableXP

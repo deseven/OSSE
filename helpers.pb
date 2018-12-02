@@ -52,12 +52,12 @@ Procedure showSplash(imgID.i = 0)
       SetGadgetState(#loadingSplash,imgID)
     Else
       If IsWindow(#wnd)
-        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,297,140,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered,WindowID(#wnd))
+        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_WindowCentered,WindowID(#wnd))
       Else
-        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,297,140,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
+        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
       EndIf
       StickyWindow(#wndLoading,#True)
-      ImageGadget(#loadingSplash,0,0,297,140,imgID)
+      ImageGadget(#loadingSplash,0,0,400,180,imgID)
     EndIf
   Else
     If IsWindow(#wndLoading) : CloseWindow(#wndLoading) : EndIf
@@ -122,7 +122,7 @@ Procedure message(message.s,type.b = #mInfo)
   ProcedureReturn #True
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 64
-; FirstLine = 36
+; CursorPosition = 54
+; FirstLine = 42
 ; Folding = --
 ; EnableXP
