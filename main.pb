@@ -123,11 +123,13 @@ langPathSelect()
 showSplash(ImageID(#splash))
 
 If Not checkSavesPath(savesPath)
+  showSplash()
   message(strings\messages("wrongSavesPath"),#mError)
   End 1
 EndIf
 
 If Not loadItems(gamePath + "\Open Sewer_Data\StreamingAssets\Items.json")
+  showSplash()
   message(strings\messages("wrongGamePath"),#mError)
   End 2
 EndIf
@@ -347,7 +349,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 2
+; CursorPosition = 131
+; FirstLine = 102
 ; Folding = -
 ; EnableXP
 ; EnableUnicode
