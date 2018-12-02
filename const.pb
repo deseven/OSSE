@@ -1,7 +1,10 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.3.1"
+#myVer = "0.3.2"
 #thanksTo = ~"\nnobody"
+#updateCheckURL = "https://deseven.info/sys/osse.ver"
+#updateApplyURL = "https://deseven.info/sys/osse.exe"
+#updateFallbackURL = "https://github.com/deseven/osse/releases"
 
 Enumeration message
   #mInfo
@@ -32,6 +35,8 @@ EndEnumeration
 Enumeration events #PB_Event_FirstCustomValue
   #evSaveLoadError
   #evSaveSaveError
+  #evUpdateFound
+  #evUpdateFailed
 EndEnumeration
 
 Enumeration main
@@ -271,7 +276,6 @@ For i = 8 To 42
 Next
 
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 235
-; FirstLine = 213
+; CursorPosition = 2
 ; EnableXP
 ; EnableUnicode

@@ -1,5 +1,15 @@
 ﻿IncludeFile "const.pb"
 
+If ProgramParameter() = "--wait-a-sec"
+  Delay(2000)
+EndIf
+
+Define myDir.s = GetPathPart(ProgramFilename())
+
+If FileSize(myDir + "osse.old") >= 0
+  DeleteFile(myDir + "osse.old",#PB_FileSystem_Force)
+EndIf
+
 UsePNGImageDecoder()
 
 CompilerSelect #PB_Compiler_OS
@@ -136,6 +146,8 @@ IncludeFile "gui.pb"
 showSplash()
 HideWindow(#wnd,#False)
 
+CreateThread(@checkUpdate(),#PB_Ignore)
+
 Repeat
   ev = WaitWindowEvent()
   Select ev
@@ -143,6 +155,14 @@ Repeat
       message(strings\messages("missingValues") + missingValuesKeys,#mWarning)
     Case #evSaveSaveError
       message(strings\messages("saveError"),#mError)
+    Case #evUpdateFound
+      If message(strings\messages("updateFound"),#mQuestion)
+        applyUpdate()
+      EndIf
+    Case #evUpdateFailed
+      message(strings\messages("updateFailed"),#mError)
+      RunProgram(#updateFallbackURL)
+      End 3
     Case #PB_Event_Gadget
       Select EventGadget()
         Case #locationSelector
@@ -327,8 +347,7 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 276
-; FirstLine = 258
+; CursorPosition = 2
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

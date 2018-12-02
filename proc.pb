@@ -518,8 +518,36 @@ Procedure updateUI()
     PostEvent(#PB_Event_Gadget,#wnd,i,0,-1)
   Next
 EndProcedure
+
+Procedure checkUpdate(dummy.i)
+  If InitNetwork()
+    Protected *buf = ReceiveHTTPMemory(#updateCheckURL,0,#myNameShort + "/" + #myVer)
+    If *buf
+      If PeekS(*buf,MemorySize(*buf),#PB_UTF8|#PB_ByteLength) <> #myVer
+        PostEvent(#evUpdateFound)
+      EndIf
+      FreeMemory(*buf)
+    EndIf
+  EndIf
+EndProcedure
+
+Procedure applyUpdate()
+  Shared myDir.s
+  HideWindow(#wnd,#True)
+  ;PostEvent(#evUpdateFailed)
+  ;ProcedureReturn
+  If RenameFile(myDir + "osse.exe",myDir + "osse.old")
+    If ReceiveHTTPFile(#updateApplyURL,myDir + "osse.exe",0,#myNameShort + "/" + #myVer)
+      RunProgram(myDir + "osse.exe","--wait-a-sec",myDir)
+      End
+    Else
+      RenameFile(myDir + "osse.old",myDir + "osse.exe")
+    EndIf
+  EndIf
+  PostEvent(#evUpdateFailed)
+EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 259
-; FirstLine = 235
+; CursorPosition = 537
+; FirstLine = 509
 ; Folding = ---
 ; EnableXP

@@ -29,7 +29,9 @@
 		"missingValues": "There are some missing values in this save file, maybe this editor is outdated or something is broken.\n\nProceed with caution!\n\nMissing values:",
 		"refreshConfirm": "Looks like you have some unsaved changes, do you really want to refresh?",
 		"selectConfirm": "Looks like you have some unsaved changes, do you really want to select another save?",
-		"exitConfirm": "Looks like you have some unsaved changes, do you really want to exit anyway?"
+		"exitConfirm": "Looks like you have some unsaved changes, do you really want to exit anyway?",
+		"updateFound": "A new OSSE version has been found! Do you want to update?",
+		"updateFailed": "Failed to install new version :(\nLooks like you have to do it manually, github releases page will be opened."
 	},
 	"character": {
 		"captions": {
@@ -75,7 +77,7 @@
 			"smvRate": "Progression rate of SMV disease per game hour",
 			"depression": "How much you want to hang yourself on a street lamp",
 			"hunger": "Hunger level",
-			"thirst": "Thirst: ",
+			"thirst": "Thirst level",
 			"bowel": "How much you need to shit",
 			"bladder": "How much you need to pee",
 			"tiredness": "How tired you are",
