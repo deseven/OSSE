@@ -7,32 +7,32 @@
   <section name="data">
     <explorer view="C:\Program Files (x86)\PureBasic\Examples\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-12-02 00:05" user="deseven" host="DESKTOP-DRNA767"/>
+    <lastopen date="2018-12-03 00:14" user="deseven" host="DESKTOP-DRNA767"/>
   </section>
   <section name="files">
     <file name="const.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="b21d9795ce3a30a4813638dc929403a9"/>
+      <fingerprint md5="5b652945e739be75048b122c9c58fd2a"/>
+    </file>
+    <file name="gui.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="355aeed80886af9bda0f9828e4658eb0"/>
+    </file>
+    <file name="helpers.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="b2923ab2f9bf23a2f4a22c13fac1f6ad"/>
     </file>
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="1513b9a8972d578bd26d48a7f7eaf21f"/>
+      <fingerprint md5="9966a991f2eb159e47931ea1c591da0f"/>
     </file>
     <file name="proc.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="5609263e5a35a4c1f748fbcfac5d11c2"/>
+      <fingerprint md5="d13d70cfed230a6426a61a792ed95ab1"/>
     </file>
     <file name="reg-read.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="825f2cf13d84c7e2a157cfbb09af71fd"/>
-    </file>
-    <file name="helpers.pb">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="17e4ef029a6dc87a48dd29d79ddcd933"/>
-    </file>
-    <file name="gui.pb">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="c900c38d046bdbcfdf875ca88f72a540"/>
     </file>
   </section>
   <section name="targets">

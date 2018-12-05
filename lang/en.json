@@ -46,8 +46,8 @@
 		"help": {
 			"name": "Player name",
 			"surname": "Player surname",
-			"openSewerCoins": "Amount of Open Sewer coins",
-			"realMoney": "Amount of real money",
+			"openSewerCoins": "Amount of Open Sewer coins, please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first",
+			"realMoney": "Amount of real money, please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first",
 			"bankMoney": "Amount of OC that you have in your bank account",
 			"playerLocation": "Player location in the game world"
 		}
