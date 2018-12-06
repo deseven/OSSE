@@ -128,7 +128,7 @@ If Not checkSavesPath(savesPath)
   End 1
 EndIf
 
-If Not loadItems(gamePath + "\Open Sewer_Data\StreamingAssets\Items.json")
+If Not loadItems(gamePath)
   showSplash()
   message(strings\messages("wrongGamePath"),#mError)
   End 2
@@ -146,6 +146,7 @@ FreeImage(#splash)
 IncludeFile "gui.pb"
 
 showSplash()
+updateUI()
 HideWindow(#wnd,#False)
 
 CreateThread(@checkUpdate(),#PB_Ignore)
@@ -159,7 +160,12 @@ Repeat
       message(strings\messages("saveError"),#mError)
     Case #evUpdateFound
       If message(strings\messages("updateFound"),#mQuestion)
-        applyUpdate()
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          applyUpdate()
+        CompilerElse
+          RunProgram("open",#updateFallbackURL,"")
+          End
+        CompilerEndIf
       EndIf
     Case #evUpdateFailed
       message(strings\messages("updateFailed"),#mError)
@@ -339,12 +345,13 @@ Repeat
           SetGadgetState(GetGadgetData(#itemApply),0)          
           CloseWindow(#wndItem)
           DisableWindow(#wnd,#False)
+          SetActiveWindow(#wnd)
      EndSelect
   EndSelect
 ForEver
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 178
-; FirstLine = 166
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 166
+; FirstLine = 132
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

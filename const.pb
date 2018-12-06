@@ -1,6 +1,6 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.3.2"
+#myVer = "0.3.3"
 #thanksTo = ~"\nnobody"
 #updateCheckURL = "https://deseven.info/sys/osse.ver"
 #updateApplyURL = "https://deseven.info/sys/osse.exe"
@@ -274,9 +274,7 @@ For i = 8 To 42
   values("inventorySlotAmount" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
   values("inventorySlotOwner" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
 Next
-
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 254
-; FirstLine = 239
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 2
 ; EnableXP
 ; EnableUnicode

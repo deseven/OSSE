@@ -23,9 +23,9 @@ CompilerSelect #PB_Compiler_OS
   CompilerCase #PB_OS_Linux
     PanelGadget(#panel,0,50,640,250)
   CompilerCase #PB_OS_MacOS
-    ResizeWindow(#wnd,#PB_Ignore,#PB_Ignore,WindowWidth(#wnd)+30,WindowHeight(#wnd)+30)
-    ComboBoxGadget(#saveSelector,5,20,650,20)
-    PanelGadget(#panel,0,50,660,270)
+    ResizeWindow(#wnd,#PB_Ignore,#PB_Ignore,WindowWidth(#wnd)+10,WindowHeight(#wnd)+30)
+    ComboBoxGadget(#saveSelector,5,20,640,20)
+    PanelGadget(#panel,0,50,650,270)
   CompilerDefault
     ComboBoxGadget(#saveSelector,5,ToolBarHeight(#toolbar)+2,630,20)
     PanelGadget(#panel,0,ToolBarHeight(#toolbar)+30,645,275)
@@ -253,15 +253,13 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
 CompilerEndIf
 
 loadSave(GetGadgetText(#saveSelector))
-updateUI()
 DisableToolBarButton(#toolbar,#toolbarSave,#True)
 RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
 
 hideNeeds(#True)
 hideSubstances(#True)
-
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 68
-; FirstLine = 47
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 254
+; FirstLine = 215
 ; Folding = -
 ; EnableXP

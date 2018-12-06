@@ -1,9 +1,9 @@
 #!/bin/bash
 
 pb="/Applications/PureBasic.app/Contents/Resources"
-name="TFCE"
-shortName="tfce"
-ident="info.deseven.tfce"
+name="OSSE"
+shortName="osse"
+ident="info.deseven.osse"
 loc="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 noColor='\033[0m'

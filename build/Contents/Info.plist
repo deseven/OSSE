@@ -5,21 +5,21 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>TFCE</string>
+	<string>OSSE</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleIconFile</key>
 	<string>main.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>info.deseven.tfce</string>
+	<string>info.deseven.osse</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>PURE</string>
 	<key>CFBundleVersion</key>
-	<string>1.1.1</string>
+	<string>0.3.3</string>
 	<key>CFBundleName</key>
-	<string>TFCE</string>
+	<string>OSSE</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>NSHighResolutionCapable</key>

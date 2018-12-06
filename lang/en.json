@@ -55,7 +55,7 @@
 	"stats": {
 		"captions": {
 			"selectHealth": "Health",
-			"selectNeeds": "Common needs",
+			"selectNeeds": "Needs",
 			"selectSubstances": "Substances",
 			"selectRates": "Rates",
 			"health": "Health: %p%",

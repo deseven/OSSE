@@ -24,12 +24,6 @@
       EndIf
       AddElement(paths())
       paths() = "C:\games\Open Sewer"
-      AddElement(paths())
-      paths() = "D:\games\Open Sewer"
-      AddElement(paths())
-      paths() = "E:\games\Open Sewer"
-      AddElement(paths())
-      paths() = "Y:\osse\Open Sewer"
     CompilerCase #PB_OS_MacOS
       AddElement(paths())
       paths() = GetEnvironmentVariable("HOME") + "/Library/Application Support/Steam/SteamApps/common/Open Sewer"
@@ -114,6 +108,11 @@ EndProcedure
 Procedure loadItems(path.s)
   Shared items.item()
   Protected.s json
+  CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+    path + "\Open Sewer_Data\StreamingAssets\Items.json"
+  CompilerElse
+    path + "/Open Sewer_Data/StreamingAssets/Items.json"
+  CompilerEndIf
   If ReadFile(0,path,#PB_UTF8|#PB_File_SharedRead)
     json = ReadString(0,#PB_UTF8|#PB_File_IgnoreEOL)
     If Left(json,1) <> Chr(123) ; fml
@@ -160,7 +159,7 @@ Procedure selectItem(gadget.i)
   SortList(categories(),#PB_Sort_Ascending|#PB_Sort_NoCase)
   ForEach categories()
     foundCat = #False
-    For i = 0 To CountGadgetItems(#itemCategory)
+    For i = 0 To CountGadgetItems(#itemCategory)-1
       If categories() = GetGadgetItemText(#itemCategory,i)
         foundCat = #True
         Break
@@ -177,7 +176,7 @@ Procedure selectItem(gadget.i)
       Break
     EndIf
   Next
-  For i = 0 To CountGadgetItems(#itemCategory)
+  For i = 0 To CountGadgetItems(#itemCategory)-1
     If item\category = GetGadgetItemText(#itemCategory,i)
       SetGadgetState(#itemCategory,i)
       Break
@@ -189,7 +188,7 @@ Procedure selectItem(gadget.i)
       AddGadgetItem(#itemTitle,-1,items()\title)
     EndIf
   Next
-  For i = 0 To CountGadgetItems(#itemTitle)
+  For i = 0 To CountGadgetItems(#itemTitle)-1
     If item\title = GetGadgetItemText(#itemTitle,i)
       SetGadgetState(#itemTitle,i)
       Break
@@ -444,8 +443,10 @@ EndProcedure
 Procedure updateInternal()
   Shared values.value()
   Protected i.i
-  values("name")\value = GetGadgetText(#name)
-  values("surname")\value = GetGadgetText(#surname)
+  values("name")\value = ReplaceString(GetGadgetText(#name),~"\"","'")
+  values("surname")\value = ReplaceString(GetGadgetText(#surname),~"\"","'")
+  values("name")\value = RTrim(values("name")\value,"\")
+  values("surname")\value = RTrim(values("surname")\value,"\")
   values("OC")\value = Str(GetGadgetState(#oc))
   values("RM")\value = Str(GetGadgetState(#rm))
   ;values("BM")\value = Str(GetGadgetState(#bm))
@@ -549,7 +550,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 450
-; FirstLine = 443
-; Folding = ---
+; CursorPosition = 448
+; FirstLine = 436
+; Folding = ----
 ; EnableXP

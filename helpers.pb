@@ -47,21 +47,24 @@ Macro hideSubstances(state)
 EndMacro
 
 Procedure showSplash(imgID.i = 0)
-  If imgID
-    If IsWindow(#wndLoading)
-      SetGadgetState(#loadingSplash,imgID)
-    Else
-      If IsWindow(#wnd)
-        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_WindowCentered,WindowID(#wnd))
+  CompilerIf #PB_Compiler_OS <> #PB_OS_MacOS ; it turned out that mac is so fast it doesn't even need this shit
+    If imgID
+      If IsWindow(#wndLoading)
+        SetGadgetState(#loadingSplash,imgID)
       Else
-        OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
+        If IsWindow(#wnd)
+          OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_WindowCentered,WindowID(#wnd))
+        Else
+          OpenWindow(#wndLoading,#PB_Ignore,#PB_Ignore,400,180,#myName,#PB_Window_BorderLess|#PB_Window_ScreenCentered)
+        EndIf
+        StickyWindow(#wndLoading,#True)
+        ImageGadget(#loadingSplash,0,0,400,180,imgID)
       EndIf
-      StickyWindow(#wndLoading,#True)
-      ImageGadget(#loadingSplash,0,0,400,180,imgID)
+    Else
+      If IsWindow(#wndLoading) : CloseWindow(#wndLoading) : EndIf
     EndIf
-  Else
-    If IsWindow(#wndLoading) : CloseWindow(#wndLoading) : EndIf
-  EndIf
+    While WindowEvent() : Wend
+  CompilerEndIf
 EndProcedure
 
 Procedure ForceGadgetZOrder(gadget)
@@ -121,8 +124,8 @@ Procedure message(message.s,type.b = #mInfo)
   CompilerEndIf
   ProcedureReturn #True
 EndProcedure
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 54
-; FirstLine = 42
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 49
+; FirstLine = 36
 ; Folding = --
 ; EnableXP
