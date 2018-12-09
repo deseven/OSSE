@@ -39,6 +39,7 @@ Define strings.lang
 Define missingValuesKeys.s
 Define saveNeeded.b
 Define *caption.String
+Define item.item
 NewList gamePaths.s()
 NewList savesPaths.s()
 NewList saveFiles.s()
@@ -204,6 +205,7 @@ Repeat
             DisableWindow(#wnd,#False)
             DisableToolBarButton(#toolbar,#toolbarSave,#False)
             saveNeeded = #True
+            SetActiveWindow(#wnd)
           EndIf
         Default
           If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_TrackBar
@@ -250,10 +252,10 @@ Repeat
                 If Not saveNeeded Or message(strings\messages("selectConfirm"),#mQuestion)
                   showSplash(ImageID(#splashSave))
                   loadSave(GetGadgetText(#saveSelector))
-                  updateUI()
                   DisableToolBarButton(#toolbar,#toolbarSave,#True)
                   saveNeeded = #False
                   showSplash()
+                  updateUI()
                 Else
                   For i = 0 To CountGadgetItems(#saveSelector)-1
                     If GetGadgetItemText(#saveSelector,i) = currentSave
@@ -269,19 +271,21 @@ Repeat
                     AddGadgetItem(#itemTitle,-1,items()\title)
                   EndIf
                 Next
-                SetGadgetText(#itemDescription,"")
+                SetGadgetText(#itemDescription,strings\inventory\captions("nothing"))
               Case #itemTitle
                 ForEach items()
                   If items()\title = GetGadgetText(#itemTitle)
+                    If items()\stackable > 0
+                      SetGadgetAttribute(#itemAmount,#PB_Spin_Maximum,items()\stackable)
+                    EndIf
                     If Not GetGadgetState(#itemAmount)
                       SetGadgetState(#itemAmount,1)
                     EndIf
                     If Not GetGadgetState(#itemOwner)
                       SetGadgetState(#itemOwner,0)
                     EndIf
-                    SetGadgetText(#itemDescription,strings\inventory\captions("description") + ": " + items()\description + ~"\n" + 
-                                                   strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~"\n" +
-                                                   strings\inventory\captions("value") + ": " + Str(items()\value))
+                    item = items()
+                    SetGadgetText(#itemDescription,getItemInfo(item))
                     Break  
                   EndIf
                 Next
@@ -307,8 +311,8 @@ Repeat
           Else
             PostEvent(#evSaveSaveError)
           EndIf
-          updateUI()
           showSplash()
+          updateUI()
         Case #toolbarRefresh
           If Not saveNeeded Or message(strings\messages("refreshConfirm"),#mQuestion)
             showSplash(ImageID(#splashSave))
@@ -319,11 +323,17 @@ Repeat
               AddGadgetItem(#saveSelector,-1,saveFiles())
             Next
             SetGadgetState(#saveSelector,0)
+            For i = 0 To CountGadgetItems(#saveSelector)-1
+              If GetGadgetItemText(#saveSelector,i) = currentSave
+                SetGadgetState(#saveSelector,i)
+                Break
+              EndIf
+            Next
             loadSave(GetGadgetText(#saveSelector))
-            updateUI()
             DisableToolBarButton(#toolbar,#toolbarSave,#True)
             saveNeeded = #False
             showSplash()
+            updateUI()
           EndIf
         Case #menuLocationTenement
           SetGadgetText(#location,"73.62659,-99.900,35.45837")
@@ -349,9 +359,9 @@ Repeat
      EndSelect
   EndSelect
 ForEver
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 166
-; FirstLine = 132
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 149
+; FirstLine = 136
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

@@ -63,7 +63,7 @@ Procedure showSplash(imgID.i = 0)
     Else
       If IsWindow(#wndLoading) : CloseWindow(#wndLoading) : EndIf
     EndIf
-    While WindowEvent() : Wend
+    ;While WindowEvent() : Wend
   CompilerEndIf
 EndProcedure
 
@@ -124,8 +124,8 @@ Procedure message(message.s,type.b = #mInfo)
   CompilerEndIf
   ProcedureReturn #True
 EndProcedure
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 49
-; FirstLine = 36
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 65
+; FirstLine = 48
 ; Folding = --
 ; EnableXP

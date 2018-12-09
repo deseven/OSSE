@@ -1,6 +1,6 @@
 ﻿#myName = "Open Sewer Save Editor"
 #myNameShort = "OSSE"
-#myVer = "0.3.3"
+#myVer = "0.4.0"
 #thanksTo = ~"\nnobody"
 #updateCheckURL = "https://deseven.info/sys/osse.ver"
 #updateApplyURL = "https://deseven.info/sys/osse.exe"

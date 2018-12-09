@@ -138,36 +138,158 @@ Procedure loadItems(path.s)
   ProcedureReturn #False
 EndProcedure
 
+Procedure.s getItemInfo(*item.item)
+  Shared items.item()
+  Shared strings.lang
+  Protected atLeastOneValidEffect.b
+  Protected itemInfo.s
+  itemInfo = strings\inventory\captions("description") + ": " + *item\description + ~"\n" + 
+             strings\inventory\captions("rarity") + ": " + Str(*item\rarity) + ~"\n" +
+             strings\inventory\captions("value") + ": " + Str(*item\value)  + ~" OC \n"
+  Select LCase(*item\use)
+    Case "eat","drink","smoke":
+      If LCase(*item\use) = "eat"
+        itemInfo + strings\inventory\captions("usageCanBeEaten") + ~":\n"
+      ElseIf LCase(*item\use) = "drink"
+        itemInfo + strings\inventory\captions("usageCanBeDrinked") + ~":\n"
+      Else
+        itemInfo + strings\inventory\captions("usageCanBeSmoked") + ~":\n"
+      EndIf
+      Protected itemHungerThirstSmokeChange.s = StringField(*item\arguments,1," ")
+      Protected itemAlcoholChange.s      = StringField(*item\arguments,2," ")
+      Protected itemGivesItem.s          = StringField(*item\arguments,3," ")
+      Protected itemSMVChange.s          = StringField(*item\arguments,4," ")
+      Protected itemHealthChange.s       = StringField(*item\arguments,5," ")
+      Protected itemDepressionChange.s   = StringField(*item\arguments,6," ")
+      If Val(itemHungerThirstSmokeChange) <> 0
+        atLeastOneValidEffect = #True
+        If LCase(*item\use) = "eat"
+          If Val(itemHungerThirstSmokeChange) > 0
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerHunger"),"%p",itemHungerThirstSmokeChange) + ~"\n"
+          Else
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseHunger"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
+          EndIf
+        ElseIf LCase(*item\use) = "drink"
+          If Val(itemHungerThirstSmokeChange) > 0
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerThirst"),"%p",itemHungerThirstSmokeChange) + ~"\n"
+          Else
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseThirst"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
+          EndIf
+        Else
+          If Val(itemHungerThirstSmokeChange) > 0
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSmokeNeed"),"%p",itemHungerThirstSmokeChange) + ~"\n"
+          Else
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSmokeNeed"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
+          EndIf
+        EndIf
+      EndIf
+      If Val(itemAlcoholChange) <> 0
+        atLeastOneValidEffect = #True
+        If Val(itemAlcoholChange) < 0
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerAlcohol"),"%p",LTrim(itemAlcoholChange,"-")) + ~"\n"
+        Else
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseAlcohol"),"%p",itemAlcoholChange) + ~"\n"
+        EndIf
+      EndIf
+      If Val(itemGivesItem) <> -1
+        ForEach items()
+          If items()\id = Val(itemGivesItem)
+            atLeastOneValidEffect = #True
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageGiveItem"),"%s",items()\title) + ~"\n"
+            Break
+          EndIf
+        Next
+      EndIf
+      If Val(itemSMVChange) <> 0
+        atLeastOneValidEffect = #True
+        If Val(itemSMVChange) < 0
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p",LTrim(itemSMVChange,"-")) + ~"\n"
+        Else
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSMV"),"%p",itemSMVChange) + ~"\n"
+        EndIf
+      EndIf
+      If Val(itemHealthChange) <> 0
+        atLeastOneValidEffect = #True
+        If Val(itemHealthChange) < 0
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageHurt"),"%p",LTrim(itemHealthChange,"-")) + ~"\n"
+        Else
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageHeal"),"%p",itemHealthChange) + ~"\n"
+        EndIf
+      EndIf
+      If Val(itemDepressionChange) <> 0
+        atLeastOneValidEffect = #True
+        If Val(itemDepressionChange) < 0
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerDepression"),"%p",LTrim(itemDepressionChange,"-")) + ~"\n"
+        Else
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseDepression"),"%p",itemDepressionChange) + ~"\n"
+        EndIf
+      EndIf
+      If Not atLeastOneValidEffect
+        itemInfo + " • " + strings\inventory\captions("usageNothing")
+      EndIf
+    Case "open","break":
+      If LCase(*item\use) = "open"
+        itemInfo + strings\inventory\captions("usageCanBeOpened") + ~":\n"
+      Else
+        itemInfo + strings\inventory\captions("usageCanBeBroken") + ~":\n"
+      EndIf
+      Protected itemOutput.s    = StringField(*item\arguments,1," ")
+      Protected itemAmount.s    = StringField(*item\arguments,2," ")
+      Protected itemContainer.s = StringField(*item\arguments,3," ")
+      If Val(itemOutput) <> -1
+        ForEach items()
+          If items()\id = Val(itemOutput)
+            If Val(itemAmount) > 1
+              atLeastOneValidEffect = #True
+              itemInfo + " • " + ReplaceString(ReplaceString(strings\inventory\captions("usageGiveItems"),"%s",items()\title),"%i",itemAmount) + ~"\n"
+            ElseIf Val(itemAmount) = 1
+              atLeastOneValidEffect = #True
+              itemInfo + " • " + ReplaceString(strings\inventory\captions("usageGiveItem"),"%s",items()\title) + ~"\n"
+            EndIf
+            Break
+          EndIf
+        Next
+      EndIf
+      If Val(itemContainer) <> -1
+        ForEach items()
+          If items()\id = Val(itemContainer)
+            atLeastOneValidEffect = #True
+            itemInfo + " • " + ReplaceString(strings\inventory\captions("usageGiveItem"),"%s",items()\title) + ~"\n"
+            Break
+          EndIf
+        Next
+      EndIf
+      If Not atLeastOneValidEffect
+        itemInfo + " • " + strings\inventory\captions("usageNothing")
+      EndIf
+    Default
+      itemInfo + strings\inventory\captions("usage") + ": " + *item\use + ~"\n"
+  EndSelect
+  ProcedureReturn itemInfo
+EndProcedure
+
 Procedure selectItem(gadget.i)
   Shared strings.lang
   Shared values.value()
   Shared items.item()
   Protected i.i,foundCat.b
-  Protected item.item
+  Shared item.item
   Protected NewMap uniqueCategories.b()
   Protected NewList categories.s()
-  OpenWindow(#wndItem,#PB_Ignore,#PB_Ignore,250,210,ReplaceString(strings\interface("itemSelectTitle"),"%s",Str(gadget-#invBegin+1)),#PB_Window_Tool|#PB_Window_WindowCentered|#PB_Window_SystemMenu,WindowID(#wnd))
+  ClearStructure(@item,item)
+  OpenWindow(#wndItem,#PB_Ignore,#PB_Ignore,250,300,ReplaceString(strings\interface("itemSelectTitle"),"%s",Str(gadget-#invBegin+1)),#PB_Window_Tool|#PB_Window_WindowCentered|#PB_Window_SystemMenu,WindowID(#wnd))
   ComboBoxGadget(#itemCategory,5,5,240,20)
   ForEach items()
-    AddElement(categories())
     uniqueCategories(items()\category) = 1
   Next
   ForEach uniqueCategories()
     AddElement(categories())
     categories() = MapKey(uniqueCategories())
+    ;Debug "adding category " + MapKey(uniqueCategories())
   Next
   SortList(categories(),#PB_Sort_Ascending|#PB_Sort_NoCase)
   ForEach categories()
-    foundCat = #False
-    For i = 0 To CountGadgetItems(#itemCategory)-1
-      If categories() = GetGadgetItemText(#itemCategory,i)
-        foundCat = #True
-        Break
-      EndIf
-    Next
-    If Not foundCat
-      AddGadgetItem(#itemCategory,-1,categories())
-    EndIf
+    AddGadgetItem(#itemCategory,-1,categories())
   Next
   ; finding item
   ForEach items()
@@ -194,21 +316,22 @@ Procedure selectItem(gadget.i)
       Break
     EndIf
   Next
-  TextGadget(#itemDescription,9,60,232,70,strings\inventory\captions("description") + ": " + item\description + ~"\n" + 
-                                          strings\inventory\captions("rarity") + ": " + Str(item\rarity) + ~"\n" +
-                                          strings\inventory\captions("value") + ": " + Str(item\value))
-  If Not Len(item\title)
-    SetGadgetText(#itemDescription,"")
+  TextGadget(#itemDescription,9,60,232,160,strings\inventory\captions("nothing"))
+  If Len(item\title)
+    SetGadgetText(#itemDescription,getItemInfo(item))
   EndIf
-  FrameGadget(#itemSeparator,5,140,240,1,"",#PB_Frame_Flat)
-  TextGadget(#itemAmountCaption,9,153,50,20,strings\inventory\captions("amount") + ":")
-  SpinGadget(#itemAmount,55,150,65,20,0,65535,#PB_Spin_Numeric)
+  FrameGadget(#itemSeparator,5,230,240,1,"",#PB_Frame_Flat)
+  TextGadget(#itemAmountCaption,9,243,50,20,strings\inventory\captions("amount") + ":")
+  SpinGadget(#itemAmount,55,240,65,20,0,65535,#PB_Spin_Numeric)
+  If item\stackable > 0
+    SetGadgetAttribute(#itemAmount,#PB_Spin_Maximum,item\stackable)
+  EndIf
   SetGadgetState(#itemAmount,Val(values("inventorySlotAmount" + Str(gadget-#invBegin+8))\value))
-  TextGadget(#itemOwnerCaption,139,153,50,20,strings\inventory\captions("owner") + ":")
-  SpinGadget(#itemOwner,180,150,65,20,0,65535,#PB_Spin_Numeric)
+  TextGadget(#itemOwnerCaption,139,243,50,20,strings\inventory\captions("owner") + ":")
+  SpinGadget(#itemOwner,180,240,65,20,0,65535,#PB_Spin_Numeric)
   SetGadgetState(#itemOwner,Val(values("inventorySlotOwner" + Str(gadget-#invBegin+8))\value))
-  ButtonGadget(#itemLeaveEmpty,5,180,118,25,strings\inventory\captions("leaveEmpty"))
-  ButtonGadget(#itemApply,130,180,118,25,strings\inventory\captions("apply"))
+  ButtonGadget(#itemLeaveEmpty,5,270,118,25,strings\inventory\captions("leaveEmpty"))
+  ButtonGadget(#itemApply,130,270,118,25,strings\inventory\captions("apply"))
   SetGadgetData(#itemApply,gadget)
   DisableWindow(#wnd,#True)
 EndProcedure
@@ -550,7 +673,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 448
-; FirstLine = 436
+; CursorPosition = 641
+; FirstLine = 626
 ; Folding = ----
 ; EnableXP
