@@ -565,7 +565,6 @@ EndProcedure
 
 Procedure updateInternal()
   Shared values.value()
-  Protected i.i
   values("name")\value = ReplaceString(GetGadgetText(#name),~"\"","'")
   values("surname")\value = ReplaceString(GetGadgetText(#surname),~"\"","'")
   values("name")\value = RTrim(values("name")\value,"\")
@@ -673,7 +672,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 641
-; FirstLine = 626
+; CursorPosition = 570
+; FirstLine = 565
 ; Folding = ----
 ; EnableXP

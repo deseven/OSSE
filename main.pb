@@ -200,6 +200,7 @@ Repeat
                 EndIf
               Next
             EndIf
+            updateInternal()
             updateUI()
             CloseWindow(#wndItem)
             DisableWindow(#wnd,#False)
@@ -360,8 +361,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 149
-; FirstLine = 136
+; CursorPosition = 202
+; FirstLine = 173
 ; Folding = -
 ; EnableXP
 ; EnableUnicode
