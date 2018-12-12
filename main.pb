@@ -146,6 +146,9 @@ FreeImage(#splash)
 
 IncludeFile "gui.pb"
 
+loadSave(GetGadgetText(#saveSelector))
+DisableToolBarButton(#toolbar,#toolbarSave,#True)
+
 showSplash()
 updateUI()
 HideWindow(#wnd,#False)
@@ -177,6 +180,14 @@ Repeat
         Case #locationSelector
           If EventData() <> -1
             DisplayPopupMenu(#menuLocation,WindowID(#wnd))
+          EndIf
+        Case #mapMarkers
+          If EventData() <> -1
+            values("landmarksNotActivated")\value = "false"
+            SetGadgetText(#mapMarkers,strings\world\captions("mapMarkersUnlocked"))
+            DisableGadget(#mapMarkers,#True)
+            DisableToolBarButton(#toolbar,#toolbarSave,#False)
+            saveNeeded = #True
           EndIf
         Case #invBegin To #invEnd
           If EventData() <> -1
@@ -219,6 +230,12 @@ Repeat
                   SetGadgetText(EventGadget()-1,ReplaceString(*caption\s,"%p",Str(GetGadgetState(EventGadget())))) ; oh shit
               EndSelect
             EndIf
+            If EventData() <> -1
+              DisableToolBarButton(#toolbar,#toolbarSave,#False)
+              saveNeeded = #True
+            EndIf
+          EndIf
+          If IsGadget(EventGadget()) And GadgetType(EventGadget()) = #PB_GadgetType_CheckBox
             If EventData() <> -1
               DisableToolBarButton(#toolbar,#toolbarSave,#False)
               saveNeeded = #True
@@ -339,11 +356,17 @@ Repeat
         Case #menuLocationTenement
           SetGadgetText(#location,"73.62659,-99.900,35.45837")
           PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
+        Case #menuLocationTenementRoof
+          SetGadgetText(#location,"72.50515,-81.900,32.75411")
+          PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
         Case #menuLocationMarket
           SetGadgetText(#location,"7.122754,-99.900,-26.292")
           PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
         Case #menuLocationBazaar
           SetGadgetText(#location,"19.98339,-99.900,118.622")
+          PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
+        Case #menuLocationShroomWorld
+          SetGadgetText(#location,"-1354.048,-308.30,917.6668")
           PostEvent(#PB_Event_Gadget,#wnd,#location,#PB_EventType_Change)
       EndSelect
     Case #PB_Event_CloseWindow
@@ -361,8 +384,8 @@ Repeat
   EndSelect
 ForEver
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 202
-; FirstLine = 173
+; CursorPosition = 359
+; FirstLine = 338
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

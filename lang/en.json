@@ -94,7 +94,7 @@
 			"description": "Description",
 			"value": "Value",
 			"rarity": "Rarity",
-			"usage": "Usage",
+			"usageDefault": "Usage: %s",
 			"usageCanBeEaten": "Can be eaten. It will",
 			"usageCanBeDrinked": "Can be drinked. It will",
 			"usageCanBeSmoked": "Can be smoked. It will",
@@ -108,6 +108,8 @@
 			"usageIncreaseSmokeNeed": "increase your smoke need by %p%",
 			"usageLowerAlcohol": "lower your alcohol level by %p%",
 			"usageIncreaseAlcohol": "increase your alcohol level by %p%",
+			"usageLowerTiredness": "lower your tiredness by %p%",
+			"usageIncreaseTiredness": "increase your tiredness by %p%",
 			"usageGiveItem": "give you '%s'",
 			"usageGiveItems": "give you %ix '%s'",
 			"usageLowerSMV": "lower your SMV progression rate by %p%",
@@ -130,6 +132,20 @@
 		"placeholder": "...work in progress..."
 	},
 	"world": {
-		"placeholder": "...work in progress..."
+		"captions": {
+			"tutorial": "Tutorial",
+			"tutorialFinished": "Finished",
+			"mapMarkers": "Map markers",
+			"mapMarkersUnlocked": "All map markers are already unlocked",
+			"mapMarkersUnlock": "Unlock all map markers",
+			"time": "World time",
+			"timeDay": "Game day",
+			"timeHourMin": "Time"
+		},
+		"help": {
+			"tutorial": "State of tutorial completion",
+			"mapMarkers": "Quick hack to unlock all locations on your game map",
+			"time": "Game world time, can be used to skip nights, etc"
+		}
 	}
 }

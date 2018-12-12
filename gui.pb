@@ -16,8 +16,10 @@ CompilerEndIf
 
 CreatePopupMenu(#menuLocation)
 MenuItem(#menuLocationTenement,"Your tenement")
+MenuItem(#menuLocationTenementRoof,"Your tenement roof")
 MenuItem(#menuLocationBazaar,"Bazaar")
 MenuItem(#menuLocationMarket,"Market")
+MenuItem(#menuLocationShroomWorld,"Shroom world")
 
 CompilerSelect #PB_Compiler_OS
   CompilerCase #PB_OS_Linux
@@ -78,8 +80,7 @@ SetGadgetData(#helpRM,@strings\character\help("realMoney"))
 ; |
 FrameGadget(#frameLocation,320,60,305,75,strings\character\captions("playerLocation"))
 If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
-If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
-StringGadget(#location,330+gadOffsetX,80+gadOffsetY,285,20,"-56.67583,-100.05,90.42398")
+StringGadget(#location,330+gadOffsetX,80+gadOffsetY,285,20,"")
 CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
   ButtonGadget(#locationSelector,325,105,295,25,strings\character\captions("playerLocationSelect"))
 CompilerElse
@@ -230,10 +231,34 @@ TextGadget(#placeholderQuests,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-5
 ImageGadget(#bgQuests,565,160,64,64,ImageID(#iconQuests))
 
 AddGadgetItem(#panel,-1,strings\interface("world"))
-TextGadget(#placeholderWorld,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\world\placeholder,#PB_Text_Center)
+
+FrameGadget(#frameTutorial,5,5,305,50,strings\world\captions("tutorial"))
+If IsFont(#frameFont) : SetGadgetFont(#frameTutorial,FontID(#frameFont)) : EndIf
+CheckBoxGadget(#tutorial,15+gadOffsetX,25+gadOffsetY,285,20,strings\world\captions("tutorialFinished"))
+ImageGadget(#helpTutorial,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpTutorial,strings\world\help("tutorial"))
+SetGadgetData(#helpTutorial,@strings\world\help("tutorial"))
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
-;SetGadgetState(#panel,2)
+FrameGadget(#frameMapMarkers,5,60,305,50,strings\world\captions("mapMarkers"))
+If IsFont(#frameFont) : SetGadgetFont(#frameMapMarkers,FontID(#frameFont)) : EndIf
+;CheckBoxGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,strings\world\captions("mapMarkersUnlocked"))
+ButtonGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,"")
+ImageGadget(#helpMapMarkers,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpMapMarkers,strings\world\help("mapMarkers"))
+SetGadgetData(#helpMapMarkers,@strings\world\help("mapMarkers"))
+
+FrameGadget(#frameTime,320,5,305,75,strings\world\captions("time"))
+If IsFont(#frameFont) : SetGadgetFont(#frameTime,FontID(#frameFont)) : EndIf
+TextGadget(#timeDayCaption,330+gadOffsetX,27+gadOffsetY,65,20,strings\world\captions("timeDay") + ":")
+SpinGadget(#timeDay,400+gadOffsetX,25+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
+TextGadget(#timeHourMinCaption,330+gadOffsetX,52+gadOffsetY,65,20,strings\world\captions("timeHourMin") + ":")
+StringGadget(#timeHourMin,400+gadOffsetX,50+gadOffsetY,80,20,"")
+ImageGadget(#helpTime,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
+GadgetToolTip(#helpTime,strings\world\help("time"))
+SetGadgetData(#helpTime,@strings\world\help("time"))
+
+;SetGadgetState(#panel,5)
 
 ; making help icons on top of controls
 For i = #controlsBegin+1 To #controlsEnd-1
@@ -252,14 +277,12 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
   CocoaMessage(0,GadgetID(#location),"setFocusRingType:",1)
 CompilerEndIf
 
-loadSave(GetGadgetText(#saveSelector))
-DisableToolBarButton(#toolbar,#toolbarSave,#True)
 RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
 
 hideNeeds(#True)
 hideSubstances(#True)
 ; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 254
-; FirstLine = 215
+; CursorPosition = 260
+; FirstLine = 238
 ; Folding = -
 ; EnableXP

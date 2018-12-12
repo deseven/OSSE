@@ -224,9 +224,6 @@ Procedure.s getItemInfo(*item.item)
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseDepression"),"%p",itemDepressionChange) + ~"\n"
         EndIf
       EndIf
-      If Not atLeastOneValidEffect
-        itemInfo + " • " + strings\inventory\captions("usageNothing")
-      EndIf
     Case "open","break":
       If LCase(*item\use) = "open"
         itemInfo + strings\inventory\captions("usageCanBeOpened") + ~":\n"
@@ -259,11 +256,26 @@ Procedure.s getItemInfo(*item.item)
           EndIf
         Next
       EndIf
-      If Not atLeastOneValidEffect
-        itemInfo + " • " + strings\inventory\captions("usageNothing")
-      EndIf
     Default
-      itemInfo + strings\inventory\captions("usage") + ": " + *item\use + ~"\n"
+      itemInfo + ReplaceString(strings\inventory\captions("usageDefault"),"%s",*item\use) + ~"\n"
+      atLeastOneValidEffect = #True
+  EndSelect
+  If Not atLeastOneValidEffect
+    itemInfo + " • " + strings\inventory\captions("usageNothing")
+  EndIf
+  Select *item\id ; hardcoded because reasons!
+    Case 20310:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","15") + ~"\n"
+    Case 20311:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","20") + ~"\n"
+    Case 20312:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","25") + ~"\n"
+    Case 20313:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","15") + ~"\n"
+    Case 20110:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","30") + ~"\n"
+    Case 140030:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseTiredness"),"%p","65") + ~"\n"
   EndSelect
   ProcedureReturn itemInfo
 EndProcedure
@@ -492,17 +504,32 @@ Procedure loadSave(path.s)
   Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
   ForEach values()
     values()\value = ""
-    If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
-      ;Debug "searching " + values()\pcre
-      If ExamineRegularExpression(0,line)
-        While NextRegularExpressionMatch(0)
-          ;Debug "found " + RegularExpressionGroup(0,1)
-          values()\value = RegularExpressionGroup(0,1)
-          Break ; should save a lot of time
-        Wend
-      EndIf
-      FreeRegularExpression(0)
-    EndIf
+    Select MapKey(values())
+      Case "landmarksNotActivated"
+        values()\value = "false"
+        If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
+          If ExamineRegularExpression(0,line)
+            While NextRegularExpressionMatch(0)
+              ;Debug RegularExpressionGroup(0,1)
+              If RegularExpressionGroup(0,1) = "true"
+                values()\value = "true"
+                Break
+              EndIf
+            Wend
+          EndIf
+          FreeRegularExpression(0)
+        EndIf
+      Default
+        If CreateRegularExpression(0,values()\pcre,#PB_RegularExpression_AnyNewLine|#PB_RegularExpression_NoCase)
+          If ExamineRegularExpression(0,line)
+            While NextRegularExpressionMatch(0)
+              values()\value = RegularExpressionGroup(0,1)
+              Break ; should save a lot of time
+            Wend
+          EndIf
+          FreeRegularExpression(0)
+        EndIf
+    EndSelect
   Next
   CloseFile(0)
   line = ""
@@ -533,24 +560,54 @@ Procedure saveSave(path.s) ; no pun intended
     ProcedureReturn #False
   EndIf
   Protected line.s = ReadString(0,#PB_Unicode|#PB_File_IgnoreEOL)
+  Protected newLine.s
+  Protected i.i
   ForEach values()
     ;Debug "saving " + MapKey(values()) + "=" + values()\value + ", regex: " + values()\pcre
-    If CreateRegularExpression(0,values()\pcre)
-      If ExamineRegularExpression(0,line)
-        While NextRegularExpressionMatch(0)
-          ;Debug "found"
-          Protected newLine.s = Left(line,RegularExpressionMatchPosition(0)+RegularExpressionMatchLength(0)-RegularExpressionGroupLength(0,1)-1) + values()\value + Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
-          ;Debug Left(line,RegularExpressionMatchPosition(0)+RegularExpressionGroupPosition(0,1))
-          ;Debug Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
-          ;Debug newLine
-          If line <> newLine
-            line = newLine
+    Select MapKey(values())
+      Case "landmarksNotActivated"
+        If values()\value = "false"
+          Protected landmarksCount.i = 0
+          If CreateRegularExpression(0,#specialNonActivatedLandmark)
+            If ExamineRegularExpression(0,line)
+              While NextRegularExpressionMatch(0)
+                landmarksCount + 1
+              Wend
+            EndIf
+            FreeRegularExpression(0)
           EndIf
-          Break ; should save a lot of time
-        Wend
+          If landmarksCount
+            For i = 1 To landmarksCount
+              If CreateRegularExpression(0,#specialNonActivatedLandmark)
+                If ExamineRegularExpression(0,line)
+                  While NextRegularExpressionMatch(0)
+                    ;Debug RegularExpressionGroup(0,1)
+                    newLine = Left(line,RegularExpressionMatchPosition(0)+RegularExpressionMatchLength(0)-RegularExpressionGroupLength(0,1)-1) + values()\value + Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
+                    If line <> newLine
+                      line = newLine
+                    EndIf
+                    Break
+                  Wend
+                EndIf
+                FreeRegularExpression(0)
+              EndIf
+            Next
+          EndIf
+        EndIf
+    Default
+      If CreateRegularExpression(0,values()\pcre)
+        If ExamineRegularExpression(0,line)
+          While NextRegularExpressionMatch(0)
+            newLine = Left(line,RegularExpressionMatchPosition(0)+RegularExpressionMatchLength(0)-RegularExpressionGroupLength(0,1)-1) + values()\value + Right(line,Len(line)-RegularExpressionMatchPosition(0)-RegularExpressionMatchLength(0)+1)
+            If line <> newLine
+              line = newLine
+            EndIf
+            Break ; should save a lot of time
+          Wend
+        EndIf
+        FreeRegularExpression(0)
       EndIf
-      FreeRegularExpression(0)
-    EndIf
+    EndSelect
   Next
   CloseFile(0)
   ;path="C:\Users\deseven\AppData\LocalLow\Loiste Interactive\Open Sewer\slot0.txt"
@@ -589,6 +646,26 @@ Procedure updateInternal()
   values("alcoholNeed")\value = Str(GetGadgetState(#alcoholNeed))
   values("smokingAddiction")\value = Str(GetGadgetState(#smokingAddiction))
   values("smokingNeed")\value = Str(GetGadgetState(#smokingNeed))
+  
+  If GetGadgetState(#tutorial) = #PB_Checkbox_Checked
+    values("tutorialFinished")\value = "true"
+  Else
+    values("tutorialFinished")\value = "false"
+  EndIf
+  
+  values("timeGlobalDay")\value = Str(GetGadgetState(#timeDay))
+  If Val(values("timeGlobalDay")\value) < 0
+    values("timeGlobalDay")\value = "0"
+  EndIf
+  values("timeGlobalHour")\value = Str(Val(StringField(GetGadgetText(#timeHourMin),1,":")))
+  values("timeGlobalMin")\value = Str(Val(StringField(GetGadgetText(#timeHourMin),2,":")))
+  If Val(values("timeGlobalHour")\value) > 23
+    values("timeGlobalHour")\value = "23"
+  EndIf
+  If Val(values("timeGlobalMin")\value) > 59
+    values("timeGlobalMin")\value = "59"
+  EndIf
+  values("timeGlobal")\value = Str(Val(values("timeGlobalHour")\value) * 3600 + Val(values("timeGlobalMin")\value) * 60)
 EndProcedure
 
 Procedure updateUI()
@@ -618,6 +695,38 @@ Procedure updateUI()
   SetGadgetState(#alcoholNeed,ValF(values("alcoholNeed")\value))
   SetGadgetState(#smokingAddiction,ValF(values("smokingAddiction")\value))
   SetGadgetState(#smokingNeed,ValF(values("smokingNeed")\value))
+  
+  If values("tutorialFinished")\value = "true"
+    SetGadgetState(#tutorial,#PB_Checkbox_Checked)
+  Else
+    SetGadgetState(#tutorial,#PB_Checkbox_Unchecked)
+  EndIf
+  
+  If values("landmarksNotActivated")\value = "true"
+    SetGadgetText(#mapMarkers,strings\world\captions("mapMarkersUnlock"))
+    DisableGadget(#mapMarkers,#False)
+  Else
+    SetGadgetText(#mapMarkers,strings\world\captions("mapMarkersUnlocked"))
+    DisableGadget(#mapMarkers,#True)
+  EndIf
+  
+  SetGadgetState(#timeDay,Val(values("timeGlobalDay")\value))
+  
+  Protected hour.s
+  If Len(values("timeGlobalHour")\value) = 1
+    hour = "0" + values("timeGlobalHour")\value
+  Else
+    hour = values("timeGlobalHour")\value
+  EndIf
+  
+  Protected min.s
+  If Len(values("timeGlobalMin")\value) = 1
+    min = "0" + values("timeGlobalMin")\value
+  Else
+    min = values("timeGlobalMin")\value
+  EndIf
+  
+  SetGadgetText(#timeHourMin,hour + ":" + min)
   
   Protected itemFound.b
   For i = 0 To 34
@@ -671,8 +780,8 @@ Procedure applyUpdate()
   EndIf
   PostEvent(#evUpdateFailed)
 EndProcedure
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 570
-; FirstLine = 565
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 583
+; FirstLine = 551
 ; Folding = ----
 ; EnableXP
