@@ -287,12 +287,13 @@ Repeat
                 ForEach items()
                   If items()\category = GetGadgetText(#itemCategory)
                     AddGadgetItem(#itemTitle,-1,items()\title)
+                    SetGadgetItemData(#itemTitle,CountGadgetItems(#itemTitle)-1,items()\id)
                   EndIf
                 Next
                 SetGadgetText(#itemDescription,strings\inventory\captions("nothing"))
               Case #itemTitle
                 ForEach items()
-                  If items()\title = GetGadgetText(#itemTitle)
+                  If items()\id = GetGadgetItemData(#itemTitle,GetGadgetState(#itemTitle))
                     If items()\stackable > 0
                       SetGadgetAttribute(#itemAmount,#PB_Spin_Maximum,items()\stackable)
                     EndIf
@@ -383,9 +384,9 @@ Repeat
      EndSelect
   EndSelect
 ForEver
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 359
-; FirstLine = 338
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 300
+; FirstLine = 270
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

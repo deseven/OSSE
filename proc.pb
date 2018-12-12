@@ -146,6 +146,8 @@ Procedure.s getItemInfo(*item.item)
   itemInfo = strings\inventory\captions("description") + ": " + *item\description + ~"\n" + 
              strings\inventory\captions("rarity") + ": " + Str(*item\rarity) + ~"\n" +
              strings\inventory\captions("value") + ": " + Str(*item\value)  + ~" OC \n"
+  ;Debug *item\id
+  ;Debug *item\arguments
   Select LCase(*item\use)
     Case "eat","drink","smoke":
       If LCase(*item\use) = "eat"
@@ -161,31 +163,31 @@ Procedure.s getItemInfo(*item.item)
       Protected itemSMVChange.s          = StringField(*item\arguments,4," ")
       Protected itemHealthChange.s       = StringField(*item\arguments,5," ")
       Protected itemDepressionChange.s   = StringField(*item\arguments,6," ")
-      If Val(itemHungerThirstSmokeChange) <> 0
+      If ValF(itemHungerThirstSmokeChange) <> 0
         atLeastOneValidEffect = #True
         If LCase(*item\use) = "eat"
-          If Val(itemHungerThirstSmokeChange) > 0
+          If ValF(itemHungerThirstSmokeChange) > 0
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerHunger"),"%p",itemHungerThirstSmokeChange) + ~"\n"
           Else
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseHunger"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
           EndIf
         ElseIf LCase(*item\use) = "drink"
-          If Val(itemHungerThirstSmokeChange) > 0
+          If ValF(itemHungerThirstSmokeChange) > 0
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerThirst"),"%p",itemHungerThirstSmokeChange) + ~"\n"
           Else
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseThirst"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
           EndIf
         Else
-          If Val(itemHungerThirstSmokeChange) > 0
+          If ValF(itemHungerThirstSmokeChange) > 0
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSmokeNeed"),"%p",itemHungerThirstSmokeChange) + ~"\n"
           Else
             itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSmokeNeed"),"%p",LTrim(itemHungerThirstSmokeChange,"-")) + ~"\n"
           EndIf
         EndIf
       EndIf
-      If Val(itemAlcoholChange) <> 0
+      If ValF(itemAlcoholChange) <> 0
         atLeastOneValidEffect = #True
-        If Val(itemAlcoholChange) < 0
+        If ValF(itemAlcoholChange) < 0
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerAlcohol"),"%p",LTrim(itemAlcoholChange,"-")) + ~"\n"
         Else
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseAlcohol"),"%p",itemAlcoholChange) + ~"\n"
@@ -200,25 +202,25 @@ Procedure.s getItemInfo(*item.item)
           EndIf
         Next
       EndIf
-      If Val(itemSMVChange) <> 0
+      If ValF(itemSMVChange) <> 0
         atLeastOneValidEffect = #True
-        If Val(itemSMVChange) < 0
+        If ValF(itemSMVChange) < 0
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p",LTrim(itemSMVChange,"-")) + ~"\n"
         Else
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSMV"),"%p",itemSMVChange) + ~"\n"
         EndIf
       EndIf
-      If Val(itemHealthChange) <> 0
+      If ValF(itemHealthChange) <> 0
         atLeastOneValidEffect = #True
-        If Val(itemHealthChange) < 0
+        If ValF(itemHealthChange) < 0
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageHurt"),"%p",LTrim(itemHealthChange,"-")) + ~"\n"
         Else
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageHeal"),"%p",itemHealthChange) + ~"\n"
         EndIf
       EndIf
-      If Val(itemDepressionChange) <> 0
+      If ValF(itemDepressionChange) <> 0
         atLeastOneValidEffect = #True
-        If Val(itemDepressionChange) < 0
+        If ValF(itemDepressionChange) < 0
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerDepression"),"%p",LTrim(itemDepressionChange,"-")) + ~"\n"
         Else
           itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseDepression"),"%p",itemDepressionChange) + ~"\n"
@@ -320,10 +322,11 @@ Procedure selectItem(gadget.i)
   ForEach items()
     If items()\category = GetGadgetText(#itemCategory)
       AddGadgetItem(#itemTitle,-1,items()\title)
+      SetGadgetItemData(#itemTitle,CountGadgetItems(#itemTitle)-1,items()\id)
     EndIf
   Next
   For i = 0 To CountGadgetItems(#itemTitle)-1
-    If item\title = GetGadgetItemText(#itemTitle,i)
+    If item\id = GetGadgetItemData(#itemTitle,i)
       SetGadgetState(#itemTitle,i)
       Break
     EndIf
@@ -781,7 +784,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 583
-; FirstLine = 551
+; CursorPosition = 300
+; FirstLine = 303
 ; Folding = ----
 ; EnableXP
