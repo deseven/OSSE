@@ -15,6 +15,7 @@ UsePNGImageDecoder()
 CompilerSelect #PB_Compiler_OS
   CompilerCase #PB_OS_Windows
     IncludeFile "reg-read.pbi"
+    NewMap hToolTips.i()
     LoadFont(#font,"Arial",10,#PB_Font_HighQuality)
   CompilerCase #PB_OS_Linux
     ImportC ""
@@ -384,9 +385,8 @@ Repeat
      EndSelect
   EndSelect
 ForEver
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 300
-; FirstLine = 270
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 17
 ; Folding = -
 ; EnableXP
 ; EnableUnicode

@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="../../" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-12-12 21:07" user="deseven" host="de7mac.local"/>
+    <lastopen date="2018-12-13 01:30" user="deseven" host="de7mac.local"/>
   </section>
   <section name="files">
     <file name="const.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="7eba93ce49c84257486655bfd84ac9f4"/>
+      <fingerprint md5="d9483e1fd3a4484bccca9a286b58b855"/>
     </file>
     <file name="gui.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -24,11 +24,11 @@
     </file>
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="1ca508b4c6257863c578d0ff42c9ba64"/>
+      <fingerprint md5="4a87237824d70fe2af2eb68c5130b9b1"/>
     </file>
     <file name="proc.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="c7fbc0023467506254ae3fb87e827e27"/>
+      <fingerprint md5="b60ace37d75461c1413ce43794c1fea6"/>
     </file>
   </section>
   <section name="targets">

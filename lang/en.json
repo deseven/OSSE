@@ -46,10 +46,10 @@
 		"help": {
 			"name": "Player name",
 			"surname": "Player surname",
-			"openSewerCoins": "Amount of Open Sewer coins, please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first",
-			"realMoney": "Amount of real money, please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first",
-			"bankMoney": "Amount of OC that you have in your bank account",
-			"playerLocation": "Player location in the game world"
+			"openSewerCoins": "Amount of Open Sewer coins. Please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first.",
+			"realMoney": "Amount of real money. Please note that this value will not be updated for dialogues, you should pick a coin or sell/buy something first.",
+			"bankMoney": "Amount of OC that you have in your bank account.",
+			"playerLocation": "Player location in the game world."
 		}
 	},
 	"stats": {
@@ -73,19 +73,19 @@
 			"smokingNeed": "Nicotine need: %p%"
 		},
 		"help": {
-			"health": "Current health level, good for not dying",
-			"smv": "Progression of SMV disease, 100% = DÖD",
-			"smvRate": "Progression rate of SMV disease per game hour",
-			"depression": "How much you want to hang yourself on a street lamp",
-			"hunger": "Hunger level",
-			"thirst": "Thirst level",
-			"bowel": "How much you need to shit",
-			"bladder": "How much you need to pee",
-			"tiredness": "How tired you are",
-			"alcoholAddiction": "Level of alcohol addiction",
-			"alcoholNeed": "How much you need that precious Osmo Olut",
-			"smokingAddiction": "Level of smoking addiction",
-			"smokingNeed": "How much you need to smoke another one"
+			"health": "Current health level, good for not dying.",
+			"smv": "Progression of SMV disease, 100% = DÖD.",
+			"smvRate": "Progression rate of SMV disease per game hour.",
+			"depression": "How much you want to hang yourself on a street lamp.",
+			"hunger": "Hunger level.",
+			"thirst": "Thirst level.",
+			"bowel": "How much you need to shit.",
+			"bladder": "How much you need to pee.",
+			"tiredness": "How tired you are.",
+			"alcoholAddiction": "Level of alcohol addiction.",
+			"alcoholNeed": "How much you need that precious Osmo Olut.",
+			"smokingAddiction": "Level of smoking addiction.",
+			"smokingNeed": "How much you need to smoke another one."
 		}
 	},
 	"inventory": {
@@ -143,9 +143,9 @@
 			"timeHourMin": "Time"
 		},
 		"help": {
-			"tutorial": "State of tutorial completion",
-			"mapMarkers": "Quick hack to unlock all locations on your game map",
-			"time": "Game world time, can be used to skip nights, etc"
+			"tutorial": "State of tutorial completion.",
+			"mapMarkers": "Quick hack to unlock all locations on your game map.",
+			"time": "Game world time, can be used to skip nights, etc."
 		}
 	}
 }

@@ -674,6 +674,7 @@ EndProcedure
 Procedure updateUI()
   Shared values.value()
   Shared items.item()
+  Shared item.item
   Shared strings.lang
   Protected i.i
   SetGadgetText(#name,values("name")\value)
@@ -736,17 +737,23 @@ Procedure updateUI()
     itemFound = #False
     ForEach items()
       If items()\id = Val(values("inventorySlotID" + Str(i+8))\value)
+        ClearStructure(@item,item)
+        item = items()
         SetGadgetText(#invBegin+i,values("inventorySlotAmount" + Str(i+8))\value + "x " + items()\title)
-        GadgetToolTip(#invBegin+i,items()\description + ~" | " + 
-                                  strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~" | " +
-                                  strings\inventory\captions("value") + ": " + Str(items()\value))
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          realGadgetToolTip(#invBegin+i,getItemInfo(@item))
+        CompilerElse
+          realGadgetToolTip(#invBegin+i,items()\description + ~" | " + 
+                                        strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~" | " +
+                                        strings\inventory\captions("value") + ": " + Str(items()\value))
+        CompilerEndIf
         itemFound = #True
         Break
       EndIf
     Next
     If Not itemFound
       SetGadgetText(#invBegin+i,strings\inventory\captions("nothing"))
-      GadgetToolTip(#invBegin+i,"")
+      realGadgetToolTip(#invBegin+i,"")
     EndIf
   Next
   
@@ -783,8 +790,8 @@ Procedure applyUpdate()
   EndIf
   PostEvent(#evUpdateFailed)
 EndProcedure
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 300
-; FirstLine = 303
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 149
+; FirstLine = 140
 ; Folding = ----
 ; EnableXP

@@ -295,7 +295,8 @@ For i = 8 To 42
   values("inventorySlotAmount" + Str(i))\pcre = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_AMOUNT[ ]*=[ ]*([0-9\\-]+)"
   values("inventorySlotOwner" + Str(i))\pcre  = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
 Next
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 2
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 46
+; FirstLine = 10
 ; EnableXP
 ; EnableUnicode

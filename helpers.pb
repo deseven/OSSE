@@ -1,4 +1,38 @@
-﻿Macro hideHealth(state)
+﻿Procedure realGadgetToolTip(gadget.i,tooltip.s)
+  CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+    Shared hToolTips()
+    Protected gadgetID.i = GadgetID(gadget)
+    Protected cWndFlags
+    
+    If hToolTips(Str(gadgetID)) <> 0 : DestroyWindow_(hToolTips(Str(gadgetID))) : EndIf
+        
+    Protected hToolTip.i = CreateWindowEx_(0,"ToolTips_Class32","",#TTS_NOPREFIX,0,0,0,0,0,0,GetModuleHandle_(0),0)
+    
+    hToolTips(Str(gadgetID)) = hToolTip
+    
+    SendMessage_(hToolTip,#TTM_SETTIPTEXTCOLOR,GetSysColor_(#COLOR_INFOTEXT),0)
+    SendMessage_(hToolTip,#TTM_SETTIPBKCOLOR,GetSysColor_(#COLOR_INFOBK),0)
+    
+    Protected tti.TOOLINFO\cbSize = SizeOf(TOOLINFO)
+    tti\uFlags = #TTF_SUBCLASS|#TTF_IDISHWND
+    SendMessage_(hToolTip,#TTM_SETMAXTIPWIDTH,0,300)
+    
+    tti\hWnd = gadgetID
+    tti\uId = gadgetID  
+    tti\hinst = 0
+    tti\lpszText = @tooltip
+        
+    SendMessage_(hToolTip,#TTM_ADDTOOL,0,tti)
+    
+    SendMessage_(hToolTip,#TTM_SETDELAYTIME,#TTDT_INITIAL,100)
+    SendMessage_(hToolTip,#TTM_SETDELAYTIME,#TTDT_AUTOPOP,20000)
+    SendMessage_(hToolTip,#TTM_UPDATE,0,0)
+  CompilerElse
+    GadgetToolTip(gadget,tooltip)
+  CompilerEndIf
+EndProcedure
+
+Macro hideHealth(state)
   HideGadget(#frameHealth,state)
   HideGadget(#health,state)
   HideGadget(#helpHealth,state)
@@ -125,7 +159,6 @@ Procedure message(message.s,type.b = #mInfo)
   ProcedureReturn #True
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 65
-; FirstLine = 48
-; Folding = --
+; CursorPosition = 8
+; Folding = ---
 ; EnableXP

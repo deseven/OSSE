@@ -44,14 +44,14 @@ FrameGadget(#frameName,5,5,305,50,strings\character\captions("name"))
 If IsFont(#frameFont) : SetGadgetFont(#frameName,FontID(#frameFont)) : EndIf
 StringGadget(#name,15+gadOffsetX,25+gadOffsetY,285,20,"")
 ImageGadget(#helpName,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpName,strings\character\help("name"))
+realGadgetToolTip(#helpName,strings\character\help("name"))
 SetGadgetData(#helpName,@strings\character\help("name"))
 
 FrameGadget(#frameSurname,320,5,305,50,strings\character\captions("surname"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSurname,FontID(#frameFont)) : EndIf
 StringGadget(#surname,330+gadOffsetX,25+gadOffsetY,285,20,"")
 ImageGadget(#helpSurname,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSurname,strings\character\help("surname"))
+realGadgetToolTip(#helpSurname,strings\character\help("surname"))
 SetGadgetData(#helpSurname,@strings\character\help("surname"))
 
 FrameGadget(#frameOC,5,60,305,50,strings\character\captions("openSewerCoins"))
@@ -59,7 +59,7 @@ If IsFont(#frameFont) : SetGadgetFont(#frameOC,FontID(#frameFont)) : EndIf
 SpinGadget(#oc,15+gadOffsetX,80+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 SetGadgetFont(#oc,FontID(#font))
 ImageGadget(#helpOC,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
+realGadgetToolTip(#helpOC,strings\character\help("openSewerCoins"))
 SetGadgetData(#helpOC,@strings\character\help("openSewerCoins"))
 
 FrameGadget(#frameRM,5,115,305,50,strings\character\captions("realMoney"))
@@ -67,7 +67,7 @@ If IsFont(#frameFont) : SetGadgetFont(#frameRM,FontID(#frameFont)) : EndIf
 SpinGadget(#rm,15+gadOffsetX,135+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 SetGadgetFont(#rm,FontID(#font))
 ImageGadget(#helpRM,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpRM,strings\character\help("realMoney"))
+realGadgetToolTip(#helpRM,strings\character\help("realMoney"))
 SetGadgetData(#helpRM,@strings\character\help("realMoney"))
 
 ; FrameGadget(#frameBM,5,170,305,50,strings\character\captions("bankMoney"))
@@ -75,7 +75,7 @@ SetGadgetData(#helpRM,@strings\character\help("realMoney"))
 ; SpinGadget(#bm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 ; SetGadgetFont(#bm,FontID(#font))
 ; ImageGadget(#helpBM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
-; GadgetToolTip(#helpBM,strings\character\help("bankMoney"))
+; realGadgetToolTip(#helpBM,strings\character\help("bankMoney"))
 ; SetGadgetData(#helpBM,@strings\character\help("bankMoney"))
 ; |
 FrameGadget(#frameLocation,320,60,305,75,strings\character\captions("playerLocation"))
@@ -87,7 +87,7 @@ CompilerElse
   ButtonGadget(#locationSelector,330,105,285,20,strings\character\captions("playerLocationSelect"))
 CompilerEndIf
 ImageGadget(#helpLocation,615,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
+realGadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
 SetGadgetData(#helpLocation,@strings\character\help("playerLocation"))
 
 ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
@@ -105,7 +105,7 @@ FrameGadget(#frameHealth,115,5,250,50,strings\stats\captions("health"))
 If IsFont(#frameFont) : SetGadgetFont(#frameHealth,FontID(#frameFont)) : EndIf
 TrackBarGadget(#health,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpHealth,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpHealth,strings\stats\help("health"))
+realGadgetToolTip(#helpHealth,strings\stats\help("health"))
 SetGadgetData(#frameHealth,@strings\stats\captions("health"))
 SetGadgetData(#helpHealth,@strings\stats\help("health"))
 
@@ -113,7 +113,7 @@ FrameGadget(#frameSMV,375,5,250,50,strings\stats\captions("smv"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSMV,FontID(#frameFont)) : EndIf
 TrackBarGadget(#smv,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpSMV,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSMV,strings\stats\help("smv"))
+realGadgetToolTip(#helpSMV,strings\stats\help("smv"))
 SetGadgetData(#frameSMV,@strings\stats\captions("smv"))
 SetGadgetData(#helpSMV,@strings\stats\help("smv"))
 
@@ -121,7 +121,7 @@ FrameGadget(#frameDepression,115,60,250,50,strings\stats\captions("depression"))
 If IsFont(#frameFont) : SetGadgetFont(#frameDepression,FontID(#frameFont)) : EndIf
 TrackBarGadget(#depression,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpDepression,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpDepression,strings\stats\help("depression"))
+realGadgetToolTip(#helpDepression,strings\stats\help("depression"))
 SetGadgetData(#frameDepression,@strings\stats\captions("depression"))
 SetGadgetData(#helpDepression,@strings\stats\help("depression"))
 
@@ -129,7 +129,7 @@ FrameGadget(#frameSMVRate,375,60,250,50,strings\stats\captions("smvRate"))
 If IsFont(#frameFont) : SetGadgetFont(#frameSMVRate,FontID(#frameFont)) : EndIf
 TrackBarGadget(#SMVRate,385+gadOffsetX,77+gadOffsetY,230,26,0,200)
 ImageGadget(#helpSMVRate,615,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSMVRate,strings\stats\help("smvRate"))
+realGadgetToolTip(#helpSMVRate,strings\stats\help("smvRate"))
 SetGadgetData(#frameSMVRate,@strings\stats\captions("smvRate"))
 SetGadgetData(#helpSMVRate,@strings\stats\help("smvRate"))
 
@@ -137,7 +137,7 @@ FrameGadget(#frameTiredness,115,115,250,50,strings\stats\captions("tiredness"))
 If IsFont(#frameFont) : SetGadgetFont(#frameTiredness,FontID(#frameFont)) : EndIf
 TrackBarGadget(#tiredness,125+gadOffsetX,132+gadOffsetY,230,26,0,100)
 ImageGadget(#helpTiredness,355,115+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpTiredness,strings\stats\help("tiredness"))
+realGadgetToolTip(#helpTiredness,strings\stats\help("tiredness"))
 SetGadgetData(#frameTiredness,@strings\stats\captions("tiredness"))
 SetGadgetData(#helpTiredness,@strings\stats\help("tiredness"))
 
@@ -146,7 +146,7 @@ FrameGadget(#frameHunger,115,5,250,50,strings\stats\captions("hunger"))
 If IsFont(#frameFont) : SetGadgetFont(#frameHunger,FontID(#frameFont)) : EndIf
 TrackBarGadget(#hunger,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpHunger,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpHunger,strings\stats\help("hunger"))
+realGadgetToolTip(#helpHunger,strings\stats\help("hunger"))
 SetGadgetData(#frameHunger,@strings\stats\captions("hunger"))
 SetGadgetData(#helpHunger,@strings\stats\help("hunger"))
 
@@ -154,7 +154,7 @@ FrameGadget(#frameBowel,375,5,250,50,strings\stats\captions("bowel"))
 If IsFont(#frameFont) : SetGadgetFont(#frameBowel,FontID(#frameFont)) : EndIf
 TrackBarGadget(#bowel,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpBowel,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpBowel,strings\stats\help("bowel"))
+realGadgetToolTip(#helpBowel,strings\stats\help("bowel"))
 SetGadgetData(#frameBowel,@strings\stats\captions("bowel"))
 SetGadgetData(#helpBowel,@strings\stats\help("bowel"))
 
@@ -162,7 +162,7 @@ FrameGadget(#frameThirst,115,60,250,50,strings\stats\captions("thirst"))
 If IsFont(#frameFont) : SetGadgetFont(#frameThirst,FontID(#frameFont)) : EndIf
 TrackBarGadget(#thirst,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpThirst,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpThirst,strings\stats\help("thirst"))
+realGadgetToolTip(#helpThirst,strings\stats\help("thirst"))
 SetGadgetData(#frameThirst,@strings\stats\captions("thirst"))
 SetGadgetData(#helpThirst,@strings\stats\help("thirst"))
 
@@ -170,7 +170,7 @@ FrameGadget(#frameBladder,375,60,250,50,strings\stats\captions("bladder"))
 If IsFont(#frameFont) : SetGadgetFont(#frameBladder,FontID(#frameFont)) : EndIf
 TrackBarGadget(#bladder,385+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpBladder,615,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpBladder,strings\stats\help("bladder"))
+realGadgetToolTip(#helpBladder,strings\stats\help("bladder"))
 SetGadgetData(#frameBladder,@strings\stats\captions("bladder"))
 SetGadgetData(#helpBladder,@strings\stats\help("bladder"))
 
@@ -179,7 +179,7 @@ FrameGadget(#frameAlcoholAddiction,115,5,250,50,strings\stats\captions("alcoholA
 If IsFont(#frameFont) : SetGadgetFont(#frameAlcoholAddiction,FontID(#frameFont)) : EndIf
 TrackBarGadget(#alcoholAddiction,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpAlcoholAddiction,355,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpAlcoholAddiction,strings\stats\help("alcoholAddiction"))
+realGadgetToolTip(#helpAlcoholAddiction,strings\stats\help("alcoholAddiction"))
 SetGadgetData(#frameAlcoholAddiction,@strings\stats\captions("alcoholAddiction"))
 SetGadgetData(#helpAlcoholAddiction,@strings\stats\help("alcoholAddiction"))
 
@@ -187,7 +187,7 @@ FrameGadget(#frameSmokingAddiction,375,5,250,50,strings\stats\captions("smokingA
 If IsFont(#frameFont) : SetGadgetFont(#frameSmokingAddiction,FontID(#frameFont)) : EndIf
 TrackBarGadget(#smokingAddiction,385+gadOffsetX,22+gadOffsetY,230,26,0,100)
 ImageGadget(#helpSmokingAddiction,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSmokingAddiction,strings\stats\help("smokingAddiction"))
+realGadgetToolTip(#helpSmokingAddiction,strings\stats\help("smokingAddiction"))
 SetGadgetData(#frameSmokingAddiction,@strings\stats\captions("smokingAddiction"))
 SetGadgetData(#helpSmokingAddiction,@strings\stats\help("smokingAddiction"))
 
@@ -195,7 +195,7 @@ FrameGadget(#frameAlcoholNeed,115,60,250,50,strings\stats\captions("alcoholNeed"
 If IsFont(#frameFont) : SetGadgetFont(#frameAlcoholNeed,FontID(#frameFont)) : EndIf
 TrackBarGadget(#alcoholNeed,125+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpAlcoholNeed,355,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpAlcoholNeed,strings\stats\help("alcoholNeed"))
+realGadgetToolTip(#helpAlcoholNeed,strings\stats\help("alcoholNeed"))
 SetGadgetData(#frameAlcoholNeed,@strings\stats\captions("alcoholNeed"))
 SetGadgetData(#helpAlcoholNeed,@strings\stats\help("alcoholNeed"))
 
@@ -203,7 +203,7 @@ FrameGadget(#frameSmokingNeed,375,60,250,50,strings\stats\captions("smokingNeed"
 If IsFont(#frameFont) : SetGadgetFont(#frameSmokingNeed,FontID(#frameFont)) : EndIf
 TrackBarGadget(#smokingNeed,385+gadOffsetX,77+gadOffsetY,230,26,0,100)
 ImageGadget(#helpSmokingNeed,615,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpSmokingNeed,strings\stats\help("smokingNeed"))
+realGadgetToolTip(#helpSmokingNeed,strings\stats\help("smokingNeed"))
 SetGadgetData(#frameSmokingNeed,@strings\stats\captions("smokingNeed"))
 SetGadgetData(#helpSmokingNeed,@strings\stats\help("smokingNeed"))
 
@@ -236,7 +236,7 @@ FrameGadget(#frameTutorial,5,5,305,50,strings\world\captions("tutorial"))
 If IsFont(#frameFont) : SetGadgetFont(#frameTutorial,FontID(#frameFont)) : EndIf
 CheckBoxGadget(#tutorial,15+gadOffsetX,25+gadOffsetY,285,20,strings\world\captions("tutorialFinished"))
 ImageGadget(#helpTutorial,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpTutorial,strings\world\help("tutorial"))
+realGadgetToolTip(#helpTutorial,strings\world\help("tutorial"))
 SetGadgetData(#helpTutorial,@strings\world\help("tutorial"))
 ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
@@ -245,7 +245,7 @@ If IsFont(#frameFont) : SetGadgetFont(#frameMapMarkers,FontID(#frameFont)) : End
 ;CheckBoxGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,strings\world\captions("mapMarkersUnlocked"))
 ButtonGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,"")
 ImageGadget(#helpMapMarkers,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpMapMarkers,strings\world\help("mapMarkers"))
+realGadgetToolTip(#helpMapMarkers,strings\world\help("mapMarkers"))
 SetGadgetData(#helpMapMarkers,@strings\world\help("mapMarkers"))
 
 FrameGadget(#frameTime,320,5,305,75,strings\world\captions("time"))
@@ -255,7 +255,7 @@ SpinGadget(#timeDay,400+gadOffsetX,25+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
 TextGadget(#timeHourMinCaption,330+gadOffsetX,52+gadOffsetY,65,20,strings\world\captions("timeHourMin") + ":")
 StringGadget(#timeHourMin,400+gadOffsetX,50+gadOffsetY,80,20,"")
 ImageGadget(#helpTime,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
-GadgetToolTip(#helpTime,strings\world\help("time"))
+realGadgetToolTip(#helpTime,strings\world\help("time"))
 SetGadgetData(#helpTime,@strings\world\help("time"))
 
 ;SetGadgetState(#panel,5)
@@ -281,8 +281,8 @@ RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
 
 hideNeeds(#True)
 hideSubstances(#True)
-; IDE Options = PureBasic 5.62 (MacOS X - x64)
-; CursorPosition = 260
-; FirstLine = 238
+; IDE Options = PureBasic 5.62 (Windows - x86)
+; CursorPosition = 257
+; FirstLine = 220
 ; Folding = -
 ; EnableXP
