@@ -36,6 +36,7 @@ if [ -f "$pb/compilers/pbcompiler" ]; then
 		cd "$loc"
 		echo -ne $greenColor"\npacking distro..."$noColor
 		zip -r9 "$shortName-mac.zip" "${name}.app" > /dev/null || die "failed to pack $shortName"
+		cp -f "$shortName-mac.zip" "../release"
 		#echo -ne $greenColor"\ncreating dmg..."$noColor
 		#cd appdmg
 		#appdmg "${name}.json" "../$shortName.dmg" > /dev/null 2>&1 || die "failed to create dmg"
