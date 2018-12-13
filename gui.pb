@@ -38,6 +38,7 @@ ForEach saveFiles()
 Next
 SetGadgetState(#saveSelector,0)
 
+;{ character
 AddGadgetItem(#panel,-1,strings\interface("character"))
 
 FrameGadget(#frameName,5,5,305,50,strings\character\captions("name"))
@@ -70,14 +71,6 @@ ImageGadget(#helpRM,300,115+helpOffsetY,16,16,ImageID(#iconInfo))
 realGadgetToolTip(#helpRM,strings\character\help("realMoney"))
 SetGadgetData(#helpRM,@strings\character\help("realMoney"))
 
-; FrameGadget(#frameBM,5,170,305,50,strings\character\captions("bankMoney"))
-; If IsFont(#frameFont) : SetGadgetFont(#frameBM,FontID(#frameFont)) : EndIf
-; SpinGadget(#bm,15+gadOffsetX,190+gadOffsetY,80,20,0,65535,#PB_Spin_Numeric)
-; SetGadgetFont(#bm,FontID(#font))
-; ImageGadget(#helpBM,300,170+helpOffsetY,16,16,ImageID(#iconInfo))
-; realGadgetToolTip(#helpBM,strings\character\help("bankMoney"))
-; SetGadgetData(#helpBM,@strings\character\help("bankMoney"))
-; |
 FrameGadget(#frameLocation,320,60,305,75,strings\character\captions("playerLocation"))
 If IsFont(#frameFont) : SetGadgetFont(#frameLocation,FontID(#frameFont)) : EndIf
 StringGadget(#location,330+gadOffsetX,80+gadOffsetY,285,20,"")
@@ -91,10 +84,12 @@ realGadgetToolTip(#helpLocation,strings\character\help("playerLocation"))
 SetGadgetData(#helpLocation,@strings\character\help("playerLocation"))
 
 ImageGadget(#bgCharacter,565,160,64,64,ImageID(#iconCharacter))
+;}
 
+;{ stats
 AddGadgetItem(#panel,-1,strings\interface("stats"))
 
-; stats - health
+; health
 ListViewGadget(#statsSelector,5,5,100,215)
 AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectHealth"))
 AddGadgetItem(#statsSelector,-1,strings\stats\captions("selectNeeds"))
@@ -141,7 +136,7 @@ realGadgetToolTip(#helpTiredness,strings\stats\help("tiredness"))
 SetGadgetData(#frameTiredness,@strings\stats\captions("tiredness"))
 SetGadgetData(#helpTiredness,@strings\stats\help("tiredness"))
 
-; stats - needs
+; needs
 FrameGadget(#frameHunger,115,5,250,50,strings\stats\captions("hunger"))
 If IsFont(#frameFont) : SetGadgetFont(#frameHunger,FontID(#frameFont)) : EndIf
 TrackBarGadget(#hunger,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
@@ -174,7 +169,7 @@ realGadgetToolTip(#helpBladder,strings\stats\help("bladder"))
 SetGadgetData(#frameBladder,@strings\stats\captions("bladder"))
 SetGadgetData(#helpBladder,@strings\stats\help("bladder"))
 
-; stats - substances
+; substances
 FrameGadget(#frameAlcoholAddiction,115,5,250,50,strings\stats\captions("alcoholAddiction"))
 If IsFont(#frameFont) : SetGadgetFont(#frameAlcoholAddiction,FontID(#frameFont)) : EndIf
 TrackBarGadget(#alcoholAddiction,125+gadOffsetX,22+gadOffsetY,230,26,0,100)
@@ -207,9 +202,10 @@ realGadgetToolTip(#helpSmokingNeed,strings\stats\help("smokingNeed"))
 SetGadgetData(#frameSmokingNeed,@strings\stats\captions("smokingNeed"))
 SetGadgetData(#helpSmokingNeed,@strings\stats\help("smokingNeed"))
 
-;TextGadget(#placeholderStats,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\stats\placeholder,#PB_Text_Center)
 ImageGadget(#bgStats,565,160,64,64,ImageID(#iconStats))
+;}
 
+;{ inventory
 AddGadgetItem(#panel,-1,strings\interface("inventory"))
 Define.b x,y
 i = 0
@@ -221,15 +217,21 @@ For y = 0 To 6
   Next
 Next
 ImageGadget(#bgInventory,565,160,64,64,ImageID(#iconInventory))
+;}
 
+;{ tenement
 AddGadgetItem(#panel,-1,strings\interface("tenement"))
 TextGadget(#placeholderTenement,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\tenement\placeholder,#PB_Text_Center)
 ImageGadget(#bgTenement,565,160,64,64,ImageID(#iconTenement))
+;}
 
+;{ quests
 AddGadgetItem(#panel,-1,strings\interface("quests"))
 TextGadget(#placeholderQuests,GadgetWidth(#panel)/2-100,GadgetHeight(#panel)/2-50,200,20,strings\quests\placeholder,#PB_Text_Center)
 ImageGadget(#bgQuests,565,160,64,64,ImageID(#iconQuests))
+;}
 
+;{ world
 AddGadgetItem(#panel,-1,strings\interface("world"))
 
 FrameGadget(#frameTutorial,5,5,305,50,strings\world\captions("tutorial"))
@@ -238,11 +240,9 @@ CheckBoxGadget(#tutorial,15+gadOffsetX,25+gadOffsetY,285,20,strings\world\captio
 ImageGadget(#helpTutorial,300,5+helpOffsetY,16,16,ImageID(#iconInfo))
 realGadgetToolTip(#helpTutorial,strings\world\help("tutorial"))
 SetGadgetData(#helpTutorial,@strings\world\help("tutorial"))
-ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
 
 FrameGadget(#frameMapMarkers,5,60,305,50,strings\world\captions("mapMarkers"))
 If IsFont(#frameFont) : SetGadgetFont(#frameMapMarkers,FontID(#frameFont)) : EndIf
-;CheckBoxGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,strings\world\captions("mapMarkersUnlocked"))
 ButtonGadget(#mapMarkers,15+gadOffsetX,80+gadOffsetY,285,20,"")
 ImageGadget(#helpMapMarkers,300,60+helpOffsetY,16,16,ImageID(#iconInfo))
 realGadgetToolTip(#helpMapMarkers,strings\world\help("mapMarkers"))
@@ -257,6 +257,9 @@ StringGadget(#timeHourMin,400+gadOffsetX,50+gadOffsetY,80,20,"")
 ImageGadget(#helpTime,615,5+helpOffsetY,16,16,ImageID(#iconInfo))
 realGadgetToolTip(#helpTime,strings\world\help("time"))
 SetGadgetData(#helpTime,@strings\world\help("time"))
+
+ImageGadget(#bgWorld,565,160,64,64,ImageID(#iconWorld))
+;}
 
 ;SetGadgetState(#panel,5)
 
@@ -275,14 +278,17 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS
   CocoaMessage(0,GadgetID(#surname),"setFocusRingType:",1)
   CocoaMessage(0,GadgetID(#location),"setBezelStyle:",10)
   CocoaMessage(0,GadgetID(#location),"setFocusRingType:",1)
+  CocoaMessage(0,GadgetID(#timeHourMin),"setBezelStyle:",10)
+  CocoaMessage(0,GadgetID(#timeHourMin),"setFocusRingType:",1)
 CompilerEndIf
 
 RemoveKeyboardShortcut(#wnd,#PB_Shortcut_Tab)
+SetActiveGadget(#frameName)
 
 hideNeeds(#True)
 hideSubstances(#True)
-; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 257
-; FirstLine = 220
-; Folding = -
+; IDE Options = PureBasic 5.62 (MacOS X - x64)
+; CursorPosition = 280
+; FirstLine = 78
+; Folding = H9
 ; EnableXP

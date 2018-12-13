@@ -158,11 +158,11 @@ Procedure.s getItemInfo(*item.item)
         itemInfo + strings\inventory\captions("usageCanBeSmoked") + ~":\n"
       EndIf
       Protected itemHungerThirstSmokeChange.s = StringField(*item\arguments,1," ")
-      Protected itemAlcoholChange.s      = StringField(*item\arguments,2," ")
-      Protected itemGivesItem.s          = StringField(*item\arguments,3," ")
-      Protected itemSMVChange.s          = StringField(*item\arguments,4," ")
-      Protected itemHealthChange.s       = StringField(*item\arguments,5," ")
-      Protected itemDepressionChange.s   = StringField(*item\arguments,6," ")
+      Protected itemAlcoholChange.s           = StringField(*item\arguments,2," ")
+      Protected itemGivesItem.s               = StringField(*item\arguments,3," ")
+      Protected itemSMVChange.s               = StringField(*item\arguments,4," ")
+      Protected itemHealthChange.s            = StringField(*item\arguments,5," ")
+      Protected itemDepressionChange.s        = StringField(*item\arguments,6," ")
       If ValF(itemHungerThirstSmokeChange) <> 0
         atLeastOneValidEffect = #True
         If LCase(*item\use) = "eat"
@@ -205,9 +205,9 @@ Procedure.s getItemInfo(*item.item)
       If ValF(itemSMVChange) <> 0
         atLeastOneValidEffect = #True
         If ValF(itemSMVChange) < 0
-          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p",LTrim(itemSMVChange,"-")) + ~"\n"
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMVRate"),"%p",LTrim(itemSMVChange,"-")) + ~"\n"
         Else
-          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSMV"),"%p",itemSMVChange) + ~"\n"
+          itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseSMVRate"),"%p",itemSMVChange) + ~"\n"
         EndIf
       EndIf
       If ValF(itemHealthChange) <> 0
@@ -278,7 +278,10 @@ Procedure.s getItemInfo(*item.item)
       itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","30") + ~"\n"
     Case 140030:
       itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseTiredness"),"%p","65") + ~"\n"
+    Case 150010:
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p","2.5") + ~"\n"
   EndSelect
+  itemInfo = RTrim(itemInfo,~"\n")
   ProcedureReturn itemInfo
 EndProcedure
 
@@ -740,13 +743,7 @@ Procedure updateUI()
         ClearStructure(@item,item)
         item = items()
         SetGadgetText(#invBegin+i,values("inventorySlotAmount" + Str(i+8))\value + "x " + items()\title)
-        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
-          realGadgetToolTip(#invBegin+i,getItemInfo(@item))
-        CompilerElse
-          realGadgetToolTip(#invBegin+i,items()\description + ~" | " + 
-                                        strings\inventory\captions("rarity") + ": " + Str(items()\rarity) + ~" | " +
-                                        strings\inventory\captions("value") + ": " + Str(items()\value))
-        CompilerEndIf
+        realGadgetToolTip(#invBegin+i,getItemInfo(@item))
         itemFound = #True
         Break
       EndIf
@@ -791,7 +788,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 149
-; FirstLine = 140
+; CursorPosition = 209
+; FirstLine = 191
 ; Folding = ----
 ; EnableXP
