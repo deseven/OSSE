@@ -265,7 +265,7 @@ Procedure.s getItemInfo(*item.item)
   If Not atLeastOneValidEffect
     itemInfo + " • " + strings\inventory\captions("usageNothing")
   EndIf
-  Select *item\id ; hardcoded because reasons!
+  Select *item\id ; hardcoded because reasons! (ask Oskutin)
     Case 20310:
       itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerTiredness"),"%p","15") + ~"\n"
     Case 20311:
@@ -279,7 +279,7 @@ Procedure.s getItemInfo(*item.item)
     Case 140030:
       itemInfo + " • " + ReplaceString(strings\inventory\captions("usageIncreaseTiredness"),"%p","65") + ~"\n"
     Case 150010:
-      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p","2.5") + ~"\n"
+      itemInfo + " • " + ReplaceString(strings\inventory\captions("usageLowerSMV"),"%p","5") + ~"\n"
   EndSelect
   itemInfo = RTrim(itemInfo,~"\n")
   ProcedureReturn itemInfo
@@ -788,7 +788,7 @@ Procedure applyUpdate()
   PostEvent(#evUpdateFailed)
 EndProcedure
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 209
-; FirstLine = 191
+; CursorPosition = 267
+; FirstLine = 254
 ; Folding = ----
 ; EnableXP

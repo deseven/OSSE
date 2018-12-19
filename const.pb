@@ -198,7 +198,7 @@ Structure item
   value.i
   description.s
   stackable.i
-  rarity.b
+  rarity.i
   material.s
   use.s
   arguments.s
@@ -296,7 +296,7 @@ For i = 8 To 42
   values("inventorySlotOwner" + Str(i))\pcre  = ~"PLAYER_INVENTORY_SLOT_" + Str(i) + ~"_OWNER[ ]*=[ ]*([0-9\\-]+)"
 Next
 ; IDE Options = PureBasic 5.62 (Windows - x86)
-; CursorPosition = 46
-; FirstLine = 10
+; CursorPosition = 200
+; FirstLine = 174
 ; EnableXP
 ; EnableUnicode
