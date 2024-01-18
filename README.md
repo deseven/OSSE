@@ -1,3 +1,5 @@
+# NOTICE: since the 2023 update Obeneseuer got a console interface, so this project is no longer needed, use it only for early builds of the game
+
 ## OSSE
 ![](https://d7.wtf/s/splash.png)  
 Open Sewer save editor for Windows, Linux and macOS.
